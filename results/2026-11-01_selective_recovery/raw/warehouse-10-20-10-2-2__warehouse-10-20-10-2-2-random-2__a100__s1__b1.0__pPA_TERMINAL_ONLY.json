@@ -1,0 +1,231 @@
+{
+  "policy": "PA_TERMINAL_ONLY",
+  "resumption_enabled": true,
+  "partial_acceptance_enabled": true,
+  "partial_acceptance_policy": "GREEDY_DEPENDENCY",
+  "map": "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/data/validation/maps/warehouse-10-20-10-2-2.map",
+  "scen": "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/data/validation/scenarios/warehouse-10-20-10-2-2-random-2.scen",
+  "num_agents": 100,
+  "time_budget_s": 1.0,
+  "slice_budget_s": 0.005,
+  "neighborhood_size": 8,
+  "seed": 1,
+  "initial_plan_source": "LOADED_FROM_SHARED_FIXTURE",
+  "initial_planning_time_s": 0.0,
+  "initial_cost": 9565,
+  "cost_at_deadline": 9043,
+  "final_cost": 9043,
+  "cost_reduction_at_deadline": 522,
+  "cost_reduction": 522,
+  "total_solve_time_s": 0.998106,
+  "deadline_overshoot_s": 0.0,
+  "deadline_exceeded_flag": false,
+  "time_of_last_accepted_commit_s": 0.870002,
+  "total_iterations": 4660,
+  "total_repair_attempts": 4660,
+  "fresh_actions_count": 1908,
+  "resumed_actions_count": 2752,
+  "accepted_repairs": 24,
+  "non_improving_repairs": 1711,
+  "failed_repairs": 0,
+  "total_interrupted_repairs": 2925,
+  "interruptions_with_complete_paths": 2865,
+  "suspended_interrupted_slices": 2925,
+  "stagnant_checkpoints_evicted": 172,
+  "incompatible_checkpoints_discarded": 0,
+  "total_expansions": 5151179,
+  "repeated_expansions": 420178,
+  "pa_attempts": 0,
+  "pa_positive_opportunities": 0,
+  "pa_committed": 0,
+  "pa_budget_skipped": 0,
+  "pa_total_gain": 0,
+  "pa_total_time_us": 0.0,
+  "selective_recovery_policy": "PA_TERMINAL_ONLY",
+  "terminal_reserve_s": 0.002,
+  "terminal_reserve_control": false,
+  "time_normal_search_stopped_s": 0.998099,
+  "terminal_reserve_consumed_s": 7e-06,
+  "terminal_recovery_called": true,
+  "filter_evaluations": 1,
+  "filter_skips": 1,
+  "filter_total_time_us": 0.083,
+  "extraction_total_time_us": 4.333,
+  "eviction_attempts": 0,
+  "eviction_filter_skips": 0,
+  "eviction_committed": 0,
+  "eviction_total_gain": 0,
+  "eviction_total_time_us": 0.0,
+  "terminal_recovery_calls": 1,
+  "terminal_checkpoints_examined": 1,
+  "terminal_filter_skips": 1,
+  "terminal_committed": 0,
+  "terminal_total_gain": 0,
+  "terminal_total_time_us": 6.125,
+  "pa_telemetry": {
+    "total_candidates_evaluated": 0,
+    "positive_weights": 0,
+    "zero_weights": 0,
+    "negative_weights": 0,
+    "forbidden_candidate_count": 0,
+    "transitively_excluded_count": 0,
+    "dependency_arc_count": 0,
+    "feasible_negative_weights": 0,
+    "nonnegative_fast_path_eligible_count": 0,
+    "selected_positive_weights": 0,
+    "selected_zero_weights": 0,
+    "selected_negative_weights": 0,
+    "graph_construction_time_us": {
+      "median": 0.0,
+      "p95": 0.0,
+      "max": 0.0,
+      "total": 0.0
+    },
+    "selection_time_us": {
+      "median": 0.0,
+      "p95": 0.0,
+      "max": 0.0,
+      "total": 0.0
+    },
+    "validation_time_us": {
+      "median": 0.0,
+      "p95": 0.0,
+      "max": 0.0,
+      "total": 0.0
+    },
+    "commit_time_us": {
+      "median": 0.0,
+      "p95": 0.0,
+      "max": 0.0,
+      "total": 0.0
+    },
+    "total_pa_overhead_us": {
+      "median": 0.0,
+      "p95": 0.0,
+      "max": 0.0,
+      "total": 0.0
+    }
+  },
+  "incumbent_version": 25,
+  "plan_valid": true,
+  "validation_error": "",
+  "anytime_cost_trajectory": [
+    {
+      "timestamp_s": 0.0,
+      "cost": 9565
+    },
+    {
+      "timestamp_s": 0.024046,
+      "cost": 9546
+    },
+    {
+      "timestamp_s": 0.031607,
+      "cost": 9545
+    },
+    {
+      "timestamp_s": 0.045718,
+      "cost": 9406
+    },
+    {
+      "timestamp_s": 0.04816,
+      "cost": 9402
+    },
+    {
+      "timestamp_s": 0.052414,
+      "cost": 9377
+    },
+    {
+      "timestamp_s": 0.055428,
+      "cost": 9375
+    },
+    {
+      "timestamp_s": 0.05655,
+      "cost": 9267
+    },
+    {
+      "timestamp_s": 0.077032,
+      "cost": 9262
+    },
+    {
+      "timestamp_s": 0.079324,
+      "cost": 9260
+    },
+    {
+      "timestamp_s": 0.105276,
+      "cost": 9258
+    },
+    {
+      "timestamp_s": 0.120449,
+      "cost": 9239
+    },
+    {
+      "timestamp_s": 0.152677,
+      "cost": 9209
+    },
+    {
+      "timestamp_s": 0.153812,
+      "cost": 9208
+    },
+    {
+      "timestamp_s": 0.165987,
+      "cost": 9207
+    },
+    {
+      "timestamp_s": 0.167967,
+      "cost": 9185
+    },
+    {
+      "timestamp_s": 0.202223,
+      "cost": 9175
+    },
+    {
+      "timestamp_s": 0.243276,
+      "cost": 9140
+    },
+    {
+      "timestamp_s": 0.266224,
+      "cost": 9129
+    },
+    {
+      "timestamp_s": 0.309424,
+      "cost": 9069
+    },
+    {
+      "timestamp_s": 0.324402,
+      "cost": 9067
+    },
+    {
+      "timestamp_s": 0.331937,
+      "cost": 9062
+    },
+    {
+      "timestamp_s": 0.493959,
+      "cost": 9045
+    },
+    {
+      "timestamp_s": 0.555826,
+      "cost": 9044
+    },
+    {
+      "timestamp_s": 0.870002,
+      "cost": 9043
+    }
+  ],
+  "run_id": "warehouse-10-20-10-2-2__warehouse-10-20-10-2-2-random-2__a100__s1__b1.0__pPA_TERMINAL_ONLY",
+  "experiment_policy": "PA_TERMINAL_ONLY",
+  "is_terminal_reserve_control": false,
+  "cell_index": 29,
+  "rotation_shift": 5,
+  "cell_parameters": {
+    "map_name": "warehouse-10-20-10-2-2",
+    "map_path": "data/validation/maps/warehouse-10-20-10-2-2.map",
+    "scen_name": "warehouse-10-20-10-2-2-random-2",
+    "scen_path": "data/validation/scenarios/warehouse-10-20-10-2-2-random-2.scen",
+    "agents": 100,
+    "budget": 1.0,
+    "seed": 1
+  },
+  "independent_validation": "PASSED",
+  "paths_sha256": "14918a775d3a05abe741a29bb4ac6e3110f80b2af90289dade7504537c40a479",
+  "raw_json_sha256": "3ec4f98a5bd46be0831970a1f37b590dd1706504118cd7ac6f442fc1f9d5d2dd"
+}

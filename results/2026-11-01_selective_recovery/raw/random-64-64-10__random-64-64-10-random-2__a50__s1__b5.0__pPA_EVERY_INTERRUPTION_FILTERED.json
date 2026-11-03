@@ -1,0 +1,159 @@
+{
+  "policy": "PA_EVERY_INTERRUPTION_FILTERED",
+  "resumption_enabled": true,
+  "partial_acceptance_enabled": true,
+  "partial_acceptance_policy": "GREEDY_DEPENDENCY",
+  "map": "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/data/validation/maps/random-64-64-10.map",
+  "scen": "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/data/validation/scenarios/random-64-64-10-random-2.scen",
+  "num_agents": 50,
+  "time_budget_s": 5.0,
+  "slice_budget_s": 0.005,
+  "neighborhood_size": 8,
+  "seed": 1,
+  "initial_plan_source": "LOADED_FROM_SHARED_FIXTURE",
+  "initial_planning_time_s": 0.0,
+  "initial_cost": 2205,
+  "cost_at_deadline": 2135,
+  "final_cost": 2135,
+  "cost_reduction_at_deadline": 70,
+  "cost_reduction": 70,
+  "total_solve_time_s": 4.999592,
+  "deadline_overshoot_s": 0.0,
+  "deadline_exceeded_flag": false,
+  "time_of_last_accepted_commit_s": 0.043961,
+  "total_iterations": 27822,
+  "total_repair_attempts": 27822,
+  "fresh_actions_count": 26477,
+  "resumed_actions_count": 1345,
+  "accepted_repairs": 6,
+  "non_improving_repairs": 26469,
+  "failed_repairs": 0,
+  "total_interrupted_repairs": 1347,
+  "interruptions_with_complete_paths": 1347,
+  "suspended_interrupted_slices": 1347,
+  "stagnant_checkpoints_evicted": 2,
+  "incompatible_checkpoints_discarded": 0,
+  "total_expansions": 44173916,
+  "repeated_expansions": 93778,
+  "pa_attempts": 1347,
+  "pa_positive_opportunities": 0,
+  "pa_committed": 0,
+  "pa_budget_skipped": 0,
+  "pa_total_gain": 0,
+  "pa_total_time_us": 4337.66,
+  "selective_recovery_policy": "PA_EVERY_INTERRUPTION_FILTERED",
+  "terminal_reserve_s": 0.002,
+  "terminal_reserve_control": false,
+  "time_normal_search_stopped_s": 4.999592,
+  "terminal_reserve_consumed_s": 0.0,
+  "terminal_recovery_called": false,
+  "filter_evaluations": 1347,
+  "filter_skips": 1347,
+  "filter_total_time_us": 19.449,
+  "extraction_total_time_us": 3806.739,
+  "eviction_attempts": 0,
+  "eviction_filter_skips": 0,
+  "eviction_committed": 0,
+  "eviction_total_gain": 0,
+  "eviction_total_time_us": 0.0,
+  "terminal_recovery_calls": 0,
+  "terminal_checkpoints_examined": 0,
+  "terminal_filter_skips": 0,
+  "terminal_committed": 0,
+  "terminal_total_gain": 0,
+  "terminal_total_time_us": 0.0,
+  "pa_telemetry": {
+    "total_candidates_evaluated": 8832,
+    "positive_weights": 0,
+    "zero_weights": 8366,
+    "negative_weights": 466,
+    "forbidden_candidate_count": 0,
+    "transitively_excluded_count": 0,
+    "dependency_arc_count": 0,
+    "feasible_negative_weights": 0,
+    "nonnegative_fast_path_eligible_count": 1347,
+    "selected_positive_weights": 0,
+    "selected_zero_weights": 0,
+    "selected_negative_weights": 0,
+    "graph_construction_time_us": {
+      "median": 0.0,
+      "p95": 0.0,
+      "max": 0.0,
+      "total": 0.0
+    },
+    "selection_time_us": {
+      "median": 0.0,
+      "p95": 0.0,
+      "max": 0.0,
+      "total": 0.0
+    },
+    "validation_time_us": {
+      "median": 0.0,
+      "p95": 0.0,
+      "max": 0.0,
+      "total": 0.0
+    },
+    "commit_time_us": {
+      "median": 0.0,
+      "p95": 0.0,
+      "max": 0.0,
+      "total": 0.0
+    },
+    "total_pa_overhead_us": {
+      "median": 3.291,
+      "p95": 3.666,
+      "max": 9.209,
+      "total": 4337.66
+    }
+  },
+  "incumbent_version": 7,
+  "plan_valid": true,
+  "validation_error": "",
+  "anytime_cost_trajectory": [
+    {
+      "timestamp_s": 0.0,
+      "cost": 2205
+    },
+    {
+      "timestamp_s": 0.005774,
+      "cost": 2199
+    },
+    {
+      "timestamp_s": 0.011369,
+      "cost": 2185
+    },
+    {
+      "timestamp_s": 0.011711,
+      "cost": 2178
+    },
+    {
+      "timestamp_s": 0.018591,
+      "cost": 2140
+    },
+    {
+      "timestamp_s": 0.039092,
+      "cost": 2139
+    },
+    {
+      "timestamp_s": 0.043961,
+      "cost": 2135
+    }
+  ],
+  "run_id": "random-64-64-10__random-64-64-10-random-2__a50__s1__b5.0__pPA_EVERY_INTERRUPTION_FILTERED",
+  "experiment_policy": "PA_EVERY_INTERRUPTION_FILTERED",
+  "is_terminal_reserve_control": false,
+  "cell_index": 11,
+  "rotation_shift": 5,
+  "cell_parameters": {
+    "map_name": "random-64-64-10",
+    "map_path": "data/validation/maps/random-64-64-10.map",
+    "scen_name": "random-64-64-10-random-2",
+    "scen_path": "data/validation/scenarios/random-64-64-10-random-2.scen",
+    "agents": 50,
+    "budget": 5.0,
+    "seed": 1
+  },
+  "independent_validation": "PASSED",
+  "paths_sha256": "78c76066f1fd04e477977049556ddccfbd047e88004bed32c1e26562a5d0861c",
+  "raw_json_sha256": "461798d6769de6eb1538301481eef945da2cc06f6c73a827ed4553e87bcc1cf8"
+}
