@@ -1,0 +1,84 @@
+{
+  "map_path": "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/data/validation/maps/random-64-64-10.map",
+  "scen_path": "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/data/validation/scenarios/random-64-64-10-random-3.scen",
+  "map_name": "random-64-64-10.map",
+  "scenario_name": "random-64-64-10-random-3.scen",
+  "agent_count": 50,
+  "budget_s": 1.0,
+  "seed": 42,
+  "policy": "SCORE_BASED_ADAPTIVE",
+  "estimator_mode": "RIDGE_REGRESSION",
+  "validation_policy": "partial_prefix",
+  "timing_protocol": "refinement",
+  "initial_plan_source": "LOADED_FROM_FILE",
+  "initial_plan_found": true,
+  "final_solution_valid": true,
+  "validation_error": "",
+  "initial_cost": 2173,
+  "final_cost": 2143,
+  "total_improvement": 30,
+  "time_of_last_accepted_commit_s": 0.329632,
+  "total_solve_time_s": 0.997524,
+  "initial_planning_time_s": 0.0,
+  "initial_validation_time_s": 8e-05,
+  "total_active_search_time_s": 0.000836,
+  "total_decision_time_s": 0.214718,
+  "deadline_overshoot_s": 0.0,
+  "total_decisions": 14670,
+  "fresh_actions_count": 14664,
+  "resumed_actions_count": 5,
+  "accepted_repairs": 4,
+  "accepted_from_resumed": 0,
+  "accepted_from_fresh": 4,
+  "non_improving_repairs": 14660,
+  "interrupted_slices": 5,
+  "interrupted_with_nonempty_prefix": 5,
+  "interrupted_with_empty_prefix": 0,
+  "incompatible_checkpoints_discarded": 0,
+  "partial_recovery_count": 0,
+  "total_salvaged_prefix_agents": 0,
+  "stagnant_checkpoints_evicted": 0,
+  "late_commits_rejected": 0,
+  "fallback_decisions_count": 14664,
+  "total_expansions": 1582,
+  "repeated_expansions": 926,
+  "repeated_work_ratio": 0.585335,
+  "fixed_bookkeeping_memory_bytes": 488,
+  "peak_payload_memory_bytes": 2448,
+  "peak_checkpoint_memory_bytes": 2936,
+  "median_decision_latency_us": 14.375,
+  "p95_decision_latency_us": 18.292,
+  "max_decision_latency_us": 93.458,
+  "slice_durations_selected_count": {
+    "2ms": 137,
+    "10ms": 14528,
+    "50ms": 4
+  },
+  "anytime_cost_trajectory": [
+    {
+      "timestamp_s": 8e-05,
+      "cost": 2173
+    },
+    {
+      "timestamp_s": 0.049148,
+      "cost": 2159
+    },
+    {
+      "timestamp_s": 0.049509,
+      "cost": 2158
+    },
+    {
+      "timestamp_s": 0.133019,
+      "cost": 2151
+    },
+    {
+      "timestamp_s": 0.329632,
+      "cost": 2143
+    }
+  ],
+  "run_key": "Policy_C_PartialPrefix_random-64-64-10_s3_a50_b1.0s_seed42",
+  "policy_label": "Policy_C_PartialPrefix",
+  "independent_validation_passed": true,
+  "independent_validation_error": "",
+  "host_runtime_s": 1.0223050117492676
+}
