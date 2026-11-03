@@ -1,0 +1,217 @@
+Start testing: Oct 26 15:19 +0530
+----------------------------------------------------------
+1/7 Testing: validator_unit_tests
+1/7 Test: validator_unit_tests
+Command: "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/build/test-clean-build/rbl_validator_tests"
+Directory: /Users/disasgamage/Documents/GitHub/RouteBudgetLab/build/test-clean-build
+"validator_unit_tests" start time: Oct 26 15:19 +0530
+Output:
+----------------------------------------------------------
+random cross-check: 4000/4000 agree (naive says valid in 1113, invalid in 2887)
+54 checks run, 0 failed
+<end of output>
+Test time =   0.77 sec
+----------------------------------------------------------
+Test Passed.
+"validator_unit_tests" end time: Oct 26 15:19 +0530
+"validator_unit_tests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/7 Testing: real_solver_output_is_valid
+2/7 Test: real_solver_output_is_valid
+Command: "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/build/test-clean-build/rbl_validate" "--map" "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/tests/fixtures/real/random-32-32-20.map" "--scen" "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/tests/fixtures/real/random-32-32-20-random-1.scen" "--agents" "50" "--paths" "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/tests/fixtures/real/baseline_50agents_seed0.paths" "--reported-cost" "1147"
+Directory: /Users/disasgamage/Documents/GitHub/RouteBudgetLab/build/test-clean-build
+"real_solver_output_is_valid" start time: Oct 26 15:19 +0530
+Output:
+----------------------------------------------------------
+{"status":"VALID","agents":50,"independent_sum_of_costs":1147,"sum_of_path_lengths":1147,"makespan":48,"reported_cost":1147,"cost_matches_independent_arrival":true,"cost_matches_path_length":true,"issue_counts":{},"issues":[]}
+<end of output>
+Test time =   0.49 sec
+----------------------------------------------------------
+Test Passed.
+"real_solver_output_is_valid" end time: Oct 26 15:19 +0530
+"real_solver_output_is_valid" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/7 Testing: real_solver_output_misread_as_xy_is_rejected
+3/7 Test: real_solver_output_misread_as_xy_is_rejected
+Command: "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/build/test-clean-build/rbl_validate" "--map" "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/tests/fixtures/real/random-32-32-20.map" "--scen" "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/tests/fixtures/real/random-32-32-20-random-1.scen" "--agents" "50" "--paths" "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/tests/fixtures/real/baseline_50agents_seed0.paths" "--coords" "xy"
+Directory: /Users/disasgamage/Documents/GitHub/RouteBudgetLab/build/test-clean-build
+"real_solver_output_misread_as_xy_is_rejected" start time: Oct 26 15:19 +0530
+Output:
+----------------------------------------------------------
+{"status":"INVALID_PLAN","agents":50,"independent_sum_of_costs":1196,"sum_of_path_lengths":1147,"makespan":48,"issue_counts":{"GOAL_NOT_REACHED":49,"OBSTACLE":228,"WRONG_START":47},"issues":[{"code":"WRONG_START","detail":"agent 0"},{"code":"GOAL_NOT_REACHED","detail":"agent 0 ends at (24,31)"},{"code":"OBSTACLE","detail":"agent 0 t=5"},{"code":"OBSTACLE","detail":"agent 0 t=12"},{"code":"OBSTACLE","detail":"agent 0 t=16"},{"code":"OBSTACLE","detail":"agent 0 t=17"},{"code":"OBSTACLE","detail":"agent 0 t=18"},{"code":"WRONG_START","detail":"agent 1"},{"code":"GOAL_NOT_REACHED","detail":"agent 1 ends at (22,24)"},{"code":"WRONG_START","detail":"agent 2"},{"code":"GOAL_NOT_REACHED","detail":"agent 2 ends at (23,28)"},{"code":"WRONG_START","detail":"agent 3"},{"code":"GOAL_NOT_REACHED","detail":"agent 3 ends at (28,16)"},{"code":"WRONG_START","detail":"agent 4"},{"code":"GOAL_NOT_REACHED","detail":"agent 4 ends at (18,7)"}]}
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"real_solver_output_misread_as_xy_is_rejected" end time: Oct 26 15:19 +0530
+"real_solver_output_misread_as_xy_is_rejected" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/7 Testing: experiment_e1_resumption_tests
+4/7 Test: experiment_e1_resumption_tests
+Command: "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/build/test-clean-build/rbl_e1_tests" "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/data/sample/random-32-32-20.map" "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/data/sample/random-32-32-20-random-1.scen"
+Directory: /Users/disasgamage/Documents/GitHub/RouteBudgetLab/build/test-clean-build
+"experiment_e1_resumption_tests" start time: Oct 26 15:19 +0530
+Output:
+----------------------------------------------------------
+================================================================
+Running Experiment E1: Resumable Repair Correctness & Equivalence
+================================================================
+Map: /Users/disasgamage/Documents/GitHub/RouteBudgetLab/data/sample/random-32-32-20.map
+Scen: /Users/disasgamage/Documents/GitHub/RouteBudgetLab/data/sample/random-32-32-20-random-1.scen
+Generated 10 initial paths.
+
+[E1 Test 1] Uninterrupted Repair Baseline...
+  Outcome: COMPLETED_ACCEPTED | Old Cost: 117 | New Cost: 101 | Delta: -16 | Expansions: 432
+
+[E1 Test 2] Interruption After 2 Agents & Exact Path Parity...
+  Slice 1 Outcome: INTERRUPTED_SLICE | r_done: 2 | Has reusable prefix: 1
+  Slice 2 Outcome: COMPLETED_ACCEPTED | Final Cost: 101
+  Explicit path-by-path cell-by-cell equivalence: VERIFIED IDENTICAL.
+
+[E1 Test 3] Interruption Inside Low-Level Search (Mid-Search Cutoff)...
+  Interrupted inside agent 1 after 6 node expansions. (r_done = 1, budget = 35)
+FAILED: Resumed outcome must report repeated expansions (outcome_mid2.repeated_expansions = 0, outcome_mid1.interruption.current_agent_expansions = 6)
+<end of output>
+Test time =   0.53 sec
+----------------------------------------------------------
+Test Failed.
+"experiment_e1_resumption_tests" end time: Oct 26 15:19 +0530
+"experiment_e1_resumption_tests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/7 Testing: experiment_e4_compatibility_tests
+5/7 Test: experiment_e4_compatibility_tests
+Command: "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/build/test-clean-build/rbl_e4_tests" "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/data/sample/random-32-32-20.map" "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/data/sample/random-32-32-20-random-1.scen"
+Directory: /Users/disasgamage/Documents/GitHub/RouteBudgetLab/build/test-clean-build
+"experiment_e4_compatibility_tests" start time: Oct 26 15:19 +0530
+Output:
+----------------------------------------------------------
+================================================================
+Running Experiment E4: Conservative Constraint Compatibility
+================================================================
+Map: /Users/disasgamage/Documents/GitHub/RouteBudgetLab/data/sample/random-32-32-20.map
+Scen: /Users/disasgamage/Documents/GitHub/RouteBudgetLab/data/sample/random-32-32-20-random-1.scen
+[Calibration] Total expansions for 4 agents = 432 | Slice for 2 agents = 216 | Slice for 1 agent = 108
+
+[E4 Test 1] Unchanged Context (Stage 1 Match)...
+  -> Stage 1 latency: 0.208 us, Verdict: COMPATIBLE_UNCHANGED [PASSED]
+
+[E4 Test 2] Irrelevant External Changes (Stage 2 Pass)...
+  -> Policy 0 Verdict: DISCARD_POLICY_DISABLED (Discarded as expected)
+  -> Policy 1 Verdict: COMPATIBLE_PREFIX_VALID (Stage 2, latency: 0.833 us, Stage 2 Verified: Retained prefix collision-free against 1 modified external agents)
+  -> Stage 2 non-conflicting validation & resumption strictly verified [PASSED]
+
+[E4 Test 3] Conflicting Changes (Vertex Conflict Detection)...
+  -> Detected vertex conflict with agent 5 at t=2, loc=123 (latency: 1.459 us) [PASSED]
+
+[E4 Test 4] Edge Swap Conflict Detection...
+  -> Detected edge swap (59<->91) with agent 6 at t=0 (latency: 0.833 us) [PASSED]
+
+[E4 Test 5] Changed Goal Occupancy (Stay-at-Goal Collision)...
+  -> Detected stay-at-goal collision at loc=156 with parked agent 7 at t=4 (latency: 0.917 us) [PASSED]
+
+[E4 Test 6] Overlapping Neighborhood Repairs...
+  -> Detected overlapping neighborhood mutation on agent 1 (latency: 0.875 us) [PASSED]
+
+[E4 Test 7] Cost Bound & Pruning Ceilings...
+  -> Detected cost bound violation (Prefix accumulated cost (127) >= current neighborhood incumbent cost (117); cannot yield improvement, latency: 0.916 us) [PASSED]
+
+[E4 Test 8] Comprehensive Policy Comparison (Policy 0 vs Policy 1)...
+
+----------------------------------------------------------------
+Policy Evaluation Summary (20 Scenarios Evaluated)
+----------------------------------------------------------------
+Metric                      Policy 0 (Discard)  Policy 1 (Selective)
+----------------------------------------------------------------
+Eligible Checkpoints        8                   14                  
+Mean Validation Latency     0.2459              0.22505              us
+Invalid Commits             0                   0                   
+----------------------------------------------------------------
+  -> Zero invalid solution commits verified across all policies [PASSED]
+
+================================================================
+Experiment E4 Completed: All 8 Test Categories Passed 100%!
+================================================================
+<end of output>
+Test time = 136.41 sec
+----------------------------------------------------------
+Test Passed.
+"experiment_e4_compatibility_tests" end time: Oct 26 15:22 +0530
+"experiment_e4_compatibility_tests" time elapsed: 00:02:16
+----------------------------------------------------------
+
+6/7 Testing: estimator_unit_tests
+6/7 Test: estimator_unit_tests
+Command: "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/build/test-clean-build/rbl_estimator_tests"
+Directory: /Users/disasgamage/Documents/GitHub/RouteBudgetLab/build/test-clean-build
+"estimator_unit_tests" start time: Oct 26 15:22 +0530
+Output:
+----------------------------------------------------------
+================================================================
+RouteBudget Lab: Estimator & Feature Extractor Unit Tests (Phase 5)
+================================================================
+[Test 1] Search Progress Feature Contract...
+  -> PASS: 13 features verified, live open-list omitted as required.
+[Test 2] Python vs C++ Prediction Parity on Verification Cases...
+  -> PASS: All 4 verification cases match Python within numerical precision (< 1e-5).
+[Test 3] Physical Bounds and Robust Fallbacks...
+  -> PASS: All non-finite inputs, size mismatches, and unknown tabular keys handled safely.
+[Test 4] Inference Latency Benchmark (100,000 evaluations)...
+  Average Inference Latency: 0.1577 microseconds per prediction (0.0002 ms)
+  -> PASS: Latency is 0.1577 us, meeting sub-millisecond real-time requirements.
+================================================================
+ALL PHASE 5 ESTIMATOR TESTS PASSED!
+================================================================
+<end of output>
+Test time =   0.34 sec
+----------------------------------------------------------
+Test Passed.
+"estimator_unit_tests" end time: Oct 26 15:22 +0530
+"estimator_unit_tests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+7/7 Testing: controller_unit_tests
+7/7 Test: controller_unit_tests
+Command: "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/build/test-clean-build/rbl_controller_tests"
+Directory: /Users/disasgamage/Documents/GitHub/RouteBudgetLab
+"controller_unit_tests" start time: Oct 26 15:22 +0530
+Output:
+----------------------------------------------------------
+================================================================
+RouteBudget Lab: Overhead-Aware Controller Integration Tests (Phase 6/7)
+================================================================
+[Test 1] Controller Initialization & Missing Initial Solution...
+  -> PASS: Missing initial solution cleanly caught.
+[Test 2] Policy Modes: K=0 Restart-Only vs K=2 FIFO vs Adaptive...
+  -> PASS: All three policy modes execute cleanly with matched settings.
+[Test 3] All-Zero Predicted Improvement Triggers Deterministic Fallback...
+  -> PASS: Fallback gracefully engaged (saw_fallback=0) with documented reasons.
+[Test 4] Stagnation Eviction: Bounded Response to Repeated No-Progress...
+  -> PASS: Stagnant checkpoint evicted cleanly after exceeding threshold.
+[Test 5] Late Commit Rejection & Strict Incumbent Preservation...
+  -> PASS: Late commit safely rejected; incumbent preserved untouched.
+[Test 6] Full Decision Pipeline Latency Audit...
+  Decisions made: 5707
+  Median Decision Latency: 8.71 us (0.01 ms)
+  P95 Decision Latency:    19.92 us (0.02 ms)
+  Deadline Overshoot:      0.00 ms
+  -> PASS: Decision pipeline latency meets proposal budget <= 1 ms.
+[Test 7] Matched Controls: SCORE_BASED_FIXED & ELAPSED_TIME_ONLY Policies...
+  -> PASS: SCORE_BASED_FIXED and ELAPSED_TIME_ONLY execute correctly with matched controls.
+[Test 8] Bookkeeping Memory vs Retained Payload Separation...
+  -> PASS: Memory separation cleanly verified (K=0 payload strictly 0 B).
+================================================================
+ALL PHASE 6/7 CONTROLLER TESTS PASSED!
+================================================================
+<end of output>
+Test time =   2.39 sec
+----------------------------------------------------------
+Test Passed.
+"controller_unit_tests" end time: Oct 26 15:22 +0530
+"controller_unit_tests" time elapsed: 00:00:02
+----------------------------------------------------------
+
+End testing: Oct 26 15:22 +0530
