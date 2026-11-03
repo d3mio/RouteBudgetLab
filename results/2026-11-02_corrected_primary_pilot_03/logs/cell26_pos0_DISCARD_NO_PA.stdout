@@ -1,0 +1,16 @@
+--------------------------------------------------------
+Policy:                DISCARD_NO_PA
+Initial Cost:          4677
+Cost at Deadline:      4675 (Reduction: 2)
+Final Cost:            4675 (Reduction: 2)
+Solve Time (s):        4.999550 (Overshoot: 0.000000 us)
+Total Repair Attempts: 12959 (Fresh: 12959, Resumed: 0)
+Interruptions:         12916 (With Completed Paths: 12833)
+Accepted Repairs:      1
+PA Attempts:           0
+PA Positive Opps:      0
+PA Committed:          0
+PA Total Gain:         0
+Incumbent Version:     2
+Plan Valid:            YES
+--------------------------------------------------------
