@@ -1,0 +1,6 @@
+{
+  "measurements": 60,
+  "max_s": 0.006042625,
+  "frozen_reserve_s": 0.013,
+  "rule": "ceil(2 * maximum of 60 measured 100-agent, 8-candidate recovery calls in milliseconds); heuristic for at most two FIFO checkpoints; not a worst-case guarantee"
+}

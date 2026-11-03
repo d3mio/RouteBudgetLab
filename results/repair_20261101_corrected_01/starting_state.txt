@@ -1,0 +1,6 @@
+Starting branch: research/selective-recovery
+HEAD: fb6ba907e4ccba9ec882537c2dce2be970c91781
+Pre-existing: modified .DS_Store; untracked audit_20261101_independent_1548/ and audit_20261101_verification_1602/
+No AGENTS.md found in repository. No submodules.
+040000 tree 47f49b0dd95165c1f84ed2a857f47744bf016ff7	third_party/anytime-mapf
+040000 tree dc380f209d58ee1b72049374e3990ba3863a9728	third_party/eigen

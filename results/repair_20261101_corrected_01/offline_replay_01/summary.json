@@ -1,0 +1,28 @@
+[
+  {
+    "map": "data/validation/maps/random-64-64-10.map",
+    "snapshots": 20,
+    "greedy_below_oracle": 0,
+    "positive_oracle": 0,
+    "positive_feasible_opportunities": 0,
+    "greedy_positive_opportunities": 0,
+    "exact_strictly_exceeds_greedy_count": 0,
+    "total_exact_gain": 0,
+    "total_greedy_gain": 0,
+    "exact_vs_oracle_mismatch_count": 0,
+    "nn_ref_vs_exact_mismatch_count": 0
+  },
+  {
+    "map": "data/validation/maps/warehouse-10-20-10-2-2.map",
+    "snapshots": 72,
+    "greedy_below_oracle": 0,
+    "positive_oracle": 1,
+    "positive_feasible_opportunities": 1,
+    "greedy_positive_opportunities": 1,
+    "exact_strictly_exceeds_greedy_count": 0,
+    "total_exact_gain": 2,
+    "total_greedy_gain": 2,
+    "exact_vs_oracle_mismatch_count": 0,
+    "nn_ref_vs_exact_mismatch_count": 0
+  }
+]

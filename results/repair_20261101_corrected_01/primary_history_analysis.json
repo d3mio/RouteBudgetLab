@@ -1,0 +1,4147 @@
+{
+  "outcome": "Historical retained FINAL cost; exact publication timing not reconstructed",
+  "delta": "treatment minus control; negative favors treatment",
+  "limitations": "Repeated budgets and nested agent sets are correlated; historical provenance incomplete. No new confirmation instances used.",
+  "comparisons": {
+    "E2: Resumption Effect": {
+      "control": "RESTART_ONLY_K0",
+      "treatment": "FIXED_FIFO_RESUME",
+      "summary": {
+        "n_pairs": 96,
+        "wins": 23,
+        "ties": 49,
+        "losses": 24,
+        "mean_delta_cost": -13.364583333333334,
+        "mean_non_ties": -27.29787234042553,
+        "sample_sd": 103.17304011291104,
+        "standard_error": 10.530054312013874,
+        "sign_two_sided": 1.0,
+        "wilcoxon_two_sided_exact": 0.8729426494915771
+      },
+      "pairs": [
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 183
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 2
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 13
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": -418
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": -8
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 81
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": -418
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": -99
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": -9
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": -33
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": -418
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 54
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": -9
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": -9
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": -418
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": -115
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 243
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 5
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 7
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 42
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": -6
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": -1
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 1
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 1
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 48
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 116
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": -19
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 6
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 11
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": -1
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 66
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 162
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 71
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": -74
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": -123
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 6
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": -29
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": -1
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 47
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 132
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 31
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": -45
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 6
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": -50
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": -1
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 7
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": -320
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 0
+        }
+      ]
+    },
+    "E3a: Controller Scoring (Matched 10ms)": {
+      "control": "FIXED_FIFO_RESUME",
+      "treatment": "SCORE_BASED_FIXED",
+      "summary": {
+        "n_pairs": 96,
+        "wins": 29,
+        "ties": 46,
+        "losses": 21,
+        "mean_delta_cost": 10.166666666666666,
+        "mean_non_ties": 19.52,
+        "sample_sd": 114.21537058204112,
+        "standard_error": 11.657057446203721,
+        "sign_two_sided": 0.3222363203575469,
+        "wilcoxon_two_sided_exact": 0.6683542369738493
+      },
+      "pairs": [
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": -175
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": -4
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 1
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": -91
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": -35
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": -12
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": -44
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 509
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": -35
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": -12
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 2
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 60
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 516
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": -35
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": -12
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": -5
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 39
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": -58
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 261
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": -93
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": -4
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 22
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": -8
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 52
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": -2
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 59
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 13
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 417
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": -3
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": -82
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": -28
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": -3
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 2
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 26
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": -112
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": -367
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 293
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 55
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": -1
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": -18
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 48
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": -114
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": -244
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 255
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": -28
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": -47
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 3
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": -112
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 112
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 15
+        }
+      ]
+    },
+    "E3b: Adaptive Slice Allocation": {
+      "control": "SCORE_BASED_FIXED",
+      "treatment": "SCORE_BASED_ADAPTIVE",
+      "summary": {
+        "n_pairs": 96,
+        "wins": 22,
+        "ties": 44,
+        "losses": 30,
+        "mean_delta_cost": 16.96875,
+        "mean_non_ties": 31.326923076923077,
+        "sample_sd": 110.56766950367401,
+        "standard_error": 11.28476551386208,
+        "sign_two_sided": 0.3317497633694906,
+        "wilcoxon_two_sided_exact": 0.12847069191428462
+      },
+      "pairs": [
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": -8
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": -2
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": -5
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 417
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 87
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": -55
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 418
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 68
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 15
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": -54
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 319
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": -356
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 19
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": -30
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 476
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": -118
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 22
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 269
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 4
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": -21
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": -67
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": -12
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": -93
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 18
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 123
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 25
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 22
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": -6
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": -43
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 1
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": -48
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 112
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 162
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": -278
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 41
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 1
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": -24
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 26
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": -6
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": -55
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 114
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 12
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": -271
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 95
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 28
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 22
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": -3
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 61
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": -15
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 17
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 112
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 93
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 0
+        }
+      ]
+    },
+    "E4: Selective Compatibility": {
+      "control": "DISCARD_ON_CHANGE",
+      "treatment": "SCORE_BASED_ADAPTIVE",
+      "summary": {
+        "n_pairs": 96,
+        "wins": 3,
+        "ties": 86,
+        "losses": 7,
+        "mean_delta_cost": 0.59375,
+        "mean_non_ties": 5.7,
+        "sample_sd": 3.712221990299497,
+        "standard_error": 0.3788770703405322,
+        "sign_two_sided": 0.34375,
+        "wilcoxon_two_sided_exact": 0.232421875
+      },
+      "pairs": [
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 8
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": -7
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 2
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 4
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 22
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 16
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": -6
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 3
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 20
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": -5
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 0
+        }
+      ]
+    },
+    "E5: Progress Feature Ablation": {
+      "control": "ELAPSED_TIME_ONLY",
+      "treatment": "SCORE_BASED_ADAPTIVE",
+      "summary": {
+        "n_pairs": 96,
+        "wins": 7,
+        "ties": 76,
+        "losses": 13,
+        "mean_delta_cost": 2.4895833333333335,
+        "mean_non_ties": 11.95,
+        "sample_sd": 28.017285939282356,
+        "standard_error": 2.859502272037312,
+        "sign_two_sided": 0.26317596435546875,
+        "wilcoxon_two_sided_exact": 0.38821983337402344
+      },
+      "pairs": [
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": -92
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 8
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": -99
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 46
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 5
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 175
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 30
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": -6
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": -20
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 42
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": -18
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 5
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": -7
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 2
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 14
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 22
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 3
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 5
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": -16
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 140
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 0
+        }
+      ]
+    },
+    "E6: End-to-End Baseline Comparison": {
+      "control": "BASELINE_BALANCE",
+      "treatment": "RBL_END_TO_END",
+      "summary": {
+        "n_pairs": 96,
+        "wins": 13,
+        "ties": 16,
+        "losses": 67,
+        "mean_delta_cost": 232.64583333333334,
+        "mean_non_ties": 279.175,
+        "sample_sd": 337.10510555757304,
+        "standard_error": 34.405645762629824,
+        "sign_two_sided": 6.415141174951122e-10,
+        "wilcoxon_two_sided_exact": 4.3837814645148215e-17
+      },
+      "pairs": [
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": -2
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 64
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 35
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 884
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": -5
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 159
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 512
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 1338
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 222
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": -2
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": -4
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 4
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 149
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 512
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 1291
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 222
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": -2
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": -4
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 12
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 134
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 413
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 854
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-1",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 222
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": -2
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-1",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": -4
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 9
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-1",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 169
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 512
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-1",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 692
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 141
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 1201
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 496
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": -2
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 127
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 80
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 74
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 246
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 16
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 193
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 215
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 1413
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 50,
+          "budget": 1.0,
+          "delta_cost": 2
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 100,
+          "budget": 1.0,
+          "delta_cost": 636
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 651
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 165
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": -2
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 34
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 19
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 87
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 229
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 52
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 317
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 214
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 1118
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 50,
+          "budget": 5.0,
+          "delta_cost": 2
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 100,
+          "budget": 5.0,
+          "delta_cost": 589
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 737
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 42
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": -2
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 36
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": -3
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 69
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 299
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 45
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 338
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 214
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 618
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 50,
+          "budget": 10.0,
+          "delta_cost": 2
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 100,
+          "budget": 10.0,
+          "delta_cost": 335
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-2",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 769
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "warehouse-20-40-10-2-1",
+          "scenario": "warehouse-20-40-10-2-1-random-3",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": -2
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-2",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 36
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "random-64-64-20",
+          "scenario": "random-64-64-20-random-3",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 15
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 87
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-2",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 294
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 41
+        },
+        {
+          "map": "room-64-64-8",
+          "scenario": "room-64-64-8-random-3",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 363
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 214
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-2",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 693
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 50,
+          "budget": 30.0,
+          "delta_cost": 0
+        },
+        {
+          "map": "ost003d",
+          "scenario": "ost003d-random-3",
+          "agents": 100,
+          "budget": 30.0,
+          "delta_cost": 397
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,1 @@
+[Offline Snapshots] Map=data/validation/maps/random-64-64-10.map Agents=100 Seed=0 | Attempts=171 Interrupts=20 WithCandidates=20 PosFeasible=0 ExactGain=0 GreedyGain=0 Exact>Greedy=0 OracleMismatch=0

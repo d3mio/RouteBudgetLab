@@ -1,0 +1,20 @@
+[
+  {
+    "cell_index": 0,
+    "cell": {
+      "map": "data/validation/maps/random-64-64-10.map",
+      "scen": "data/validation/scenarios/random-64-64-10-random-1.scen",
+      "agents": 50,
+      "budget": 1.0,
+      "seed": 0
+    },
+    "policies": [
+      "RESUMPTION_NO_PA",
+      "PA_EVERY_INTERRUPTION_FILTERED",
+      "PA_EVICTION_ONLY",
+      "PA_TERMINAL_ONLY",
+      "PA_EVICTION_AND_TERMINAL",
+      "TERMINAL_RESERVE_CONTROL"
+    ]
+  }
+]

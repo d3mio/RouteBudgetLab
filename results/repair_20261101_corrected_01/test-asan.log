@@ -1,0 +1,81 @@
+Test project /Users/disasgamage/Documents/GitHub/RouteBudgetLab/build/corrected-asan
+      Start  1: validator_unit_tests
+ 1/13 Test  #1: validator_unit_tests ...........................   Passed    0.69 sec
+      Start  2: real_solver_output_is_valid
+ 2/13 Test  #2: real_solver_output_is_valid ....................   Passed    0.04 sec
+      Start  3: real_solver_output_misread_as_xy_is_rejected
+ 3/13 Test  #3: real_solver_output_misread_as_xy_is_rejected ...   Passed    0.04 sec
+      Start  4: experiment_e1_resumption_tests
+ 4/13 Test  #4: experiment_e1_resumption_tests .................***Failed    0.49 sec
+================================================================
+Running Experiment E1: Resumable Repair Correctness & Equivalence
+================================================================
+Map: /Users/disasgamage/Documents/GitHub/RouteBudgetLab/data/sample/random-32-32-20.map
+Scen: /Users/disasgamage/Documents/GitHub/RouteBudgetLab/data/sample/random-32-32-20-random-1.scen
+Generated 10 initial paths.
+
+[E1 Test 1] Uninterrupted Repair Baseline...
+  Outcome: COMPLETED_ACCEPTED | Old Cost: 117 | New Cost: 101 | Delta: -16 | Expansions: 432
+
+[E1 Test 2] Interruption After 2 Agents & Exact Path Parity...
+  Slice 1 Outcome: INTERRUPTED_SLICE | r_done: 2 | Has reusable prefix: 1
+  Slice 2 Outcome: COMPLETED_ACCEPTED | Final Cost: 101
+  Explicit path-by-path cell-by-cell equivalence: VERIFIED IDENTICAL.
+
+[E1 Test 3] Interruption Inside Low-Level Search (Mid-Search Cutoff)...
+  Interrupted inside agent 1 after 6 node expansions. (r_done = 1, budget = 35)
+  Resumed cleanly: repeated 6 expansions recorded. Incumbent cost matches baseline.
+
+[E1 Test 4] Repeated Interruption Inside the Same Difficult Agent...
+  Repeated interruption accurately observed: r_done remained 0 across 3 short slices.
+  Accumulated repeated expansions discarded: 9
+
+[E1 Test 5] Interruption Before Any Prefix (r_done = 0)...
+
+[E1 Test 6] Multiple Pause/Resume Cycles...
+  Multi-cycle final outcome: COMPLETED_ACCEPTED | Final Cost: 200
+
+[E1 Test 7] Bounded Store Lifecycle: K=0, K=1, K=2...
+  K=0, K=1, and K=2 bounded store lifecycle verified.
+
+[E1 Test 8] Global Deadline Expiry Handling...
+  STOPPED_DEADLINE handled cleanly with zero state mutation.
+
+[E1 Test 9] Independent Path Verification (rbl_validator)...
+  Independent Validator Verdict: VALID | Independent Cost: 200
+
+[E1 Test 10] Integrated Checkpoint Performance Reporting...
+  [Live Solver Integration Measurements]
+  Save Latency:    9.625 us
+  Restore Latency: 196.875 us
+  Combined Cost:   206.5 us
+  Retained Memory: 1072 bytes (1.04688 KB)
+  Combined / 10ms Slice: 2.065 %
+FAILED: Integrated restore latency must be sub-millisecond (cp->restore_time_us < 100.0 is false)
+
+      Start  5: experiment_e4_compatibility_tests
+ 5/13 Test  #5: experiment_e4_compatibility_tests ..............   Passed    0.42 sec
+      Start  6: estimator_unit_tests
+ 6/13 Test  #6: estimator_unit_tests ...........................   Passed    0.18 sec
+      Start  7: controller_unit_tests
+ 7/13 Test  #7: controller_unit_tests ..........................   Passed    2.29 sec
+      Start  8: partial_prefix_recovery_tests
+ 8/13 Test  #8: partial_prefix_recovery_tests ..................   Passed    0.42 sec
+      Start  9: partial_acceptance_tests
+ 9/13 Test  #9: partial_acceptance_tests .......................   Passed    0.61 sec
+      Start 10: selective_recovery_tests
+10/13 Test #10: selective_recovery_tests .......................   Passed    0.50 sec
+      Start 11: cost_transaction_tests
+11/13 Test #11: cost_transaction_tests .........................   Passed    0.11 sec
+      Start 12: release_harness_intentional_failure
+12/13 Test #12: release_harness_intentional_failure ............   Passed    0.04 sec
+      Start 13: recovery_correctness_tests
+13/13 Test #13: recovery_correctness_tests .....................   Passed    4.91 sec
+
+92% tests passed, 1 tests failed out of 13
+
+Total Test time (real) =  10.77 sec
+
+The following tests FAILED:
+	  4 - experiment_e1_resumption_tests (Failed)
+Errors while running CTest

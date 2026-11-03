@@ -1,0 +1,36 @@
+{
+  "command": [
+    "build/corrected-release/rbl_profile_partial_acceptance",
+    "--mode",
+    "offline_snapshots",
+    "--map",
+    "data/validation/maps/warehouse-10-20-10-2-2.map",
+    "--scen",
+    "data/validation/scenarios/warehouse-10-20-10-2-2-random-1.scen",
+    "--agents",
+    "100",
+    "--seed",
+    "0",
+    "--budget",
+    "0.05",
+    "--slice",
+    "0.005",
+    "--neighborhood-size",
+    "8",
+    "--policy",
+    "RESUMPTION_NO_PA",
+    "--load-init-paths",
+    "results/partial_acceptance_pilot/init_paths/warehouse-10-20-10-2-2__warehouse-10-20-10-2-2-random-1__a100.paths",
+    "--output",
+    "results/repair_20261101_corrected_01/offline_replay_01/warehouse-10-20-10-2-2.json"
+  ],
+  "returncode": 0,
+  "executable_sha256": "74e60c54591d630ef959306d88dd859075007281f025a1393c2914ca5fc77849",
+  "git_commit": "ac01fb47445a1bc6e4522de549e11b48c26e83a5",
+  "source_provenance": "results/2026-11-02_corrected_selective_pilot_03/provenance.json",
+  "inputs": {
+    "data/validation/maps/warehouse-10-20-10-2-2.map": "4f06e82c2b87238daa8e308086afdba701112bf023e94e740e5bf9508a6adec3",
+    "data/validation/scenarios/warehouse-10-20-10-2-2-random-1.scen": "4b9b8c1ba6de56a1448733fbf690977b70f6c88c03f45a9bca936cb99a5e2566",
+    "results/partial_acceptance_pilot/init_paths/warehouse-10-20-10-2-2__warehouse-10-20-10-2-2-random-1__a100.paths": "4e30c3d53b754529c3e7220b3fd1468462c6d900ac5bfbe1bba132d1f0cfa8b6"
+  }
+}

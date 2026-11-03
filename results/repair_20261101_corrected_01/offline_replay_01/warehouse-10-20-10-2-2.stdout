@@ -1,0 +1,1 @@
+[Offline Snapshots] Map=data/validation/maps/warehouse-10-20-10-2-2.map Agents=100 Seed=0 | Attempts=101 Interrupts=75 WithCandidates=72 PosFeasible=1 ExactGain=2 GreedyGain=2 Exact>Greedy=0 OracleMismatch=0

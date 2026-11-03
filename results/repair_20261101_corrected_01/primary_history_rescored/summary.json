@@ -1,0 +1,6 @@
+{
+  "runs": 768,
+  "valid": 768,
+  "cost_matches": 768,
+  "scope": "Previously exposed saved final plans only; no untouched confirmation data or new solver run. Historical deadline-publication timing/provenance is not repaired by rescoring."
+}

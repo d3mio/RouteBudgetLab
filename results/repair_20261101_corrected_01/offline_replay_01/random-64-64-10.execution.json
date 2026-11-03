@@ -1,0 +1,36 @@
+{
+  "command": [
+    "build/corrected-release/rbl_profile_partial_acceptance",
+    "--mode",
+    "offline_snapshots",
+    "--map",
+    "data/validation/maps/random-64-64-10.map",
+    "--scen",
+    "data/validation/scenarios/random-64-64-10-random-1.scen",
+    "--agents",
+    "100",
+    "--seed",
+    "0",
+    "--budget",
+    "0.05",
+    "--slice",
+    "0.005",
+    "--neighborhood-size",
+    "8",
+    "--policy",
+    "RESUMPTION_NO_PA",
+    "--load-init-paths",
+    "results/partial_acceptance_pilot/init_paths/random-64-64-10__random-64-64-10-random-1__a100.paths",
+    "--output",
+    "results/repair_20261101_corrected_01/offline_replay_01/random-64-64-10.json"
+  ],
+  "returncode": 0,
+  "executable_sha256": "74e60c54591d630ef959306d88dd859075007281f025a1393c2914ca5fc77849",
+  "git_commit": "ac01fb47445a1bc6e4522de549e11b48c26e83a5",
+  "source_provenance": "results/2026-11-02_corrected_selective_pilot_03/provenance.json",
+  "inputs": {
+    "data/validation/maps/random-64-64-10.map": "b31c671228f884a113ca11c41b83630dc042e58e07f9b36da74ec508f82a5659",
+    "data/validation/scenarios/random-64-64-10-random-1.scen": "6c1701dc331408bd92f0762abb039abddf47a0d3e81a1d097b374f29de3e75a7",
+    "results/partial_acceptance_pilot/init_paths/random-64-64-10__random-64-64-10-random-1__a100.paths": "a9c3590f31e16d06752976e62b7a77e22672eeb87c0e4ae8308dcc5e13d29da5"
+  }
+}

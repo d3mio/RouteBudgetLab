@@ -1,0 +1,29 @@
+Test project /Users/disasgamage/Documents/GitHub/RouteBudgetLab/build/corrected-release
+      Start  1: validator_unit_tests
+ 1/12 Test  #1: validator_unit_tests ...........................   Passed    0.05 sec
+      Start  2: real_solver_output_is_valid
+ 2/12 Test  #2: real_solver_output_is_valid ....................   Passed    0.01 sec
+      Start  3: real_solver_output_misread_as_xy_is_rejected
+ 3/12 Test  #3: real_solver_output_misread_as_xy_is_rejected ...   Passed    0.01 sec
+      Start  4: experiment_e1_resumption_tests
+ 4/12 Test  #4: experiment_e1_resumption_tests .................   Passed    0.06 sec
+      Start  5: experiment_e4_compatibility_tests
+ 5/12 Test  #5: experiment_e4_compatibility_tests ..............   Passed    0.05 sec
+      Start  6: estimator_unit_tests
+ 6/12 Test  #6: estimator_unit_tests ...........................   Passed    0.01 sec
+      Start  7: controller_unit_tests
+ 7/12 Test  #7: controller_unit_tests ..........................   Passed    1.82 sec
+      Start  8: partial_prefix_recovery_tests
+ 8/12 Test  #8: partial_prefix_recovery_tests ..................   Passed    0.04 sec
+      Start  9: partial_acceptance_tests
+ 9/12 Test  #9: partial_acceptance_tests .......................   Passed    0.05 sec
+      Start 10: selective_recovery_tests
+10/12 Test #10: selective_recovery_tests .......................   Passed    0.04 sec
+      Start 11: cost_transaction_tests
+11/12 Test #11: cost_transaction_tests .........................   Passed    0.01 sec
+      Start 12: release_harness_intentional_failure
+12/12 Test #12: release_harness_intentional_failure ............   Passed    0.01 sec
+
+100% tests passed out of 12
+
+Total Test time (real) =   2.17 sec

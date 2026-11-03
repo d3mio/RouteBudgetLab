@@ -1,0 +1,48 @@
+{
+  "historical_files_unchanged": 5354,
+  "manifests": {
+    "results/2026-11-02_corrected_selective_pilot_01": 1350,
+    "results/2026-11-02_corrected_primary_pilot_01": 454,
+    "results/2026-11-02_corrected_selective_pilot_02": 1542,
+    "results/2026-11-02_corrected_primary_pilot_02": 518,
+    "results/2026-11-02_corrected_selective_pilot_03": 1542,
+    "results/2026-11-02_corrected_primary_pilot_03": 518,
+    "results/repair_20261101_corrected_01/smoke_01": 48
+  },
+  "experiments": {
+    "results/2026-11-02_corrected_selective_pilot_01": {
+      "runs": 192,
+      "validated": 192,
+      "analysis_reproduces": true
+    },
+    "results/2026-11-02_corrected_primary_pilot_01": {
+      "runs": 64,
+      "validated": 64,
+      "analysis_reproduces": true
+    },
+    "results/2026-11-02_corrected_selective_pilot_02": {
+      "runs": 192,
+      "validated": 192,
+      "analysis_reproduces": true
+    },
+    "results/2026-11-02_corrected_primary_pilot_02": {
+      "runs": 64,
+      "validated": 64,
+      "analysis_reproduces": true
+    },
+    "results/2026-11-02_corrected_selective_pilot_03": {
+      "runs": 192,
+      "validated": 192,
+      "analysis_reproduces": true
+    },
+    "results/2026-11-02_corrected_primary_pilot_03": {
+      "runs": 64,
+      "validated": 64,
+      "analysis_reproduces": true
+    }
+  },
+  "instrumented_compile_units": 59,
+  "linked_asan_ubsan_symbols": true,
+  "document_tables_match": true,
+  "vendor_check": "third_party/anytime-mapf == upstream 47bb25e9 (no local modifications)"
+}
