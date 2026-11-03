@@ -1,0 +1,283 @@
+{
+  "policy": "PA_EVERY_INTERRUPTION_FILTERED",
+  "resumption_enabled": true,
+  "partial_acceptance_enabled": true,
+  "partial_acceptance_policy": "GREEDY_DEPENDENCY",
+  "map": "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/data/validation/maps/random-64-64-10.map",
+  "scen": "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/data/validation/scenarios/random-64-64-10-random-2.scen",
+  "num_agents": 100,
+  "time_budget_s": 1.0,
+  "slice_budget_s": 0.005,
+  "neighborhood_size": 8,
+  "seed": 0,
+  "initial_plan_source": "LOADED_FROM_SHARED_FIXTURE",
+  "initial_planning_time_s": 0.0,
+  "initial_cost": 4608,
+  "cost_at_deadline": 4334,
+  "final_cost": 4334,
+  "cost_reduction_at_deadline": 274,
+  "cost_reduction": 274,
+  "total_solve_time_s": 0.999718,
+  "deadline_overshoot_s": 0.0,
+  "deadline_exceeded_flag": false,
+  "time_of_last_accepted_commit_s": 0.632417,
+  "total_iterations": 5443,
+  "total_repair_attempts": 5443,
+  "fresh_actions_count": 4335,
+  "resumed_actions_count": 1108,
+  "accepted_repairs": 37,
+  "non_improving_repairs": 4295,
+  "failed_repairs": 0,
+  "total_interrupted_repairs": 1120,
+  "interruptions_with_complete_paths": 1120,
+  "suspended_interrupted_slices": 1111,
+  "stagnant_checkpoints_evicted": 2,
+  "incompatible_checkpoints_discarded": 0,
+  "total_expansions": 8164996,
+  "repeated_expansions": 73816,
+  "pa_attempts": 1120,
+  "pa_positive_opportunities": 9,
+  "pa_committed": 9,
+  "pa_budget_skipped": 0,
+  "pa_total_gain": 52,
+  "pa_total_time_us": 5910.228,
+  "selective_recovery_policy": "PA_EVERY_INTERRUPTION_FILTERED",
+  "terminal_reserve_s": 0.002,
+  "terminal_reserve_control": false,
+  "time_normal_search_stopped_s": 0.999718,
+  "terminal_reserve_consumed_s": 0.0,
+  "terminal_recovery_called": false,
+  "filter_evaluations": 1120,
+  "filter_skips": 1088,
+  "filter_total_time_us": 15.58,
+  "extraction_total_time_us": 3081.512,
+  "eviction_attempts": 0,
+  "eviction_filter_skips": 0,
+  "eviction_committed": 0,
+  "eviction_total_gain": 0,
+  "eviction_total_time_us": 0.0,
+  "terminal_recovery_calls": 0,
+  "terminal_checkpoints_examined": 0,
+  "terminal_filter_skips": 0,
+  "terminal_committed": 0,
+  "terminal_total_gain": 0,
+  "terminal_total_time_us": 0.0,
+  "pa_telemetry": {
+    "total_candidates_evaluated": 6947,
+    "positive_weights": 32,
+    "zero_weights": 6763,
+    "negative_weights": 152,
+    "forbidden_candidate_count": 13,
+    "transitively_excluded_count": 4,
+    "dependency_arc_count": 35,
+    "feasible_negative_weights": 17,
+    "nonnegative_fast_path_eligible_count": 1103,
+    "selected_positive_weights": 9,
+    "selected_zero_weights": 6,
+    "selected_negative_weights": 3,
+    "graph_construction_time_us": {
+      "median": 0.0,
+      "p95": 0.0,
+      "max": 78.75,
+      "total": 1825.626
+    },
+    "selection_time_us": {
+      "median": 0.0,
+      "p95": 0.0,
+      "max": 3.125,
+      "total": 50.669
+    },
+    "validation_time_us": {
+      "median": 34.708,
+      "p95": 37.25,
+      "max": 37.25,
+      "total": 312.041
+    },
+    "commit_time_us": {
+      "median": 2.5,
+      "p95": 4.667,
+      "max": 4.667,
+      "total": 25.21
+    },
+    "total_pa_overhead_us": {
+      "median": 3.208,
+      "p95": 4.375,
+      "max": 137.875,
+      "total": 5910.228
+    }
+  },
+  "incumbent_version": 38,
+  "plan_valid": true,
+  "validation_error": "",
+  "anytime_cost_trajectory": [
+    {
+      "timestamp_s": 0.0,
+      "cost": 4608
+    },
+    {
+      "timestamp_s": 0.00097,
+      "cost": 4607
+    },
+    {
+      "timestamp_s": 0.006775,
+      "cost": 4599
+    },
+    {
+      "timestamp_s": 0.010148,
+      "cost": 4590
+    },
+    {
+      "timestamp_s": 0.019644,
+      "cost": 4588
+    },
+    {
+      "timestamp_s": 0.021035,
+      "cost": 4570
+    },
+    {
+      "timestamp_s": 0.023323,
+      "cost": 4538
+    },
+    {
+      "timestamp_s": 0.032906,
+      "cost": 4533
+    },
+    {
+      "timestamp_s": 0.036374,
+      "cost": 4525
+    },
+    {
+      "timestamp_s": 0.038122,
+      "cost": 4515
+    },
+    {
+      "timestamp_s": 0.039014,
+      "cost": 4500
+    },
+    {
+      "timestamp_s": 0.050115,
+      "cost": 4480
+    },
+    {
+      "timestamp_s": 0.065436,
+      "cost": 4477
+    },
+    {
+      "timestamp_s": 0.073164,
+      "cost": 4476
+    },
+    {
+      "timestamp_s": 0.076267,
+      "cost": 4464
+    },
+    {
+      "timestamp_s": 0.077989,
+      "cost": 4460
+    },
+    {
+      "timestamp_s": 0.079917,
+      "cost": 4441
+    },
+    {
+      "timestamp_s": 0.084198,
+      "cost": 4435
+    },
+    {
+      "timestamp_s": 0.085128,
+      "cost": 4425
+    },
+    {
+      "timestamp_s": 0.085856,
+      "cost": 4424
+    },
+    {
+      "timestamp_s": 0.104884,
+      "cost": 4420
+    },
+    {
+      "timestamp_s": 0.109055,
+      "cost": 4415
+    },
+    {
+      "timestamp_s": 0.135261,
+      "cost": 4409
+    },
+    {
+      "timestamp_s": 0.153104,
+      "cost": 4401
+    },
+    {
+      "timestamp_s": 0.156829,
+      "cost": 4399
+    },
+    {
+      "timestamp_s": 0.15814,
+      "cost": 4396
+    },
+    {
+      "timestamp_s": 0.168727,
+      "cost": 4395
+    },
+    {
+      "timestamp_s": 0.175379,
+      "cost": 4393
+    },
+    {
+      "timestamp_s": 0.180094,
+      "cost": 4392
+    },
+    {
+      "timestamp_s": 0.186855,
+      "cost": 4391
+    },
+    {
+      "timestamp_s": 0.195616,
+      "cost": 4356
+    },
+    {
+      "timestamp_s": 0.219059,
+      "cost": 4355
+    },
+    {
+      "timestamp_s": 0.266044,
+      "cost": 4351
+    },
+    {
+      "timestamp_s": 0.289705,
+      "cost": 4345
+    },
+    {
+      "timestamp_s": 0.343302,
+      "cost": 4337
+    },
+    {
+      "timestamp_s": 0.351353,
+      "cost": 4336
+    },
+    {
+      "timestamp_s": 0.61017,
+      "cost": 4335
+    },
+    {
+      "timestamp_s": 0.632417,
+      "cost": 4334
+    }
+  ],
+  "run_id": "random-64-64-10__random-64-64-10-random-2__a100__s0__b1.0__pPA_EVERY_INTERRUPTION_FILTERED",
+  "experiment_policy": "PA_EVERY_INTERRUPTION_FILTERED",
+  "is_terminal_reserve_control": false,
+  "cell_index": 12,
+  "rotation_shift": 0,
+  "cell_parameters": {
+    "map_name": "random-64-64-10",
+    "map_path": "data/validation/maps/random-64-64-10.map",
+    "scen_name": "random-64-64-10-random-2",
+    "scen_path": "data/validation/scenarios/random-64-64-10-random-2.scen",
+    "agents": 100,
+    "budget": 1.0,
+    "seed": 0
+  },
+  "independent_validation": "PASSED",
+  "paths_sha256": "f640ccce76533fd0747fd8806777a7fc9391336231376757489e157ef3c7b9b8",
+  "raw_json_sha256": "adbae5a52efd7e2366f1bc4f1d54998b8cb08cb902896abc3861d570ea966e0e"
+}

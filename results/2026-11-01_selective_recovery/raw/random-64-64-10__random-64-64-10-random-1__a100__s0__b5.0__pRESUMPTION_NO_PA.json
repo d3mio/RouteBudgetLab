@@ -1,0 +1,211 @@
+{
+  "policy": "RESUMPTION_NO_PA",
+  "resumption_enabled": true,
+  "partial_acceptance_enabled": false,
+  "partial_acceptance_policy": "OFF",
+  "map": "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/data/validation/maps/random-64-64-10.map",
+  "scen": "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/data/validation/scenarios/random-64-64-10-random-1.scen",
+  "num_agents": 100,
+  "time_budget_s": 5.0,
+  "slice_budget_s": 0.005,
+  "neighborhood_size": 8,
+  "seed": 0,
+  "initial_plan_source": "LOADED_FROM_SHARED_FIXTURE",
+  "initial_planning_time_s": 0.0,
+  "initial_cost": 4438,
+  "cost_at_deadline": 4286,
+  "final_cost": 4286,
+  "cost_reduction_at_deadline": 152,
+  "cost_reduction": 152,
+  "total_solve_time_s": 4.999686,
+  "deadline_overshoot_s": 0.0,
+  "deadline_exceeded_flag": false,
+  "time_of_last_accepted_commit_s": 2.915938,
+  "total_iterations": 27182,
+  "total_repair_attempts": 27182,
+  "fresh_actions_count": 22375,
+  "resumed_actions_count": 4807,
+  "accepted_repairs": 19,
+  "non_improving_repairs": 22336,
+  "failed_repairs": 0,
+  "total_interrupted_repairs": 4827,
+  "interruptions_with_complete_paths": 4827,
+  "suspended_interrupted_slices": 4827,
+  "stagnant_checkpoints_evicted": 19,
+  "incompatible_checkpoints_discarded": 0,
+  "total_expansions": 41465324,
+  "repeated_expansions": 399631,
+  "pa_attempts": 0,
+  "pa_positive_opportunities": 0,
+  "pa_committed": 0,
+  "pa_budget_skipped": 0,
+  "pa_total_gain": 0,
+  "pa_total_time_us": 0.0,
+  "selective_recovery_policy": "RESUMPTION_NO_PA",
+  "terminal_reserve_s": 0.002,
+  "terminal_reserve_control": false,
+  "time_normal_search_stopped_s": 4.999686,
+  "terminal_reserve_consumed_s": 0.0,
+  "terminal_recovery_called": false,
+  "filter_evaluations": 0,
+  "filter_skips": 0,
+  "filter_total_time_us": 0.0,
+  "extraction_total_time_us": 0.0,
+  "eviction_attempts": 0,
+  "eviction_filter_skips": 0,
+  "eviction_committed": 0,
+  "eviction_total_gain": 0,
+  "eviction_total_time_us": 0.0,
+  "terminal_recovery_calls": 0,
+  "terminal_checkpoints_examined": 0,
+  "terminal_filter_skips": 0,
+  "terminal_committed": 0,
+  "terminal_total_gain": 0,
+  "terminal_total_time_us": 0.0,
+  "pa_telemetry": {
+    "total_candidates_evaluated": 0,
+    "positive_weights": 0,
+    "zero_weights": 0,
+    "negative_weights": 0,
+    "forbidden_candidate_count": 0,
+    "transitively_excluded_count": 0,
+    "dependency_arc_count": 0,
+    "feasible_negative_weights": 0,
+    "nonnegative_fast_path_eligible_count": 0,
+    "selected_positive_weights": 0,
+    "selected_zero_weights": 0,
+    "selected_negative_weights": 0,
+    "graph_construction_time_us": {
+      "median": 0.0,
+      "p95": 0.0,
+      "max": 0.0,
+      "total": 0.0
+    },
+    "selection_time_us": {
+      "median": 0.0,
+      "p95": 0.0,
+      "max": 0.0,
+      "total": 0.0
+    },
+    "validation_time_us": {
+      "median": 0.0,
+      "p95": 0.0,
+      "max": 0.0,
+      "total": 0.0
+    },
+    "commit_time_us": {
+      "median": 0.0,
+      "p95": 0.0,
+      "max": 0.0,
+      "total": 0.0
+    },
+    "total_pa_overhead_us": {
+      "median": 0.0,
+      "p95": 0.0,
+      "max": 0.0,
+      "total": 0.0
+    }
+  },
+  "incumbent_version": 20,
+  "plan_valid": true,
+  "validation_error": "",
+  "anytime_cost_trajectory": [
+    {
+      "timestamp_s": 0.0,
+      "cost": 4438
+    },
+    {
+      "timestamp_s": 0.003854,
+      "cost": 4425
+    },
+    {
+      "timestamp_s": 0.004283,
+      "cost": 4404
+    },
+    {
+      "timestamp_s": 0.030968,
+      "cost": 4401
+    },
+    {
+      "timestamp_s": 0.032424,
+      "cost": 4399
+    },
+    {
+      "timestamp_s": 0.035462,
+      "cost": 4385
+    },
+    {
+      "timestamp_s": 0.036061,
+      "cost": 4384
+    },
+    {
+      "timestamp_s": 0.037797,
+      "cost": 4383
+    },
+    {
+      "timestamp_s": 0.040878,
+      "cost": 4381
+    },
+    {
+      "timestamp_s": 0.045165,
+      "cost": 4362
+    },
+    {
+      "timestamp_s": 0.086217,
+      "cost": 4354
+    },
+    {
+      "timestamp_s": 0.122441,
+      "cost": 4345
+    },
+    {
+      "timestamp_s": 0.133254,
+      "cost": 4343
+    },
+    {
+      "timestamp_s": 0.141546,
+      "cost": 4339
+    },
+    {
+      "timestamp_s": 0.171449,
+      "cost": 4331
+    },
+    {
+      "timestamp_s": 0.242093,
+      "cost": 4311
+    },
+    {
+      "timestamp_s": 2.129061,
+      "cost": 4295
+    },
+    {
+      "timestamp_s": 2.157025,
+      "cost": 4288
+    },
+    {
+      "timestamp_s": 2.325014,
+      "cost": 4287
+    },
+    {
+      "timestamp_s": 2.915938,
+      "cost": 4286
+    }
+  ],
+  "run_id": "random-64-64-10__random-64-64-10-random-1__a100__s0__b5.0__pRESUMPTION_NO_PA",
+  "experiment_policy": "RESUMPTION_NO_PA",
+  "is_terminal_reserve_control": false,
+  "cell_index": 6,
+  "rotation_shift": 0,
+  "cell_parameters": {
+    "map_name": "random-64-64-10",
+    "map_path": "data/validation/maps/random-64-64-10.map",
+    "scen_name": "random-64-64-10-random-1",
+    "scen_path": "data/validation/scenarios/random-64-64-10-random-1.scen",
+    "agents": 100,
+    "budget": 5.0,
+    "seed": 0
+  },
+  "independent_validation": "PASSED",
+  "paths_sha256": "966c6145b813160fb3c4d4ed56bd32802b15e61d81f0a271e0d651e31c034eb3",
+  "raw_json_sha256": "736f10d76415a89bd47bd5e7d0947f1ca65e197ff742c110eaedddb71edbd699"
+}
