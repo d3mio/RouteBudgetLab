@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/build/corrected-release/rbl_validate",
+    "--map",
+    "data/validation/maps/random-64-64-10.map",
+    "--scen",
+    "data/validation/scenarios/random-64-64-10-random-2.scen",
+    "--agents",
+    "100",
+    "--paths",
+    "results/2026-11-02_corrected_selective_pilot_01/paths/cell13_pos5_RESUMPTION_NO_PA.paths",
+    "--reported-cost",
+    "4335"
+  ],
+  "returncode": 0,
+  "stdout": "{\"status\":\"VALID\",\"agents\":100,\"independent_sum_of_costs\":4335,\"sum_of_path_lengths\":4335,\"makespan\":106,\"reported_cost\":4335,\"cost_matches_independent_arrival\":true,\"cost_matches_path_length\":true,\"issue_counts\":{},\"issues\":[]}\n",
+  "stderr": ""
+}
