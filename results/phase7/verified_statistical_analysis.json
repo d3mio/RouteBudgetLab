@@ -1,0 +1,367 @@
+{
+  "manifest_path": "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/results/phase7/verified_reference/verified_reference_manifest.json",
+  "run_accounting": {
+    "total_completed": 768,
+    "solver_valid": 768,
+    "retained_trajectories": 768,
+    "independently_validated": 768,
+    "unverified_trajectories": 0
+  },
+  "comparisons": {
+    "E2: Resumption Effect": {
+      "control": "RESTART_ONLY_K0",
+      "treatment": "FIXED_FIFO_RESUME",
+      "n_pairs": 96,
+      "wins": 23,
+      "losses": 24,
+      "ties": 49,
+      "mean_delta_cost": 13.364583333333334,
+      "median_delta_cost": 0.0,
+      "mean_pct_improvement": 0.14458021048459221,
+      "cluster_by_map_ci": [
+        -9.302083333333334,
+        52.145833333333336
+      ],
+      "cluster_by_map_agents_ci": [
+        -9.270833333333334,
+        50.947916666666664
+      ],
+      "per_map": {
+        "random-64-64-20": {
+          "count": 24,
+          "mean_diff": 0.2916666666666667,
+          "median_diff": 0.0,
+          "wins": 1,
+          "losses": 2,
+          "ties": 21
+        },
+        "warehouse-20-40-10-2-1": {
+          "count": 24,
+          "mean_diff": -12.5,
+          "median_diff": 0.0,
+          "wins": 3,
+          "losses": 3,
+          "ties": 18
+        },
+        "room-64-64-8": {
+          "count": 24,
+          "mean_diff": -5.791666666666667,
+          "median_diff": -0.5,
+          "wins": 11,
+          "losses": 12,
+          "ties": 1
+        },
+        "ost003d": {
+          "count": 24,
+          "mean_diff": 71.45833333333333,
+          "median_diff": 0.0,
+          "wins": 8,
+          "losses": 7,
+          "ties": 9
+        }
+      },
+      "leave_one_map_out": {
+        "random-64-64-20": 17.72222222222222,
+        "warehouse-20-40-10-2-1": 21.98611111111111,
+        "room-64-64-8": 19.75,
+        "ost003d": -6.0
+      }
+    },
+    "E3a: Controller Scoring (Matched 10ms)": {
+      "control": "FIXED_FIFO_RESUME",
+      "treatment": "SCORE_BASED_FIXED",
+      "n_pairs": 96,
+      "wins": 29,
+      "losses": 21,
+      "ties": 46,
+      "mean_delta_cost": -10.166666666666666,
+      "median_delta_cost": 0.0,
+      "mean_pct_improvement": -0.04010592129452318,
+      "cluster_by_map_ci": [
+        -39.53125,
+        10.802083333333334
+      ],
+      "cluster_by_map_agents_ci": [
+        -50.00338541666667,
+        16.614583333333332
+      ],
+      "per_map": {
+        "random-64-64-20": {
+          "count": 24,
+          "mean_diff": 3.25,
+          "median_diff": 0.0,
+          "wins": 8,
+          "losses": 1,
+          "ties": 15
+        },
+        "warehouse-20-40-10-2-1": {
+          "count": 24,
+          "mean_diff": 16.666666666666668,
+          "median_diff": 0.0,
+          "wins": 6,
+          "losses": 1,
+          "ties": 17
+        },
+        "room-64-64-8": {
+          "count": 24,
+          "mean_diff": -6.791666666666667,
+          "median_diff": 0.0,
+          "wins": 7,
+          "losses": 9,
+          "ties": 8
+        },
+        "ost003d": {
+          "count": 24,
+          "mean_diff": -53.791666666666664,
+          "median_diff": 0.0,
+          "wins": 8,
+          "losses": 10,
+          "ties": 6
+        }
+      },
+      "leave_one_map_out": {}
+    },
+    "E3b: Adaptive Slice Allocation": {
+      "control": "SCORE_BASED_FIXED",
+      "treatment": "SCORE_BASED_ADAPTIVE",
+      "n_pairs": 96,
+      "wins": 22,
+      "losses": 30,
+      "ties": 44,
+      "mean_delta_cost": -16.96875,
+      "median_delta_cost": 0.0,
+      "mean_pct_improvement": -0.19402281665046706,
+      "cluster_by_map_ci": [
+        -40.416666666666664,
+        4.1875
+      ],
+      "cluster_by_map_agents_ci": [
+        -63.96875,
+        19.28125
+      ],
+      "per_map": {
+        "random-64-64-20": {
+          "count": 24,
+          "mean_diff": -3.9166666666666665,
+          "median_diff": 0.0,
+          "wins": 1,
+          "losses": 6,
+          "ties": 17
+        },
+        "warehouse-20-40-10-2-1": {
+          "count": 24,
+          "mean_diff": -23.666666666666668,
+          "median_diff": 0.0,
+          "wins": 0,
+          "losses": 6,
+          "ties": 18
+        },
+        "room-64-64-8": {
+          "count": 24,
+          "mean_diff": 12.291666666666666,
+          "median_diff": 5.5,
+          "wins": 15,
+          "losses": 6,
+          "ties": 3
+        },
+        "ost003d": {
+          "count": 24,
+          "mean_diff": -52.583333333333336,
+          "median_diff": -6.0,
+          "wins": 6,
+          "losses": 12,
+          "ties": 6
+        }
+      },
+      "leave_one_map_out": {}
+    },
+    "E4: Selective Compatibility": {
+      "control": "DISCARD_ON_CHANGE",
+      "treatment": "SCORE_BASED_ADAPTIVE",
+      "n_pairs": 96,
+      "wins": 3,
+      "losses": 7,
+      "ties": 86,
+      "mean_delta_cost": -0.59375,
+      "median_delta_cost": 0.0,
+      "mean_pct_improvement": -0.00808751568691831,
+      "cluster_by_map_ci": [
+        -0.7291666666666666,
+        -0.3645833333333333
+      ],
+      "cluster_by_map_agents_ci": [
+        -1.0729166666666667,
+        -0.1875
+      ],
+      "per_map": {
+        "random-64-64-20": {
+          "count": 24,
+          "mean_diff": -0.75,
+          "median_diff": 0.0,
+          "wins": 1,
+          "losses": 2,
+          "ties": 21
+        },
+        "warehouse-20-40-10-2-1": {
+          "count": 24,
+          "mean_diff": -0.6666666666666666,
+          "median_diff": 0.0,
+          "wins": 0,
+          "losses": 1,
+          "ties": 23
+        },
+        "room-64-64-8": {
+          "count": 24,
+          "mean_diff": -0.25,
+          "median_diff": 0.0,
+          "wins": 1,
+          "losses": 2,
+          "ties": 21
+        },
+        "ost003d": {
+          "count": 24,
+          "mean_diff": -0.7083333333333334,
+          "median_diff": 0.0,
+          "wins": 1,
+          "losses": 2,
+          "ties": 21
+        }
+      },
+      "leave_one_map_out": {}
+    },
+    "E5: Progress Feature Ablation": {
+      "control": "ELAPSED_TIME_ONLY",
+      "treatment": "SCORE_BASED_ADAPTIVE",
+      "n_pairs": 96,
+      "wins": 7,
+      "losses": 13,
+      "ties": 76,
+      "mean_delta_cost": -2.4895833333333335,
+      "median_delta_cost": 0.0,
+      "mean_pct_improvement": -0.02895250837323406,
+      "cluster_by_map_ci": [
+        -6.479166666666667,
+        0.13541666666666666
+      ],
+      "cluster_by_map_agents_ci": [
+        -7.219010416666666,
+        0.5625
+      ],
+      "per_map": {
+        "random-64-64-20": {
+          "count": 24,
+          "mean_diff": -1.3333333333333333,
+          "median_diff": 0.0,
+          "wins": 1,
+          "losses": 3,
+          "ties": 20
+        },
+        "warehouse-20-40-10-2-1": {
+          "count": 24,
+          "mean_diff": -0.9166666666666666,
+          "median_diff": 0.0,
+          "wins": 1,
+          "losses": 1,
+          "ties": 22
+        },
+        "room-64-64-8": {
+          "count": 24,
+          "mean_diff": 0.625,
+          "median_diff": 0.0,
+          "wins": 3,
+          "losses": 5,
+          "ties": 16
+        },
+        "ost003d": {
+          "count": 24,
+          "mean_diff": -8.333333333333334,
+          "median_diff": 0.0,
+          "wins": 2,
+          "losses": 4,
+          "ties": 18
+        }
+      },
+      "leave_one_map_out": {}
+    },
+    "E6: End-to-End Baseline Comparison": {
+      "control": "BASELINE_BALANCE",
+      "treatment": "RBL_END_TO_END",
+      "n_pairs": 96,
+      "wins": 13,
+      "losses": 67,
+      "ties": 16,
+      "mean_delta_cost": -232.64583333333334,
+      "median_delta_cost": -71.5,
+      "mean_pct_improvement": -2.108221481009026,
+      "cluster_by_map_ci": [
+        -434.78125,
+        -72.15625
+      ],
+      "cluster_by_map_agents_ci": [
+        -434.375,
+        -70.85416666666667
+      ],
+      "per_map": {
+        "random-64-64-20": {
+          "count": 24,
+          "mean_diff": -15.833333333333334,
+          "median_diff": 1.0,
+          "wins": 12,
+          "losses": 8,
+          "ties": 4
+        },
+        "warehouse-20-40-10-2-1": {
+          "count": 24,
+          "mean_diff": -241.125,
+          "median_diff": -38.5,
+          "wins": 0,
+          "losses": 13,
+          "ties": 11
+        },
+        "room-64-64-8": {
+          "count": 24,
+          "mean_diff": -140.875,
+          "median_diff": -110.5,
+          "wins": 1,
+          "losses": 23,
+          "ties": 0
+        },
+        "ost003d": {
+          "count": 24,
+          "mean_diff": -532.75,
+          "median_diff": -512.0,
+          "wins": 0,
+          "losses": 23,
+          "ties": 1
+        }
+      },
+      "leave_one_map_out": {}
+    }
+  },
+  "deadline_compliance": {
+    "BASELINE_BALANCE": {
+      "measured_runs": 96,
+      "overrunning_count": 76,
+      "overrunning_rate_pct": 79.16666666666666,
+      "mean_overshoot_us_all": 224.7916666665526,
+      "mean_overshoot_us_overrunning": 283.9473684209086,
+      "max_overshoot_us": 5650.000000000155,
+      "p50_us": 99.99999999976694,
+      "p90_us": 399.99999999906777,
+      "p95_us": 604.9999999999111,
+      "p99_us": 2277.499999998723
+    },
+    "RBL_END_TO_END": {
+      "measured_runs": 96,
+      "overrunning_count": 0,
+      "overrunning_rate_pct": 0.0,
+      "mean_overshoot_us_all": 0.0,
+      "mean_overshoot_us_overrunning": 0.0,
+      "max_overshoot_us": 0.0,
+      "p50_us": 0.0,
+      "p90_us": 0.0,
+      "p95_us": 0.0,
+      "p99_us": 0.0
+    }
+  }
+}
