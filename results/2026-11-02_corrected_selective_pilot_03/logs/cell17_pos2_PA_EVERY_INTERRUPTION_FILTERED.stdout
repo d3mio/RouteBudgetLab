@@ -1,0 +1,16 @@
+--------------------------------------------------------
+Policy:                PA_EVERY_INTERRUPTION_FILTERED
+Initial Cost:          5375
+Cost at Deadline:      5217 (Reduction: 158)
+Final Cost:            5217 (Reduction: 158)
+Solve Time (s):        0.999876 (Overshoot: 0.000000 us)
+Total Repair Attempts: 2673 (Fresh: 1065, Resumed: 1608)
+Interruptions:         1621 (With Completed Paths: 1621)
+Accepted Repairs:      8
+PA Attempts:           1621
+PA Positive Opps:      5
+PA Committed:          5
+PA Total Gain:         88
+Incumbent Version:     9
+Plan Valid:            YES
+--------------------------------------------------------
