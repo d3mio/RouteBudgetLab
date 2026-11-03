@@ -1,0 +1,26 @@
+# 2026-10-21T06:15:17Z  cwd=/Users/disasgamage/Documents/GitHub/RouteBudgetLab
+# command: cmake -S /Users/disasgamage/Documents/GitHub/RouteBudgetLab -B /Users/disasgamage/Documents/GitHub/RouteBudgetLab/build/rbl-asan -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS=-fsanitize=address,undefined -fno-omit-frame-pointer -g -O1 -DCMAKE_C_COMPILER=/Library/Developer/CommandLineTools/usr/bin/clang -DCMAKE_CXX_COMPILER=/Library/Developer/CommandLineTools/usr/bin/clang++ -DBOOST_ROOT=/opt/homebrew/opt/boost
+CMake Warning (policy) at CMakeLists.txt:25 (find_package):
+  Policy CMP0144 is not set: find_package uses upper-case <PACKAGENAME>_ROOT
+  variables.  Run "cmake --help-policy CMP0144" for policy details.  Use the
+  cmake_policy command to set the policy and suppress this warning.
+
+  CMake variable BOOST_ROOT is set to:
+
+    /opt/homebrew/opt/boost
+
+  For compatibility, find_package is ignoring the variable, but code in a
+  .cmake module might still use it.
+This warning is for project developers.  Use -Wno-author or -Wno-policy to
+suppress it.
+
+CMake Warning (policy) at CMakeLists.txt:25 (find_package):
+  Policy CMP0167 is not set: The FindBoost module is removed.  Run "cmake
+  --help-policy CMP0167" for policy details.  Use the cmake_policy command to
+  set the policy and suppress this warning.
+This warning is for project developers.  Use -Wno-author or -Wno-policy to
+suppress it.
+
+-- Configuring done (0.1s)
+-- Generating done (0.0s)
+-- Build files have been written to: /Users/disasgamage/Documents/GitHub/RouteBudgetLab/build/rbl-asan

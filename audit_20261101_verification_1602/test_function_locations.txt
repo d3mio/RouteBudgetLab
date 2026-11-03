@@ -1,0 +1,39 @@
+tests/partial_acceptance_tests.cpp:162:bool test1_empty_replacement_set(const Instance& instance, const std::vector<::Path>& base_paths) {
+tests/partial_acceptance_tests.cpp:188:bool test2_independent_improving_alternatives(const Instance& instance, const std::vector<::Path>& base_paths) {
+tests/partial_acceptance_tests.cpp:232:bool test3_no_positive_feasible_gain(const Instance& instance, const std::vector<::Path>& base_paths) {
+tests/partial_acceptance_tests.cpp:255:bool test4_a_requires_unavailable_b(const Instance& instance) {
+tests/partial_acceptance_tests.cpp:286:bool test5_transitive_unavailable(const Instance& instance) {
+tests/partial_acceptance_tests.cpp:327:bool test6_positive_requires_negative(const Instance& instance) {
+tests/partial_acceptance_tests.cpp:428:bool test7_zero_weight_enabling_replacement(const Instance& instance, const std::vector<::Path>& base_paths) {
+tests/partial_acceptance_tests.cpp:468:bool test8_dependency_cycle(const Instance& instance) {
+tests/partial_acceptance_tests.cpp:526:bool test9_vertex_and_edge_swap_conflicts(const Instance& instance) {
+tests/partial_acceptance_tests.cpp:555:bool test10_persistent_goal_occupancy(const Instance& instance) {
+tests/partial_acceptance_tests.cpp:573:bool test11_mutually_conflicting_replacement_paths(const Instance& instance, const std::vector<::Path>& base_paths) {
+tests/partial_acceptance_tests.cpp:602:bool test12_wrong_start_goal_or_obstacle(const Instance& instance, const std::vector<::Path>& base_paths) {
+tests/partial_acceptance_tests.cpp:652:bool test13_stale_incumbent_version(const Instance& instance, const std::vector<::Path>& base_paths) {
+tests/partial_acceptance_tests.cpp:674:bool test14_deadline_interruption_and_overflow(const Instance& instance, const std::vector<::Path>& base_paths) {
+tests/partial_acceptance_tests.cpp:763:bool test15_rejected_batch_update(const Instance& instance, const std::vector<::Path>& base_paths) {
+tests/partial_acceptance_tests.cpp:878:bool test16_disabled_feature(const Instance& instance, const std::vector<::Path>& base_paths) {
+tests/partial_acceptance_tests.cpp:950:bool test17_independent_exhaustive_oracle_comparison(const Instance& instance, const std::vector<::Path>& base_paths) {
+tests/selective_recovery_tests.cpp:117:bool test1_all_gains_zero_or_negative_skips_analysis(const Instance& instance, const std::vector<::Path>& init_paths) {
+tests/selective_recovery_tests.cpp:147:bool test2_positive_candidate_requires_negative_dependency(const Instance& instance) {
+tests/selective_recovery_tests.cpp:182:bool test3_dependency_cycle_handling(const Instance& instance) {
+tests/selective_recovery_tests.cpp:242:bool test4_new_new_route_conflict_rejected(const Instance& instance, const std::vector<::Path>& init_paths) {
+tests/selective_recovery_tests.cpp:272:bool test5_dependency_has_no_replacement(const Instance& instance) {
+tests/selective_recovery_tests.cpp:300:bool test6_natural_eviction_recovery(const Instance& instance, const std::vector<::Path>& init_paths) {
+tests/selective_recovery_tests.cpp:363:bool test7_incumbent_changes_after_checkpoint(const Instance& instance, const std::vector<::Path>& init_paths) {
+tests/selective_recovery_tests.cpp:395:bool test8_path_compat_holds_but_search_state_incompatible(const Instance& instance, const std::vector<::Path>& init_paths) {
+tests/selective_recovery_tests.cpp:433:bool test9_deadline_cancellation_preserves_incumbent(const Instance& instance, const std::vector<::Path>& init_paths) {
+tests/selective_recovery_tests.cpp:457:bool test10_terminal_recovery_no_gain_preserves_incumbent(const Instance& instance, const std::vector<::Path>& init_paths) {
+tests/selective_recovery_tests.cpp:496:bool test11_cascading_multi_checkpoint_recovery(const Instance& instance, const std::vector<::Path>& init_paths) {
+tests/selective_recovery_tests.cpp:571:bool test12_overflow_malformed_and_bounds_rejection(const Instance& instance, const std::vector<::Path>& init_paths) {
+tests/selective_recovery_tests.cpp:616:bool test13_goal_occupancy_and_edge_swap_detection(const Instance& instance, const std::vector<::Path>& init_paths) {
+tests/selective_recovery_tests.cpp:637:bool test14_recovery_disabled_preserves_deterministic_baseline(const Instance& instance, const std::vector<::Path>& init_paths) {
+tests/selective_recovery_tests.cpp:665:bool test15_deadline_overshoot_measured_without_late_credit(const Instance& instance, const std::vector<::Path>& init_paths) {
+tests/selective_recovery_tests.cpp:686:bool test16_checked_arithmetic_overflow_capacities(const Instance& instance, const std::vector<::Path>& init_paths) {
+tests/selective_recovery_tests.cpp:713:bool test17_state_invariants_preserved_on_failure(const Instance& instance, const std::vector<::Path>& init_paths) {
+tests/selective_recovery_tests.cpp:756:bool test18_selector_agreement_greedy_exact_oracle(const Instance& instance, const std::vector<::Path>& init_paths) {
+tests/selective_recovery_tests.cpp:806:bool test19_multiple_candidate_alternatives_per_agent(const Instance& instance, const std::vector<::Path>& init_paths) {
+tests/selective_recovery_tests.cpp:826:bool test20_cli_policy_parsing_and_telemetry(const Instance& instance, const std::vector<::Path>& init_paths) {
+tests/selective_recovery_tests.cpp:847:bool test21_failed_eviction_recovery_completes_original_eviction(const Instance& instance, const std::vector<::Path>& init_paths) {
+tests/selective_recovery_tests.cpp:899:bool test22_boundary_time_control_and_deadline_polling(const Instance& instance, const std::vector<::Path>& init_paths) {

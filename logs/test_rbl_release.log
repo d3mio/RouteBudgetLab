@@ -1,0 +1,15 @@
+# 2026-10-21T06:14:59Z  cwd=/Users/disasgamage/Documents/GitHub/RouteBudgetLab
+# command: ctest --test-dir /Users/disasgamage/Documents/GitHub/RouteBudgetLab/build/rbl-release --output-on-failure
+Test project /Users/disasgamage/Documents/GitHub/RouteBudgetLab/build/rbl-release
+    Start 1: validator_unit_tests
+1/4 Test #1: validator_unit_tests ...........................   Passed    0.65 sec
+    Start 2: real_solver_output_is_valid
+2/4 Test #2: real_solver_output_is_valid ....................   Passed    0.42 sec
+    Start 3: real_solver_output_misread_as_xy_is_rejected
+3/4 Test #3: real_solver_output_misread_as_xy_is_rejected ...   Passed    0.01 sec
+    Start 4: experiment_e1_resumption_tests
+4/4 Test #4: experiment_e1_resumption_tests .................   Passed    0.79 sec
+
+100% tests passed out of 4
+
+Total Test time (real) =   1.87 sec

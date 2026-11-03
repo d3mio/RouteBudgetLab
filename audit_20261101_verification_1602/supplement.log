@@ -1,0 +1,47 @@
+converted fixtures [('results/partial_acceptance_pilot/init_paths/random-64-64-10__random-64-64-10-random-1__a100.paths', 0), ('results/partial_acceptance_pilot/init_paths/random-64-64-10__random-64-64-10-random-1__a50.paths', 0), ('results/partial_acceptance_pilot/init_paths/random-64-64-10__random-64-64-10-random-2__a100.paths', 0), ('results/partial_acceptance_pilot/init_paths/random-64-64-10__random-64-64-10-random-2__a50.paths', 0), ('results/partial_acceptance_pilot/init_paths/warehouse-10-20-10-2-2__warehouse-10-20-10-2-2-random-1__a100.paths', 0), ('results/partial_acceptance_pilot/init_paths/warehouse-10-20-10-2-2__warehouse-10-20-10-2-2-random-1__a50.paths', 0), ('results/partial_acceptance_pilot/init_paths/warehouse-10-20-10-2-2__warehouse-10-20-10-2-2-random-2__a100.paths', 0), ('results/partial_acceptance_pilot/init_paths/warehouse-10-20-10-2-2__warehouse-10-20-10-2-2-random-2__a50.paths', 0)]
+Generated statistical analysis report: /Users/disasgamage/Documents/GitHub/RouteBudgetLab/audit_20261101_verification_1602/repository_analysis_reexecuted.json
+Generated markdown summary: /Users/disasgamage/Documents/GitHub/RouteBudgetLab/audit_20261101_verification_1602/repository_analysis_reexecuted.md
+{
+  "DISCARD_NO_PA": {
+    "runs": 48,
+    "attempts": 0,
+    "total_pa_us": 0.0,
+    "mean_per_attempt_us": 0,
+    "median_of_per_run_medians_us": 0.0,
+    "total_budget_s": 144.0
+  },
+  "EXACT_PARTIAL_ACCEPTANCE": {
+    "runs": 48,
+    "attempts": 203260,
+    "total_pa_us": 15110769.605,
+    "mean_per_attempt_us": 74.34207224736791,
+    "median_of_per_run_medians_us": 62.187,
+    "total_budget_s": 144.0
+  },
+  "GREEDY_PARTIAL_ACCEPTANCE": {
+    "runs": 48,
+    "attempts": 204827,
+    "total_pa_us": 15192922.135,
+    "mean_per_attempt_us": 74.17441125925781,
+    "median_of_per_run_medians_us": 61.8955,
+    "total_budget_s": 144.0
+  },
+  "RESUMPTION_NO_PA": {
+    "runs": 48,
+    "attempts": 0,
+    "total_pa_us": 0.0,
+    "mean_per_attempt_us": 0,
+    "median_of_per_run_medians_us": 0.0,
+    "total_budget_s": 144.0
+  },
+  "selective_filtered": {
+    "filter_average_ns": 14.31210128328284,
+    "extraction_average_us": 2.6992843973989507,
+    "prep_average_us": 2.7135964986822336,
+    "pa_total_average_us": 4.066438883962659,
+    "total_pa_s": 0.660373409,
+    "per_run_pa_s": 0.02063666903125,
+    "extraction_total_s": 0.438352989,
+    "total_planning_budget_s": 96
+  }
+}

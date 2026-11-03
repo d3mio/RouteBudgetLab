@@ -1,0 +1,613 @@
+diff --git a/src/engine/rbl_checkpoint.hpp b/src/engine/rbl_checkpoint.hpp
+index 7ae7537..1272098 100644
+--- a/src/engine/rbl_checkpoint.hpp
++++ b/src/engine/rbl_checkpoint.hpp
+@@ -161,6 +161,25 @@ public:
+         return count;
+     }
+ 
++    // Returns slot index in [0, max_capacity-1] of the checkpoint that will be evicted
++    // on the next saveCheckpoint() call if all slots are full, or -1 if an empty slot exists.
++    int findEvictionVictimSlot() const {
++        if (max_capacity == 0) return -1;
++        for (int i = 0; i < max_capacity; ++i) {
++            if (slots[i].lifecycle == CheckpointLifecycle::EMPTY ||
++                slots[i].lifecycle == CheckpointLifecycle::DISCARDED ||
++                slots[i].lifecycle == CheckpointLifecycle::COMMITTED ||
++                slots[i].lifecycle == CheckpointLifecycle::EXPIRED) {
++                return -1; // Slot available; no eviction will occur
++            }
++        }
++        int target_slot = 0;
++        if (max_capacity > 1 && slots[1].checkpoint_id < slots[0].checkpoint_id) {
++            target_slot = 1;
++        }
++        return target_slot;
++    }
++
+     // Save checkpoint into store with deterministic eviction
+     // Returns index in [0, max_capacity-1], or -1 if capacity == 0
+     int saveCheckpoint(const MacroPrefixCheckpoint& cp) {
+diff --git a/src/engine/rbl_partial_acceptance.cpp b/src/engine/rbl_partial_acceptance.cpp
+index 4327de6..1ffb9bc 100644
+--- a/src/engine/rbl_partial_acceptance.cpp
++++ b/src/engine/rbl_partial_acceptance.cpp
+@@ -23,6 +23,23 @@ int PartialAcceptanceOptimizer::computeArrivalCost(const Path& path, int goal_lo
+     return arr;
+ }
+ 
++bool PartialAcceptanceOptimizer::computeOptimisticUpperBound(
++    const std::vector<ReplacementCandidate>& candidates,
++    int64_t& out_u,
++    bool& out_overflow) {
++    out_u = 0;
++    out_overflow = false;
++    for (const auto& c : candidates) {
++        if (c.weight > 0) {
++            if (!checkedAdd(out_u, c.weight, out_u)) {
++                out_overflow = true;
++                return false;
++            }
++        }
++    }
++    return true;
++}
++
+ bool PartialAcceptanceOptimizer::checkPathKinematics(const Path& path, int start_loc, int goal_loc, const Instance& instance, std::string& err) {
+     if (path.empty()) {
+         err = "Path is empty";
+diff --git a/src/engine/rbl_partial_acceptance.hpp b/src/engine/rbl_partial_acceptance.hpp
+index fa084d2..fbaf5bc 100644
+--- a/src/engine/rbl_partial_acceptance.hpp
++++ b/src/engine/rbl_partial_acceptance.hpp
+@@ -108,6 +108,45 @@ inline std::ostream& operator<<(std::ostream& os, PartialAcceptancePolicy p) {
+     return os << toString(p);
+ }
+ 
++// Policy governing selective recovery triggers (Claude Prompt Section 7)
++enum class SelectiveRecoveryPolicy {
++    RESUMPTION_NO_PA,                // Normal resumption baseline, no partial acceptance
++    PA_EVERY_INTERRUPTION_FILTERED, // Filtered recovery evaluated on every slice interruption
++    PA_EVICTION_ONLY,               // Normal resumption; recovery attempted only upon natural checkpoint eviction
++    PA_TERMINAL_ONLY,               // Normal resumption; recovery attempted only during terminal reserve before deadline
++    PA_EVICTION_AND_TERMINAL        // Normal resumption; recovery attempted on eviction and during terminal reserve
++};
++
++inline const char* toString(SelectiveRecoveryPolicy p) {
++    switch (p) {
++        case SelectiveRecoveryPolicy::RESUMPTION_NO_PA: return "RESUMPTION_NO_PA";
++        case SelectiveRecoveryPolicy::PA_EVERY_INTERRUPTION_FILTERED: return "PA_EVERY_INTERRUPTION_FILTERED";
++        case SelectiveRecoveryPolicy::PA_EVICTION_ONLY: return "PA_EVICTION_ONLY";
++        case SelectiveRecoveryPolicy::PA_TERMINAL_ONLY: return "PA_TERMINAL_ONLY";
++        case SelectiveRecoveryPolicy::PA_EVICTION_AND_TERMINAL: return "PA_EVICTION_AND_TERMINAL";
++        default: return "UNKNOWN";
++    }
++}
++
++inline std::ostream& operator<<(std::ostream& os, SelectiveRecoveryPolicy p) {
++    return os << toString(p);
++}
++
++inline SelectiveRecoveryPolicy parseSelectiveRecoveryPolicy(const std::string& str) {
++    if (str == "RESUMPTION_NO_PA" || str == "DISCARD_NO_PA") {
++        return SelectiveRecoveryPolicy::RESUMPTION_NO_PA;
++    } else if (str == "PA_EVERY_INTERRUPTION_FILTERED" || str == "EXACT_PARTIAL_ACCEPTANCE" || str == "GREEDY_PARTIAL_ACCEPTANCE") {
++        return SelectiveRecoveryPolicy::PA_EVERY_INTERRUPTION_FILTERED;
++    } else if (str == "PA_EVICTION_ONLY") {
++        return SelectiveRecoveryPolicy::PA_EVICTION_ONLY;
++    } else if (str == "PA_TERMINAL_ONLY") {
++        return SelectiveRecoveryPolicy::PA_TERMINAL_ONLY;
++    } else if (str == "PA_EVICTION_AND_TERMINAL") {
++        return SelectiveRecoveryPolicy::PA_EVICTION_AND_TERMINAL;
++    }
++    return SelectiveRecoveryPolicy::RESUMPTION_NO_PA;
++}
++
+ // Representation of one agent replacement candidate
+ struct ReplacementCandidate {
+     int agent_id = -1;
+@@ -158,9 +197,13 @@ struct PartialAcceptanceResult {
+     int selected_negative_weight_count = 0;
+     int dependency_arc_count = 0;
+     bool used_nonnegative_fast_path = false;
++    bool filter_skipped = false;
++    int64_t optimistic_upper_bound_U = 0;
+ 
+     // High-resolution timing breakdown in microseconds
+     double prep_time_us = 0.0;
++    double extraction_time_us = 0.0;
++    double filter_time_us = 0.0;
+     double graph_build_time_us = 0.0;
+     double selection_time_us = 0.0;
+     double validation_time_us = 0.0;
+@@ -177,6 +220,12 @@ public:
+     // Avoids counting terminal padding waits as extra cost.
+     static int computeArrivalCost(const Path& path, int goal_location);
+ 
++    // Compute cheap optimistic upper bound U = sum(max(w_i, 0)) using checked arithmetic (Section 5).
++    // Returns false if arithmetic overflow occurs.
++    static bool computeOptimisticUpperBound(const std::vector<ReplacementCandidate>& candidates,
++                                            int64_t& out_u,
++                                            bool& out_overflow);
++
+     // Validate kinematic movement rules for a path on a given map instance.
+     static bool checkPathKinematics(const Path& path, int start_loc, int goal_loc, const Instance& instance, std::string& err);
+ 
+diff --git a/src/engine/rbl_resumable_engine.cpp b/src/engine/rbl_resumable_engine.cpp
+index 40a965e..a0ae679 100644
+--- a/src/engine/rbl_resumable_engine.cpp
++++ b/src/engine/rbl_resumable_engine.cpp
+@@ -120,6 +120,21 @@ void ResumableRepairEngine::resetStats() {
+     total_interruptions_observed = 0;
+     total_interruptions_with_completed_prefix = 0;
+     total_repair_attempts_counter = 0;
++    total_filter_evaluations = 0;
++    total_filter_skips = 0;
++    total_filter_time_us = 0.0;
++    total_extraction_time_us = 0.0;
++    total_eviction_pa_attempts = 0;
++    total_eviction_pa_filter_skips = 0;
++    total_eviction_pa_committed = 0;
++    total_eviction_pa_gain = 0;
++    total_eviction_pa_time_us = 0.0;
++    total_terminal_recovery_calls = 0;
++    total_terminal_pa_examined = 0;
++    total_terminal_pa_filter_skips = 0;
++    total_terminal_pa_committed = 0;
++    total_terminal_pa_gain = 0;
++    total_terminal_pa_time_us = 0.0;
+ }
+ 
+ // Low-level Space-Time A* search with cooperative budget checking and deterministic tie-breaking
+@@ -445,8 +460,8 @@ RepairOutcome ResumableRepairEngine::attemptFreshRepair(const std::vector<int>&
+             }
+         }
+ 
+-        // Check if partial acceptance is enabled and has completed candidates
+-        if (enable_partial_acceptance && partial_acceptance_policy != PartialAcceptancePolicy::OFF && r_done > 0) {
++        // Check if partial acceptance is enabled on every interruption (PA_EVERY_INTERRUPTION_FILTERED)
++        if (enable_partial_acceptance && selective_recovery_policy == SelectiveRecoveryPolicy::PA_EVERY_INTERRUPTION_FILTERED && r_done > 0) {
+             std::vector<int> candidate_agents(priority_order.begin(), priority_order.begin() + r_done);
+             bool pa_committed = processInterruptedPartialAcceptance(candidate_agents, prefix_paths, budget, outcome);
+             outcome.duration_s = std::chrono::duration<double>(std::chrono::steady_clock::now() - t_start).count();
+@@ -455,6 +470,15 @@ RepairOutcome ResumableRepairEngine::attemptFreshRepair(const std::vector<int>&
+             }
+         }
+ 
++        // Natural eviction recovery hook (Section 8)
++        if (checkpoint_store.getCapacity() > 0 && r_done > 0) {
++            int victim_slot = checkpoint_store.findEvictionVictimSlot();
++            if (victim_slot >= 0 && (selective_recovery_policy == SelectiveRecoveryPolicy::PA_EVICTION_ONLY ||
++                                     selective_recovery_policy == SelectiveRecoveryPolicy::PA_EVICTION_AND_TERMINAL)) {
++                attemptEvictionRecovery(victim_slot, budget);
++            }
++        }
++
+         // Save into bounded checkpoint store (K in {0, 1, 2})
+         checkpoint_store.saveCheckpoint(cp);
+         total_interrupted_slices++;
+@@ -786,8 +810,8 @@ RepairOutcome ResumableRepairEngine::resumeCheckpoint(int slot_idx, SearchBudget
+             }
+         }
+ 
+-        // Check if partial acceptance is enabled and has completed candidates
+-        if (enable_partial_acceptance && partial_acceptance_policy != PartialAcceptancePolicy::OFF && r_done > 0) {
++        // Check if partial acceptance is enabled on every interruption (PA_EVERY_INTERRUPTION_FILTERED)
++        if (enable_partial_acceptance && selective_recovery_policy == SelectiveRecoveryPolicy::PA_EVERY_INTERRUPTION_FILTERED && r_done > 0) {
+             std::vector<int> candidate_agents(priority_order.begin(), priority_order.begin() + r_done);
+             bool pa_committed = processInterruptedPartialAcceptance(candidate_agents, prefix_paths, budget, outcome);
+             outcome.duration_s = std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count();
+@@ -999,7 +1023,43 @@ PartialAcceptanceResult ResumableRepairEngine::evaluatePartialAcceptance(
+         candidates.push_back(c);
+     }
+ 
+-    // 3. Validate pairwise collision freedom of candidates (Assumption 3)
++    auto t_extract_end = std::chrono::steady_clock::now();
++    res.extraction_time_us = std::chrono::duration<double, std::micro>(t_extract_end - t_start).count();
++    total_extraction_time_us += res.extraction_time_us;
++
++    // Cheap optimistic gain filter: U = sum(max(w_i, 0)) (Claude Prompt Section 5)
++    auto t_filter_start = std::chrono::steady_clock::now();
++    int64_t upper_bound_u = 0;
++    bool filter_overflow = false;
++    if (!PartialAcceptanceOptimizer::computeOptimisticUpperBound(candidates, upper_bound_u, filter_overflow) || filter_overflow) {
++        res.status = PartialAcceptanceStatus::INVALID_INPUT;
++        res.detail = "Arithmetic overflow computing optimistic upper bound U";
++        return res;
++    }
++    auto t_filter_end = std::chrono::steady_clock::now();
++    res.filter_time_us = std::chrono::duration<double, std::micro>(t_filter_end - t_filter_start).count();
++    res.optimistic_upper_bound_U = upper_bound_u;
++
++    total_filter_evaluations++;
++    total_filter_time_us += res.filter_time_us;
++
++    if (upper_bound_u == 0) {
++        total_filter_skips++;
++        res.status = PartialAcceptanceStatus::NO_GAIN;
++        res.filter_skipped = true;
++        res.detail = "Skipped by cheap optimistic gain filter (U == 0)";
++        res.candidate_count = static_cast<int>(candidates.size());
++        for (const auto& cand : candidates) {
++            if (cand.weight > 0) res.positive_weight_count++;
++            else if (cand.weight == 0) res.zero_weight_count++;
++            else res.negative_weight_count++;
++        }
++        res.prep_time_us = res.extraction_time_us + res.filter_time_us;
++        res.total_time_us = res.prep_time_us;
++        return res;
++    }
++
++    // 3. Validate pairwise collision freedom of candidates (Assumption 3) - evaluated ONLY when U > 0
+     std::string pair_err;
+     if (!PartialAcceptanceOptimizer::checkPairwiseCandidateCollisions(candidates, pair_err)) {
+         res.status = PartialAcceptanceStatus::INVALID_INPUT;
+@@ -1167,4 +1227,111 @@ bool ResumableRepairEngine::commitPartialAcceptance(const std::vector<int>& sele
+     return true;
+ }
+ 
++bool ResumableRepairEngine::attemptEvictionRecovery(int victim_slot, SearchBudget& budget) {
++    if (victim_slot < 0 || victim_slot >= checkpoint_store.getCapacity()) {
++        return false;
++    }
++    const MacroPrefixCheckpoint* victim = checkpoint_store.getCheckpoint(victim_slot);
++    if (!victim || victim->r_done <= 0 || victim->prefix_paths.empty()) {
++        return false;
++    }
++
++    total_eviction_pa_attempts++;
++    auto t0 = std::chrono::steady_clock::now();
++
++    // 1. Safely snapshot victim's completed candidate data
++    int r_done = std::min(static_cast<int>(victim->r_done), static_cast<int>(victim->prefix_paths.size()));
++    std::vector<int> candidate_agents(victim->priority_order.begin(), victim->priority_order.begin() + r_done);
++    std::vector<Path> candidate_paths(victim->prefix_paths.begin(), victim->prefix_paths.begin() + r_done);
++
++    // 2. Check remaining global time
++    if (budget.isGlobalBudgetExhausted(0.0)) {
++        double elapsed_us = std::chrono::duration<double, std::micro>(std::chrono::steady_clock::now() - t0).count();
++        total_eviction_pa_time_us += elapsed_us;
++        return false;
++    }
++
++    // 3. Evaluate partial acceptance against CURRENT incumbent (recomputing gains and fresh compatibility)
++    PartialAcceptanceResult res = evaluatePartialAcceptance(candidate_agents, candidate_paths, &budget);
++
++    if (res.filter_skipped) {
++        total_eviction_pa_filter_skips++;
++    }
++
++    bool committed = false;
++    if (res.status == PartialAcceptanceStatus::OPTIMAL_SELECTION && res.predicted_gain > 0) {
++        if (!budget.isGlobalBudgetExhausted(0.0)) {
++            committed = commitPartialAcceptance(res.selected_agent_ids, res.selected_paths, incumbent_version, res, &budget);
++            if (committed) {
++                total_eviction_pa_committed++;
++                total_eviction_pa_gain += res.verified_gain;
++                total_accepted_repairs++;
++            }
++        }
++    }
++
++    double elapsed_us = std::chrono::duration<double, std::micro>(std::chrono::steady_clock::now() - t0).count();
++    total_eviction_pa_time_us += elapsed_us;
++    return committed;
++}
++
++bool ResumableRepairEngine::attemptTerminalRecovery(SearchBudget& budget) {
++    total_terminal_recovery_calls++;
++    auto t0 = std::chrono::steady_clock::now();
++    bool any_committed = false;
++
++    // Collect suspended slots in deterministic FIFO order (ascending checkpoint_id)
++    std::vector<int> suspended_slots;
++    for (int s = 0; s < checkpoint_store.getCapacity(); ++s) {
++        const MacroPrefixCheckpoint* cp = checkpoint_store.getCheckpoint(s);
++        if (cp && cp->lifecycle == CheckpointLifecycle::SUSPENDED && cp->r_done > 0 && !cp->prefix_paths.empty()) {
++            suspended_slots.push_back(s);
++        }
++    }
++    std::sort(suspended_slots.begin(), suspended_slots.end(), [&](int a, int b) {
++        return checkpoint_store.getCheckpoint(a)->checkpoint_id < checkpoint_store.getCheckpoint(b)->checkpoint_id;
++    });
++
++    for (int s : suspended_slots) {
++        if (budget.isGlobalBudgetExhausted(0.0)) {
++            break;
++        }
++
++        const MacroPrefixCheckpoint* cp = checkpoint_store.getCheckpoint(s);
++        if (!cp || cp->lifecycle != CheckpointLifecycle::SUSPENDED || cp->r_done <= 0 || cp->prefix_paths.empty()) {
++            continue;
++        }
++
++        total_terminal_pa_examined++;
++        int r_done = std::min(static_cast<int>(cp->r_done), static_cast<int>(cp->prefix_paths.size()));
++        std::vector<int> candidate_agents(cp->priority_order.begin(), cp->priority_order.begin() + r_done);
++        std::vector<Path> candidate_paths(cp->prefix_paths.begin(), cp->prefix_paths.begin() + r_done);
++
++        // Evaluate against current incumbent (recomputed if a prior checkpoint committed!)
++        PartialAcceptanceResult res = evaluatePartialAcceptance(candidate_agents, candidate_paths, &budget);
++
++        if (res.filter_skipped) {
++            total_terminal_pa_filter_skips++;
++        }
++
++        if (res.status == PartialAcceptanceStatus::OPTIMAL_SELECTION && res.predicted_gain > 0) {
++            if (budget.isGlobalBudgetExhausted(0.0)) {
++                break;
++            }
++            bool committed = commitPartialAcceptance(res.selected_agent_ids, res.selected_paths, incumbent_version, res, &budget);
++            if (committed) {
++                checkpoint_store.markCommitted(s);
++                total_terminal_pa_committed++;
++                total_terminal_pa_gain += res.verified_gain;
++                total_accepted_repairs++;
++                any_committed = true;
++            }
++        }
++    }
++
++    double elapsed_us = std::chrono::duration<double, std::micro>(std::chrono::steady_clock::now() - t0).count();
++    total_terminal_pa_time_us += elapsed_us;
++    return any_committed;
++}
++
+ } // namespace rbl
+diff --git a/src/engine/rbl_resumable_engine.hpp b/src/engine/rbl_resumable_engine.hpp
+index 6190c55..4091da5 100644
+--- a/src/engine/rbl_resumable_engine.hpp
++++ b/src/engine/rbl_resumable_engine.hpp
+@@ -127,8 +127,28 @@ public:
+     // Partial Acceptance Feature Controls & Policy
+     void setPartialAcceptanceEnabled(bool enable) { enable_partial_acceptance = enable; }
+     bool isPartialAcceptanceEnabled() const { return enable_partial_acceptance; }
+-    void setPartialAcceptancePolicy(PartialAcceptancePolicy policy) { partial_acceptance_policy = policy; }
++    void setPartialAcceptancePolicy(PartialAcceptancePolicy policy) {
++        partial_acceptance_policy = policy;
++        if (policy == PartialAcceptancePolicy::OFF) {
++            enable_partial_acceptance = false;
++            selective_recovery_policy = SelectiveRecoveryPolicy::RESUMPTION_NO_PA;
++        } else if (selective_recovery_policy == SelectiveRecoveryPolicy::RESUMPTION_NO_PA) {
++            enable_partial_acceptance = true;
++            selective_recovery_policy = SelectiveRecoveryPolicy::PA_EVERY_INTERRUPTION_FILTERED;
++        }
++    }
+     PartialAcceptancePolicy getPartialAcceptancePolicy() const { return partial_acceptance_policy; }
++
++    // Selective Recovery Policy Controls (Claude Prompt Section 7)
++    void setSelectiveRecoveryPolicy(SelectiveRecoveryPolicy policy) {
++        selective_recovery_policy = policy;
++        enable_partial_acceptance = (policy != SelectiveRecoveryPolicy::RESUMPTION_NO_PA);
++        if (enable_partial_acceptance && partial_acceptance_policy == PartialAcceptancePolicy::OFF) {
++            partial_acceptance_policy = PartialAcceptancePolicy::GREEDY_DEPENDENCY;
++        }
++    }
++    SelectiveRecoveryPolicy getSelectiveRecoveryPolicy() const { return selective_recovery_policy; }
++
+     const PartialAcceptanceResult& getLastPartialAcceptanceResult() const { return last_partial_acceptance_result; }
+     const std::vector<PartialAcceptanceResult>& getPartialAcceptanceHistory() const { return partial_acceptance_history; }
+ 
+@@ -147,6 +167,12 @@ public:
+         const std::vector<Path>& candidate_replacements,
+         SearchBudget* budget = nullptr);
+ 
++    // Eviction-triggered recovery hook (Section 8)
++    bool attemptEvictionRecovery(int victim_slot, SearchBudget& budget);
++
++    // Terminal reserve recovery hook (Section 9)
++    bool attemptTerminalRecovery(SearchBudget& budget);
++
+     // Partial acceptance cumulative statistics
+     int getPartialAcceptanceAttempts() const { return total_partial_acceptance_attempts; }
+     int getPartialAcceptancePositiveOpportunities() const { return total_partial_acceptance_positive_opps; }
+@@ -155,6 +181,27 @@ public:
+     int64_t getPartialAcceptanceTotalGain() const { return total_partial_acceptance_gain; }
+     double getPartialAcceptanceTotalTimeUs() const { return total_partial_acceptance_time_us; }
+ 
++    // Filter cumulative statistics (Section 5)
++    int getFilterEvaluations() const { return total_filter_evaluations; }
++    int getFilterSkips() const { return total_filter_skips; }
++    double getFilterTotalTimeUs() const { return total_filter_time_us; }
++    double getExtractionTotalTimeUs() const { return total_extraction_time_us; }
++
++    // Eviction recovery cumulative statistics (Section 8)
++    int getEvictionRecoveryAttempts() const { return total_eviction_pa_attempts; }
++    int getEvictionRecoveryFilterSkips() const { return total_eviction_pa_filter_skips; }
++    int getEvictionRecoveryCommitted() const { return total_eviction_pa_committed; }
++    int64_t getEvictionRecoveryTotalGain() const { return total_eviction_pa_gain; }
++    double getEvictionRecoveryTotalTimeUs() const { return total_eviction_pa_time_us; }
++
++    // Terminal recovery cumulative statistics (Section 9)
++    int getTerminalRecoveryCalls() const { return total_terminal_recovery_calls; }
++    int getTerminalRecoveryExamined() const { return total_terminal_pa_examined; }
++    int getTerminalRecoveryFilterSkips() const { return total_terminal_pa_filter_skips; }
++    int getTerminalRecoveryCommitted() const { return total_terminal_pa_committed; }
++    int64_t getTerminalRecoveryTotalGain() const { return total_terminal_pa_gain; }
++    double getTerminalRecoveryTotalTimeUs() const { return total_terminal_pa_time_us; }
++
+     // Offline snapshot capture controls (Task 8)
+     void setSnapshotCaptureEnabled(bool enable) { enable_snapshot_capture = enable; }
+     bool isSnapshotCaptureEnabled() const { return enable_snapshot_capture; }
+@@ -214,6 +261,7 @@ private:
+     // Partial acceptance state
+     bool enable_partial_acceptance = false;
+     PartialAcceptancePolicy partial_acceptance_policy = PartialAcceptancePolicy::OFF;
++    SelectiveRecoveryPolicy selective_recovery_policy = SelectiveRecoveryPolicy::RESUMPTION_NO_PA;
+     PartialAcceptanceResult last_partial_acceptance_result;
+     std::vector<PartialAcceptanceResult> partial_acceptance_history;
+     int total_partial_acceptance_attempts = 0;
+@@ -223,6 +271,27 @@ private:
+     int64_t total_partial_acceptance_gain = 0;
+     double total_partial_acceptance_time_us = 0.0;
+ 
++    // Filter telemetry (Section 5)
++    int total_filter_evaluations = 0;
++    int total_filter_skips = 0;
++    double total_filter_time_us = 0.0;
++    double total_extraction_time_us = 0.0;
++
++    // Eviction recovery telemetry (Section 8)
++    int total_eviction_pa_attempts = 0;
++    int total_eviction_pa_filter_skips = 0;
++    int total_eviction_pa_committed = 0;
++    int64_t total_eviction_pa_gain = 0;
++    double total_eviction_pa_time_us = 0.0;
++
++    // Terminal recovery telemetry (Section 9)
++    int total_terminal_recovery_calls = 0;
++    int total_terminal_pa_examined = 0;
++    int total_terminal_pa_filter_skips = 0;
++    int total_terminal_pa_committed = 0;
++    int64_t total_terminal_pa_gain = 0;
++    double total_terminal_pa_time_us = 0.0;
++
+     // Offline snapshot capture state
+     bool enable_snapshot_capture = false;
+     std::vector<InterruptedRepairSnapshot> captured_snapshots;
+diff --git a/src/profiler/profile_partial_acceptance.cpp b/src/profiler/profile_partial_acceptance.cpp
+index c575546..87c2424 100644
+--- a/src/profiler/profile_partial_acceptance.cpp
++++ b/src/profiler/profile_partial_acceptance.cpp
+@@ -216,6 +216,8 @@ int main(int argc, char* argv[]) {
+     double slice_budget_s = 0.005;
+     int neighborhood_size = 8;
+     int rng_seed = 0;
++    double terminal_reserve_s = 0.002;
++    bool terminal_reserve_control = false;
+ 
+     po::options_description desc("RouteBudget Lab - Partial Acceptance Profiler");
+     desc.add_options()
+@@ -227,8 +229,12 @@ int main(int argc, char* argv[]) {
+         ("slice", po::value<double>(&slice_budget_s)->default_value(0.005), "Repair slice budget (seconds)")
+         ("neighborhood-size,k", po::value<int>(&neighborhood_size)->default_value(8), "Neighborhood size k")
+         ("seed", po::value<int>(&rng_seed)->default_value(0), "Random seed")
+-        ("policy,p", po::value<std::string>(&policy_str)->default_value("EXACT_PARTIAL_ACCEPTANCE"),
+-         "Policy: DISCARD_NO_PA, RESUMPTION_NO_PA, GREEDY_PARTIAL_ACCEPTANCE, EXACT_PARTIAL_ACCEPTANCE")
++        ("policy,p", po::value<std::string>(&policy_str)->default_value("RESUMPTION_NO_PA"),
++         "Policy: RESUMPTION_NO_PA, PA_EVERY_INTERRUPTION_FILTERED, PA_EVICTION_ONLY, PA_TERMINAL_ONLY, PA_EVICTION_AND_TERMINAL (or DISCARD_NO_PA, EXACT_PARTIAL_ACCEPTANCE, GREEDY_PARTIAL_ACCEPTANCE)")
++        ("terminal-reserve", po::value<double>(&terminal_reserve_s)->default_value(0.002),
++         "Terminal reserve before deadline for recovery evaluation (seconds, default 0.002 = 2.0 ms)")
++        ("terminal-reserve-control", po::bool_switch(&terminal_reserve_control)->default_value(false),
++         "Control flag: Stop normal search at terminal reserve cutoff without executing recovery")
+         ("mode", po::value<std::string>(&mode_str)->default_value("online"),
+          "Execution mode: online | offline_snapshots")
+         ("load-init-paths", po::value<std::string>(&load_init_path)->default_value(""), "Load shared initial paths from file")
+@@ -265,20 +271,21 @@ int main(int argc, char* argv[]) {
+     }
+ 
+     bool resumption_enabled = (policy_str != "DISCARD_NO_PA");
+-    bool use_pa = (mode_str == "online") &&
+-                  (policy_str == "GREEDY_PARTIAL_ACCEPTANCE" || policy_str == "EXACT_PARTIAL_ACCEPTANCE");
++    SelectiveRecoveryPolicy sel_policy = parseSelectiveRecoveryPolicy(policy_str);
+     PartialAcceptancePolicy pa_policy = PartialAcceptancePolicy::OFF;
+-    if (use_pa) {
+-        if (policy_str == "EXACT_PARTIAL_ACCEPTANCE") {
+-            pa_policy = PartialAcceptancePolicy::EXACT_CLOSURE;
+-        } else if (policy_str == "GREEDY_PARTIAL_ACCEPTANCE") {
+-            pa_policy = PartialAcceptancePolicy::GREEDY_DEPENDENCY;
+-        }
++    if (policy_str == "EXACT_PARTIAL_ACCEPTANCE") {
++        pa_policy = PartialAcceptancePolicy::EXACT_CLOSURE;
++    } else if (policy_str == "GREEDY_PARTIAL_ACCEPTANCE" || sel_policy != SelectiveRecoveryPolicy::RESUMPTION_NO_PA) {
++        pa_policy = PartialAcceptancePolicy::GREEDY_DEPENDENCY;
+     }
++    bool use_pa = (mode_str == "online") &&
++                  (sel_policy != SelectiveRecoveryPolicy::RESUMPTION_NO_PA ||
++                   policy_str == "GREEDY_PARTIAL_ACCEPTANCE" || policy_str == "EXACT_PARTIAL_ACCEPTANCE");
+ 
+     int store_capacity = resumption_enabled ? 2 : 0;
+     ResumableRepairEngine engine(instance, false, store_capacity);
+     engine.setInitialSolution(initial_paths);
++    engine.setSelectiveRecoveryPolicy(sel_policy);
+     engine.setPartialAcceptanceEnabled(use_pa);
+     engine.setPartialAcceptancePolicy(pa_policy);
+     if (mode_str == "offline_snapshots") {
+@@ -295,6 +302,10 @@ int main(int argc, char* argv[]) {
+ 
+     // 2. Start Monotonic Global Refinement Timer
+     const double t_reserve_s = 0.0005; // 500 us safety reserve before starting an operation
++    bool terminal_recovery_needed = (mode_str == "online") &&
++        (sel_policy == SelectiveRecoveryPolicy::PA_TERMINAL_ONLY ||
++         sel_policy == SelectiveRecoveryPolicy::PA_EVICTION_AND_TERMINAL);
++    double effective_cutoff_reserve_s = (terminal_recovery_needed || terminal_reserve_control) ? terminal_reserve_s : t_reserve_s;
+     const int max_stagnant_attempts = 2;
+     auto t_global_start = std::chrono::steady_clock::now();
+     auto global_deadline = t_global_start + std::chrono::duration_cast<std::chrono::steady_clock::duration>(
+@@ -320,7 +331,7 @@ int main(int argc, char* argv[]) {
+         double elapsed_s = std::chrono::duration<double>(t_now - t_global_start).count();
+         double b_k = std::max(0.0, time_budget_s - elapsed_s);
+ 
+-        if (b_k <= t_reserve_s) {
++        if (b_k <= effective_cutoff_reserve_s) {
+             break;
+         }
+ 
+@@ -330,11 +341,11 @@ int main(int argc, char* argv[]) {
+         auto t_pre_exec = std::chrono::steady_clock::now();
+         double elapsed_pre_s = std::chrono::duration<double>(t_pre_exec - t_global_start).count();
+         double b_k_exec = std::max(0.0, time_budget_s - elapsed_pre_s);
+-        if (b_k_exec <= t_reserve_s) {
++        if (b_k_exec <= effective_cutoff_reserve_s) {
+             break;
+         }
+ 
+-        double effective_slice_s = std::min(slice_budget_s, std::max(0.001, b_k_exec - t_reserve_s));
++        double effective_slice_s = std::min(slice_budget_s, std::max(0.001, b_k_exec - effective_cutoff_reserve_s));
+         // Standard RouteBudget Lab slice expansion cap rule (100,000 expansions/sec)
+         uint64_t expansion_cap = std::max<uint64_t>(50, static_cast<uint64_t>(slice_budget_s * 100000.0));
+         SearchBudget slice_budget(expansion_cap, effective_slice_s);
+@@ -365,6 +376,25 @@ int main(int argc, char* argv[]) {
+         }
+     }
+ 
++    double time_normal_search_stopped_s = std::chrono::duration<double>(std::chrono::steady_clock::now() - t_global_start).count();
++    bool terminal_recovery_called = false;
++    if (terminal_recovery_needed && !terminal_reserve_control) {
++        terminal_recovery_called = true;
++        auto t_term_now = std::chrono::steady_clock::now();
++        double rem_s = std::max(0.0, std::chrono::duration<double>(global_deadline - t_term_now).count());
++        SearchBudget term_budget(100000, rem_s);
++        term_budget.setGlobalDeadline(global_deadline);
++        bool term_committed = engine.attemptTerminalRecovery(term_budget);
++        if (term_committed) {
++            auto t_term_commit = std::chrono::steady_clock::now();
++            double term_commit_ts = std::chrono::duration<double>(t_term_commit - t_global_start).count();
++            time_of_last_accepted_commit_s = term_commit_ts;
++            anytime_cost_trajectory.push_back({term_commit_ts, engine.getIncumbentCost()});
++        }
++    }
++    double time_terminal_recovery_completed_s = std::chrono::duration<double>(std::chrono::steady_clock::now() - t_global_start).count();
++    double terminal_reserve_consumed_s = std::max(0.0, time_terminal_recovery_completed_s - time_normal_search_stopped_s);
++
+     auto t_global_end = std::chrono::steady_clock::now();
+     double total_solve_time_s = std::chrono::duration<double>(t_global_end - t_global_start).count();
+     double deadline_overshoot_s = std::max(0.0, total_solve_time_s - time_budget_s);
+@@ -681,6 +711,27 @@ int main(int argc, char* argv[]) {
+         out << "  \"pa_budget_skipped\": " << engine.getPartialAcceptanceBudgetSkipped() << ",\n";
+         out << "  \"pa_total_gain\": " << engine.getPartialAcceptanceTotalGain() << ",\n";
+         out << "  \"pa_total_time_us\": " << engine.getPartialAcceptanceTotalTimeUs() << ",\n";
++        out << "  \"selective_recovery_policy\": \"" << toString(sel_policy) << "\",\n";
++        out << "  \"terminal_reserve_s\": " << terminal_reserve_s << ",\n";
++        out << "  \"terminal_reserve_control\": " << (terminal_reserve_control ? "true" : "false") << ",\n";
++        out << "  \"time_normal_search_stopped_s\": " << time_normal_search_stopped_s << ",\n";
++        out << "  \"terminal_reserve_consumed_s\": " << terminal_reserve_consumed_s << ",\n";
++        out << "  \"terminal_recovery_called\": " << (terminal_recovery_called ? "true" : "false") << ",\n";
++        out << "  \"filter_evaluations\": " << engine.getFilterEvaluations() << ",\n";
++        out << "  \"filter_skips\": " << engine.getFilterSkips() << ",\n";
++        out << "  \"filter_total_time_us\": " << engine.getFilterTotalTimeUs() << ",\n";
++        out << "  \"extraction_total_time_us\": " << engine.getExtractionTotalTimeUs() << ",\n";
++        out << "  \"eviction_attempts\": " << engine.getEvictionRecoveryAttempts() << ",\n";
++        out << "  \"eviction_filter_skips\": " << engine.getEvictionRecoveryFilterSkips() << ",\n";
++        out << "  \"eviction_committed\": " << engine.getEvictionRecoveryCommitted() << ",\n";
++        out << "  \"eviction_total_gain\": " << engine.getEvictionRecoveryTotalGain() << ",\n";
++        out << "  \"eviction_total_time_us\": " << engine.getEvictionRecoveryTotalTimeUs() << ",\n";
++        out << "  \"terminal_recovery_calls\": " << engine.getTerminalRecoveryCalls() << ",\n";
++        out << "  \"terminal_checkpoints_examined\": " << engine.getTerminalRecoveryExamined() << ",\n";
++        out << "  \"terminal_filter_skips\": " << engine.getTerminalRecoveryFilterSkips() << ",\n";
++        out << "  \"terminal_committed\": " << engine.getTerminalRecoveryCommitted() << ",\n";
++        out << "  \"terminal_total_gain\": " << engine.getTerminalRecoveryTotalGain() << ",\n";
++        out << "  \"terminal_total_time_us\": " << engine.getTerminalRecoveryTotalTimeUs() << ",\n";
+         out << "  \"pa_telemetry\": {\n";
+         out << "    \"total_candidates_evaluated\": " << total_cands_eval << ",\n";
+         out << "    \"positive_weights\": " << total_pos_w << ",\n";
