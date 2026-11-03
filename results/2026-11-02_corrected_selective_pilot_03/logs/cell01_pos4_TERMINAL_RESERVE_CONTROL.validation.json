@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/build/corrected-release/rbl_validate",
+    "--map",
+    "data/validation/maps/random-64-64-10.map",
+    "--scen",
+    "data/validation/scenarios/random-64-64-10-random-1.scen",
+    "--agents",
+    "50",
+    "--paths",
+    "results/2026-11-02_corrected_selective_pilot_03/paths/cell01_pos4_TERMINAL_RESERVE_CONTROL.paths",
+    "--reported-cost",
+    "2082"
+  ],
+  "returncode": 0,
+  "stdout": "{\"status\":\"VALID\",\"agents\":50,\"independent_sum_of_costs\":2082,\"sum_of_path_lengths\":2082,\"makespan\":88,\"reported_cost\":2082,\"cost_matches_independent_arrival\":true,\"cost_matches_path_length\":true,\"issue_counts\":{},\"issues\":[]}\n",
+  "stderr": ""
+}
