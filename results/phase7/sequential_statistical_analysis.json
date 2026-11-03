@@ -1,0 +1,344 @@
+{
+  "summary": {
+    "E2: Resumption Effect": {
+      "comparison": "E2: Resumption Effect",
+      "protocol": "PROTOCOL_A",
+      "control_method": "RESTART_ONLY_K0",
+      "treatment_method": "FIXED_FIFO_RESUME",
+      "n_pairs": 32,
+      "wins": 10,
+      "losses": 6,
+      "ties": 16,
+      "mean_cost_reduction": 49.0625,
+      "median_cost_reduction": 0.0,
+      "std_cost_reduction": 149.13080153925927,
+      "mean_pct_cost_reduction": 0.546791372104506,
+      "bootstrap_95ci_mean_cost_reduction": [
+        2.653906250000001,
+        103.69062499999995
+      ],
+      "control_mean_cost": 8360.25,
+      "treatment_mean_cost": 8311.1875,
+      "control_telemetry_means": {
+        "resumed_actions_count": 0.0,
+        "accepted_from_resumed": 0.0,
+        "accepted_repairs": 14.59375,
+        "interrupted_slices": 4935.78125,
+        "incompatible_checkpoints_discarded": 0.0,
+        "total_expansions": 4914705.875,
+        "repeated_expansions": 3898180.5625,
+        "repeated_work_ratio": 0.71611184375,
+        "median_decision_latency_us": 3.1745,
+        "deadline_overshoot_us": 0.0
+      },
+      "treatment_telemetry_means": {
+        "resumed_actions_count": 5398.3125,
+        "accepted_from_resumed": 0.78125,
+        "accepted_repairs": 16.0625,
+        "interrupted_slices": 7705.59375,
+        "incompatible_checkpoints_discarded": 0.0,
+        "total_expansions": 7683200.53125,
+        "repeated_expansions": 7025280.0625,
+        "repeated_work_ratio": 0.8315083750000001,
+        "median_decision_latency_us": 3.15496875,
+        "deadline_overshoot_us": 0.0
+      }
+    },
+    "E3a: Controller Scoring (Matched 10ms)": {
+      "comparison": "E3a: Controller Scoring (Matched 10ms)",
+      "protocol": "PROTOCOL_A",
+      "control_method": "FIXED_FIFO_RESUME",
+      "treatment_method": "SCORE_BASED_FIXED",
+      "n_pairs": 32,
+      "wins": 12,
+      "losses": 7,
+      "ties": 13,
+      "mean_cost_reduction": -26.25,
+      "median_cost_reduction": 0.0,
+      "std_cost_reduction": 142.8520552089446,
+      "mean_pct_cost_reduction": -0.14103404338640063,
+      "bootstrap_95ci_mean_cost_reduction": [
+        -81.5640625,
+        15.719531249999989
+      ],
+      "control_mean_cost": 8311.1875,
+      "treatment_mean_cost": 8337.4375,
+      "control_telemetry_means": {
+        "resumed_actions_count": 5398.3125,
+        "accepted_from_resumed": 0.78125,
+        "accepted_repairs": 16.0625,
+        "interrupted_slices": 7705.59375,
+        "incompatible_checkpoints_discarded": 0.0,
+        "total_expansions": 7683200.53125,
+        "repeated_expansions": 7025280.0625,
+        "repeated_work_ratio": 0.8315083750000001,
+        "median_decision_latency_us": 3.15496875,
+        "deadline_overshoot_us": 0.0
+      },
+      "treatment_telemetry_means": {
+        "resumed_actions_count": 5105.25,
+        "accepted_from_resumed": 0.96875,
+        "accepted_repairs": 15.9375,
+        "interrupted_slices": 7294.53125,
+        "incompatible_checkpoints_discarded": 0.375,
+        "total_expansions": 7307353.125,
+        "repeated_expansions": 6644038.15625,
+        "repeated_work_ratio": 0.83232375,
+        "median_decision_latency_us": 9.427031249999999,
+        "deadline_overshoot_us": 0.0
+      }
+    },
+    "E3b: Adaptive Slice Allocation": {
+      "comparison": "E3b: Adaptive Slice Allocation",
+      "protocol": "PROTOCOL_A",
+      "control_method": "SCORE_BASED_FIXED",
+      "treatment_method": "SCORE_BASED_ADAPTIVE",
+      "n_pairs": 32,
+      "wins": 8,
+      "losses": 8,
+      "ties": 16,
+      "mean_cost_reduction": -37.03125,
+      "median_cost_reduction": 0.0,
+      "std_cost_reduction": 159.97146607966502,
+      "mean_pct_cost_reduction": -0.4779175403183509,
+      "bootstrap_95ci_mean_cost_reduction": [
+        -94.43984375,
+        15.253906249999943
+      ],
+      "control_mean_cost": 8337.4375,
+      "treatment_mean_cost": 8374.46875,
+      "control_telemetry_means": {
+        "resumed_actions_count": 5105.25,
+        "accepted_from_resumed": 0.96875,
+        "accepted_repairs": 15.9375,
+        "interrupted_slices": 7294.53125,
+        "incompatible_checkpoints_discarded": 0.375,
+        "total_expansions": 7307353.125,
+        "repeated_expansions": 6644038.15625,
+        "repeated_work_ratio": 0.83232375,
+        "median_decision_latency_us": 9.427031249999999,
+        "deadline_overshoot_us": 0.0
+      },
+      "treatment_telemetry_means": {
+        "resumed_actions_count": 7145.71875,
+        "accepted_from_resumed": 0.15625,
+        "accepted_repairs": 14.84375,
+        "interrupted_slices": 10662.71875,
+        "incompatible_checkpoints_discarded": 0.25,
+        "total_expansions": 5078673.03125,
+        "repeated_expansions": 4301822.65625,
+        "repeated_work_ratio": 0.7823866562499999,
+        "median_decision_latency_us": 29.96225,
+        "deadline_overshoot_us": 369.09375
+      }
+    },
+    "E4: Selective Compatibility": {
+      "comparison": "E4: Selective Compatibility",
+      "protocol": "PROTOCOL_A",
+      "control_method": "DISCARD_ON_CHANGE",
+      "treatment_method": "SCORE_BASED_ADAPTIVE",
+      "n_pairs": 32,
+      "wins": 0,
+      "losses": 0,
+      "ties": 32,
+      "mean_cost_reduction": 0.0,
+      "median_cost_reduction": 0.0,
+      "std_cost_reduction": 0.0,
+      "mean_pct_cost_reduction": 0.0,
+      "bootstrap_95ci_mean_cost_reduction": [
+        0.0,
+        0.0
+      ],
+      "control_mean_cost": 8374.46875,
+      "treatment_mean_cost": 8374.46875,
+      "control_telemetry_means": {
+        "resumed_actions_count": 7095.625,
+        "accepted_from_resumed": 0.1875,
+        "accepted_repairs": 14.84375,
+        "interrupted_slices": 10587.78125,
+        "incompatible_checkpoints_discarded": 0.40625,
+        "total_expansions": 5042803.0625,
+        "repeated_expansions": 4269226.6875,
+        "repeated_work_ratio": 0.78233684375,
+        "median_decision_latency_us": 30.04553125,
+        "deadline_overshoot_us": 0.0
+      },
+      "treatment_telemetry_means": {
+        "resumed_actions_count": 7145.71875,
+        "accepted_from_resumed": 0.15625,
+        "accepted_repairs": 14.84375,
+        "interrupted_slices": 10662.71875,
+        "incompatible_checkpoints_discarded": 0.25,
+        "total_expansions": 5078673.03125,
+        "repeated_expansions": 4301822.65625,
+        "repeated_work_ratio": 0.7823866562499999,
+        "median_decision_latency_us": 29.96225,
+        "deadline_overshoot_us": 369.09375
+      }
+    },
+    "E5: Progress Feature Ablation": {
+      "comparison": "E5: Progress Feature Ablation",
+      "protocol": "PROTOCOL_A",
+      "control_method": "ELAPSED_TIME_ONLY",
+      "treatment_method": "SCORE_BASED_ADAPTIVE",
+      "n_pairs": 32,
+      "wins": 2,
+      "losses": 4,
+      "ties": 26,
+      "mean_cost_reduction": -2.1875,
+      "median_cost_reduction": 0.0,
+      "std_cost_reduction": 41.09582625381647,
+      "mean_pct_cost_reduction": -0.031206920339983495,
+      "bootstrap_95ci_mean_cost_reduction": [
+        -17.28203125,
+        11.189062499999977
+      ],
+      "control_mean_cost": 8372.28125,
+      "treatment_mean_cost": 8374.46875,
+      "control_telemetry_means": {
+        "resumed_actions_count": 7278.40625,
+        "accepted_from_resumed": 0.0625,
+        "accepted_repairs": 14.9375,
+        "interrupted_slices": 10787.9375,
+        "incompatible_checkpoints_discarded": 0.0,
+        "total_expansions": 5171894.59375,
+        "repeated_expansions": 4367469.90625,
+        "repeated_work_ratio": 0.782453,
+        "median_decision_latency_us": 30.13790625,
+        "deadline_overshoot_us": 0.0
+      },
+      "treatment_telemetry_means": {
+        "resumed_actions_count": 7145.71875,
+        "accepted_from_resumed": 0.15625,
+        "accepted_repairs": 14.84375,
+        "interrupted_slices": 10662.71875,
+        "incompatible_checkpoints_discarded": 0.25,
+        "total_expansions": 5078673.03125,
+        "repeated_expansions": 4301822.65625,
+        "repeated_work_ratio": 0.7823866562499999,
+        "median_decision_latency_us": 29.96225,
+        "deadline_overshoot_us": 369.09375
+      }
+    },
+    "E6: End-to-End Baseline Comparison": {
+      "comparison": "E6: End-to-End Baseline Comparison",
+      "protocol": "PROTOCOL_B",
+      "control_method": "BASELINE_BALANCE",
+      "treatment_method": "RBL_END_TO_END",
+      "n_pairs": 32,
+      "wins": 8,
+      "losses": 21,
+      "ties": 3,
+      "mean_cost_reduction": -261.0,
+      "median_cost_reduction": -99.0,
+      "std_cost_reduction": 377.9027012511332,
+      "mean_pct_cost_reduction": -2.14219030567157,
+      "bootstrap_95ci_mean_cost_reduction": [
+        -399.134375,
+        -138.74531250000007
+      ],
+      "control_mean_cost": 8113.65625,
+      "treatment_mean_cost": 8374.65625,
+      "control_telemetry_means": {
+        "resumed_actions_count": 0.0,
+        "accepted_from_resumed": 0.0,
+        "accepted_repairs": 56465.78125,
+        "interrupted_slices": 0.0,
+        "incompatible_checkpoints_discarded": 0.0,
+        "total_expansions": 13929121.375,
+        "repeated_expansions": 0.0,
+        "repeated_work_ratio": 0.0,
+        "median_decision_latency_us": 0.0,
+        "deadline_overshoot_us": 214.37499999994725
+      },
+      "treatment_telemetry_means": {
+        "resumed_actions_count": 7066.375,
+        "accepted_from_resumed": 0.15625,
+        "accepted_repairs": 14.875,
+        "interrupted_slices": 10544.6875,
+        "incompatible_checkpoints_discarded": 0.25,
+        "total_expansions": 5021093.625,
+        "repeated_expansions": 4249239.65625,
+        "repeated_work_ratio": 0.781909875,
+        "median_decision_latency_us": 30.302093750000004,
+        "deadline_overshoot_us": 0.0
+      }
+    }
+  },
+  "by_budget": {
+    "E2: Resumption Effect": {
+      "1.0": 19.875,
+      "5.0": 56.75,
+      "10.0": 50.75,
+      "30.0": 68.875
+    },
+    "E3a: Controller Scoring (Matched 10ms)": {
+      "1.0": 38.375,
+      "5.0": -53.25,
+      "10.0": -66.375,
+      "30.0": -23.75
+    },
+    "E3b: Adaptive Slice Allocation": {
+      "1.0": -61.125,
+      "5.0": -54.375,
+      "10.0": 10.5,
+      "30.0": -43.125
+    },
+    "E4: Selective Compatibility": {
+      "1.0": 0.0,
+      "5.0": 0.0,
+      "10.0": 0.0,
+      "30.0": 0.0
+    },
+    "E5: Progress Feature Ablation": {
+      "1.0": 0.0,
+      "5.0": 11.5,
+      "10.0": 5.75,
+      "30.0": -26.0
+    },
+    "E6: End-to-End Baseline Comparison": {
+      "1.0": -371.625,
+      "5.0": -271.5,
+      "10.0": -201.75,
+      "30.0": -199.125
+    }
+  },
+  "by_map": {
+    "E2: Resumption Effect": {
+      "warehouse-20-40-10-2-1": -22.875,
+      "random-64-64-20": 0.0,
+      "room-64-64-8": -6.125,
+      "ost003d": 225.25
+    },
+    "E3a: Controller Scoring (Matched 10ms)": {
+      "warehouse-20-40-10-2-1": 35.0,
+      "random-64-64-20": 4.5,
+      "room-64-64-8": -7.0,
+      "ost003d": -137.5
+    },
+    "E3b: Adaptive Slice Allocation": {
+      "warehouse-20-40-10-2-1": 0.0,
+      "random-64-64-20": 1.0,
+      "room-64-64-8": 14.5,
+      "ost003d": -163.625
+    },
+    "E4: Selective Compatibility": {
+      "warehouse-20-40-10-2-1": 0.0,
+      "random-64-64-20": 0.0,
+      "room-64-64-8": 0.0,
+      "ost003d": 0.0
+    },
+    "E5: Progress Feature Ablation": {
+      "warehouse-20-40-10-2-1": 0.0,
+      "random-64-64-20": 0.0,
+      "room-64-64-8": -0.625,
+      "ost003d": -8.125
+    },
+    "E6: End-to-End Baseline Comparison": {
+      "warehouse-20-40-10-2-1": -198.125,
+      "random-64-64-20": -5.5,
+      "room-64-64-8": -77.25,
+      "ost003d": -763.125
+    }
+  }
+}
