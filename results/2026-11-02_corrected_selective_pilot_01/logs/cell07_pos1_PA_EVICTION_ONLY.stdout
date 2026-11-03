@@ -1,0 +1,16 @@
+--------------------------------------------------------
+Policy:                PA_EVICTION_ONLY
+Initial Cost:          4438
+Cost at Deadline:      4287 (Reduction: 151)
+Final Cost:            4287 (Reduction: 151)
+Solve Time (s):        4.999669 (Overshoot: 0.000000 us)
+Total Repair Attempts: 18442 (Fresh: 14933, Resumed: 3509)
+Interruptions:         3522 (With Completed Paths: 3521)
+Accepted Repairs:      16
+PA Attempts:           0
+PA Positive Opps:      0
+PA Committed:          0
+PA Total Gain:         0
+Incumbent Version:     17
+Plan Valid:            YES
+--------------------------------------------------------
