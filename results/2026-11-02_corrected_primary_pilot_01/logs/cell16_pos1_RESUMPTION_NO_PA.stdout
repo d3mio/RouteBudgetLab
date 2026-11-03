@@ -1,0 +1,16 @@
+--------------------------------------------------------
+Policy:                RESUMPTION_NO_PA
+Initial Cost:          5375
+Cost at Deadline:      5217 (Reduction: 158)
+Final Cost:            5217 (Reduction: 158)
+Solve Time (s):        1.000512 (Overshoot: 512.000000 us)
+Total Repair Attempts: 2480 (Fresh: 980, Resumed: 1500)
+Interruptions:         1510 (With Completed Paths: 1508)
+Accepted Repairs:      9
+PA Attempts:           0
+PA Positive Opps:      0
+PA Committed:          0
+PA Total Gain:         0
+Incumbent Version:     10
+Plan Valid:            YES
+--------------------------------------------------------
