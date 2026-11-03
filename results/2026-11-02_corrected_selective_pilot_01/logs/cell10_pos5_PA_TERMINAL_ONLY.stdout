@@ -1,0 +1,16 @@
+--------------------------------------------------------
+Policy:                PA_TERMINAL_ONLY
+Initial Cost:          2205
+Cost at Deadline:      2135 (Reduction: 70)
+Final Cost:            2135 (Reduction: 70)
+Solve Time (s):        4.987106 (Overshoot: 0.000000 us)
+Total Repair Attempts: 20998 (Fresh: 19992, Resumed: 1006)
+Interruptions:         1007 (With Completed Paths: 1007)
+Accepted Repairs:      6
+PA Attempts:           0
+PA Positive Opps:      0
+PA Committed:          0
+PA Total Gain:         0
+Incumbent Version:     7
+Plan Valid:            YES
+--------------------------------------------------------
