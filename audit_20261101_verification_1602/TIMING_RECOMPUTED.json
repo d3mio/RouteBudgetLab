@@ -1,0 +1,44 @@
+{
+  "DISCARD_NO_PA": {
+    "runs": 48,
+    "attempts": 0,
+    "total_pa_us": 0.0,
+    "mean_per_attempt_us": 0,
+    "median_of_per_run_medians_us": 0.0,
+    "total_budget_s": 144.0
+  },
+  "EXACT_PARTIAL_ACCEPTANCE": {
+    "runs": 48,
+    "attempts": 203260,
+    "total_pa_us": 15110769.605,
+    "mean_per_attempt_us": 74.34207224736791,
+    "median_of_per_run_medians_us": 62.187,
+    "total_budget_s": 144.0
+  },
+  "GREEDY_PARTIAL_ACCEPTANCE": {
+    "runs": 48,
+    "attempts": 204827,
+    "total_pa_us": 15192922.135,
+    "mean_per_attempt_us": 74.17441125925781,
+    "median_of_per_run_medians_us": 61.8955,
+    "total_budget_s": 144.0
+  },
+  "RESUMPTION_NO_PA": {
+    "runs": 48,
+    "attempts": 0,
+    "total_pa_us": 0.0,
+    "mean_per_attempt_us": 0,
+    "median_of_per_run_medians_us": 0.0,
+    "total_budget_s": 144.0
+  },
+  "selective_filtered": {
+    "filter_average_ns": 14.31210128328284,
+    "extraction_average_us": 2.6992843973989507,
+    "prep_average_us": 2.7135964986822336,
+    "pa_total_average_us": 4.066438883962659,
+    "total_pa_s": 0.660373409,
+    "per_run_pa_s": 0.02063666903125,
+    "extraction_total_s": 0.438352989,
+    "total_planning_budget_s": 96
+  }
+}

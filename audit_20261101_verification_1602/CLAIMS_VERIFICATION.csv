@@ -1,0 +1,61 @@
+claim_id,status,severity,claim,evidence,finding
+C01,VERIFIED,Info,Reported short commit IDs resolve,provenance.log; commit-identities.log,Three full hashes in AUDIT_REPORT.md
+C02,CONTRADICTED,High,Preservation report prints correct full 07973d0 hash,docs/selective_recovery_audit_and_preservation.md:8; provenance.log,Actual suffix is 48cc473131f2854197bbf3e99875374ae
+C03,UNVERIFIED,High,Exact historical executable/source/configuration attribution,results/partial_acceptance_pilot/pilot_manifest.json:5; RAW_INTEGRITY.json,Historical dirty tree; selective raw lacks build/source hashes
+C04,VERIFIED,Info,Completion solver source equivalent to pre-audit source,completion-source-diff.log; completion-raw-diff.log,No source/build/vendor or raw pilot changes; analysis/test changes only
+C05,VERIFIED,Info,Two distinct 192-run designs exist,recompute-v2.log; TIMING_RECOMPUTED.json,Historical 48 cells x4; selective 32 cells x6
+C06,VERIFIED,Info,Selective raw pairing is complete,RAW_INTEGRITY.json; PAIRED_RAW_VALUES.csv,192 individual JSON files;32 complete cells;no duplicate cells;aggregate equal
+C07,VERIFIED,Info,All saved final plans independently valid with matching costs,independent_validation.json,Fresh rbl_validate passes 192/192
+C08,VERIFIED,Info,Eight shared current initial fixtures valid and hashed,initial_fixture_converted_validation.json,Converted internal index format without changing routes;8/8 pass
+C09,UNVERIFIED,Medium,Historical per-run initial bytes and no background contention established,scripts/run_selective_recovery_pilot.py:111; RAW_INTEGRITY.json,Shared paths but no run-specific input hash or process monitoring
+C10,CONTRADICTED,High,Original raw JSON manifest verifies saved JSON,original_manifest_check.csv; scripts/run_selective_recovery_pilot.py:184,192/192 JSON hashes mismatch because hashing precedes rewrite;192 path hashes match
+C11,VERIFIED,Info,U uses current incumbent and checked positive gains,src/engine/rbl_resumable_engine.cpp:1017; src/engine/rbl_partial_acceptance.cpp:26,Checked subtraction/addition fails closed on overflow
+C12,VERIFIED,Info,U zero exits before expensive graph and pairwise analysis,src/engine/rbl_resumable_engine.cpp:1049,Extraction and route checks still precede filter
+C13,VERIFIED,Info,Negative dependencies retained and cycles handled,src/engine/rbl_partial_acceptance.cpp:268; tests/selective_recovery_tests.cpp:147,Closure includes negative members;cycles selected only if beneficial and feasible
+C14,VERIFIED,Info,Actual selective online selector is greedy,src/profiler/profile_partial_acceptance.cpp:275; raw JSON partial_acceptance_policy,128 recovery-enabled runs report GREEDY_DEPENDENCY;Dinic is alternative
+C15,VERIFIED,Info,Replacement conflicts rejected before closure,src/engine/rbl_resumable_engine.cpp:1069,Entire colliding input rejected;does not optimize among mutually conflicting alternatives
+C16,VERIFIED,Info,Ordinary interruptions retain resumable prefixes,src/engine/rbl_resumable_engine.cpp:483; src/engine/rbl_resumable_engine.cpp:630,Unfinished low-level agent restarts;not OPEN/CLOSED frontier restoration
+C17,VERIFIED,Info,Victim predictor matches supported store policy,src/engine/rbl_checkpoint.hpp:166; src/engine/rbl_checkpoint.hpp:204,Reusable slots first;oldest ID for supported K<=2
+C18,CONTRADICTED,Medium,Every capacity eviction invokes recovery when victim profitable,src/engine/rbl_resumable_engine.cpp:473,Incoming r_done>0 gates hook;zero-prefix incoming checkpoint skips it
+C19,VERIFIED,Info,Failed normal eviction recovery still performs original save,src/engine/rbl_resumable_engine.cpp:478; tests/selective_recovery_tests.cpp:847,Normal return path continues save regardless of hook result
+C20,VERIFIED,Info,Recovery final validation independent of selector,src/engine/rbl_resumable_engine.cpp:1165; src/engine/rbl_partial_acceptance.cpp:136,Complete occupancy-based grid validation plus independent CLI revalidation
+C21,CONTRADICTED,High,All incumbent stored costs remain authoritative through commits,probe-release.log; probe-asan.log; src/engine/rbl_resumable_engine.cpp:69; src/engine/rbl_resumable_engine.cpp:1216,Valid padding produces stored/arrival mismatch before and after successful commit
+C22,UNVERIFIED,High,All failures atomically preserve reservations paths costs versions caches,src/engine/rbl_resumable_engine.cpp:1205; TEST_COVERAGE.md,No allocation-failure rollback;cost counterexample;normal validation failures preserve state
+C23,VERIFIED,Info,Terminal reevaluates each checkpoint against latest incumbent,src/engine/rbl_resumable_engine.cpp:1310,Fresh extraction/gains/graph per checkpoint
+C24,CONTRADICTED,Medium,Terminal checkpoints ordered by descending gain,docs/selective_recovery_technical_report.md:80; src/engine/rbl_resumable_engine.cpp:1295,Actual ordering ascending checkpoint_id FIFO
+C25,VERIFIED,Info,Terminal reserve control uses same cutoff without recovery,src/profiler/profile_partial_acceptance.cpp:308; src/profiler/profile_partial_acceptance.cpp:381,Same 2ms cutoff calculation;cooperative timing not exact boundary
+C26,CONTRADICTED,High,Declared solve time includes return and all finalization,src/profiler/profile_partial_acceptance.cpp:398; src/profiler/profile_partial_acceptance.cpp:413,Final validation serialization telemetry output and teardown outside timer
+C27,UNVERIFIED,High,Exact best solution by deadline captured for every commit path,src/profiler/profile_partial_acceptance.cpp:369; src/profiler/profile_partial_acceptance.cpp:387,Eviction commits not individually recorded;terminal commits grouped;can under-credit
+C28,VERIFIED,Info,Recorded deadline quality excludes recorded late trajectory points,src/profiler/profile_partial_acceptance.cpp:403; RAW_INTEGRITY.json,All 192 costs reconstruct and equal final cost;not proof of unrecorded publication times
+C29,CONTRADICTED,High,2ms reserve guarantees hard deadline compliance,src/engine/rbl_resumable_engine.cpp:1197; docs/selective_recovery_analysis.md:27,No publication completion bound or preemptive checks;no reserve calibration artifact
+C30,CONTRADICTED,High,All 192 runs had zero overshoot,DEADLINE_OVERRUNS.csv; docs/correction_ledger.md:19,4/192 overruns;0/96 terminal-reserve group
+C31,VERIFIED,Info,Filtered W/T/L and mean reported correctly,RECOMPUTED_RESULTS.csv,0/28/4;mean13.5625;non-tie108.5;SD52.975915 n-1;SEM9.364907
+C32,CONTRADICTED,Medium,Reported Wilcoxon p=1 is computed two-sided result,scripts/analyze_selective_recovery.py:189; RECOMPUTED_RESULTS.csv,Hardcoded fallback for <5 nonzeros;exact two-sided=.125;no repository adjustment
+C33,VERIFIED,Info,Sign-test p=.125,RECOMPUTED_RESULTS.csv; recompute.py,"2*C(4,0)/16=.125 excluding28 ties"
+C34,CONTRADICTED,Medium,Four losses all at1s with listed per-cell values,docs/selective_recovery_analysis.md:71; PAIRED_RAW_VALUES.csv,Actual differences287 2 72 73;72 at5s
+C35,UNVERIFIED,Medium,16 groups are independent instances,scripts/analyze_selective_recovery.py:198; AUDIT_REPORT.md,8 map/scenario/scale instances;budgets related;4 layouts and2 maps
+C36,VERIFIED,Info,Every-policy funnel counters and cumulative gain,RECOVERY_EVENTS.json,32 runs:162396=160496+1900;1900=1724+176;176commits;3254gain
+C37,UNVERIFIED,Medium,All1724 residuals are proven infeasible/non-improving optimal closures,RECOVERY_EVENTS.json; scripts/analyze_selective_recovery.py:276,Only aggregate residual;greedy selector;no status event stream
+C38,VERIFIED,Info,Terminal counts reconcile,RECOVERY_EVENTS.json,64calls;23examined=10+13;22skips=10+12;0commits
+C39,UNVERIFIED,Medium,One terminal Upositive had no feasible improving subset,RECOVERY_EVENTS.json; src/engine/rbl_resumable_engine.cpp:1314,No event reason or exact subset oracle recorded;zero commits only established
+C40,VERIFIED,Info,Zero recorded eviction-recovery attempts,RECOVERY_EVENTS.json,64eviction-enabled runs;not direct exported capacity-eviction counter
+C41,CONTRADICTED,Medium,No evictions or discards of any kind occurred,RECOVERY_EVENTS.json; src/profiler/profile_partial_acceptance.cpp:183,Thousands of stagnation discards;distinct from capacity eviction
+C42,VERIFIED,Info,Filter timing arithmetic yields14.3ns,TIMING_RECOMPUTED.json,2324.228us/162396=14.3121ns;not calibrated single-call latency
+C43,CONTRADICTED,Medium,Filter was measured with one batched timer,src/engine/rbl_resumable_engine.cpp:1031; clock-probe.log,Each invocation timed then accumulated;clock quantization ~41.67ns
+C44,VERIFIED,Info,Preparation timing is about2.71us and extraction total about.44s,TIMING_RECOMPUTED.json,2.713596us prep;.438353s extraction across32runs
+C45,CONTRADICTED,Medium,2.71us measures full recovery overhead and .44s is CPU time,TIMING_RECOMPUTED.json; src/engine/rbl_resumable_engine.cpp:888,Total PA wrapper .660373s/4.066439us per evaluation;steady wall clock
+C46,UNVERIFIED,High,95.6percent comparable overhead reduction,TIMING_RECOMPUTED.json; AUDIT_REPORT.md,Historical62.187 is median of full-pipeline run medians vs mean prep;different workload/selector/build provenance
+C47,VERIFIED,Info,Mean filtered iteration deficit about61,RECOMPUTED_RESULTS.csv,61.4375per run;1966total;not61total
+C48,UNVERIFIED,Medium,Recovery overhead caused all four losses,PAIRED_RAW_VALUES.csv; RECOVERY_EVENTS.json,One loss has more iterations;total expansions increased;trajectory and timing confounds
+C49,VERIFIED,Info,Current Release and actual ASan UBSan suites pass,test-release.log; test-asan.log; build-flags.log; sanitizer-symbols.log,10/10 each;explicit instrumentation;no runtime diagnostics
+C50,CONTRADICTED,High,Documented ENABLE_SANITIZERS option enables sanitizers,unsupported-sanitizer-option.log; README.md:183,Unused CMake option;explicit flags required
+C51,VERIFIED,Info,Custom Release assertions remain active,assertion-expected-failure.log; assertion-compile.log,Actual macro copied to audit harness;O3 DNDEBUG intentional failure exit17
+C52,CONTRADICTED,High,22 functions fully cover claimed22requirements,TEST_COVERAGE.md; probe-release.log,Vacuous conflict test;entry-only deadline tests;aliased rollback;enum-only telemetry test
+C53,UNVERIFIED,Medium,Historical completion sanitizer execution proven by retained logs,logs/audit_asan_test.log; old-log-history.log,Existing named audit logs are October4-suite runs;fresh current tests independently pass
+C54,VERIFIED,Info,Offline43166 snapshot and negative selection counts,OFFLINE_RECOMPUTED.json,43166;2673any-negative;8selected-negative;155extra gain recorded
+C55,UNVERIFIED,Low,Origin of43163 discrepancy established,docs/correction_ledger.md item10; docs/selective_recovery_audit_and_preservation.md:43,Conflicting explanations;raw count verifies total not origin
+C56,CONTRADICTED,Medium,Discrete collision checks establish continuous kinematic safety,src/engine/rbl_partial_acceptance.cpp:43; AUDIT_REPORT.md,Grid waits/moves/collisions only;no continuous dynamics
+C57,CONTRADICTED,Medium,Pilot definitively proves general absence of recovery benefit,docs/decisions.md:290; AUDIT_REPORT.md,No observed improvement on limited exposed pilot;not general equivalence proof
+C58,UNVERIFIED,Medium,Broad prior-art exclusivity or publication promise,docs/selective_recovery_technical_report.md:54,Not established by local code/raw artifacts;no novelty percentage assigned
+C59,VERIFIED,Info,Tracked source and historical results preserved,final-preservation.log; EVIDENCE_SHA256.txt,Only new audit directory added;pre-existing audit not used or modified
+C60,CONTRADICTED,Low,Exactly balanced32cell Latin square eliminates order bias,RAW_INTEGRITY.json; scripts/run_selective_recovery_pilot.py:99,32not divisible6;shift frequencies6 6 5 5 5 5;cannot eliminate OS/thermal effects
