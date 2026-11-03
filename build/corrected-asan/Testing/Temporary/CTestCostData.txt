@@ -1,0 +1,14 @@
+validator_unit_tests 6 0.107999
+real_solver_output_is_valid 6 0.0078684
+real_solver_output_misread_as_xy_is_rejected 6 0.01337
+experiment_e1_resumption_tests 5 0.129825
+experiment_e4_compatibility_tests 6 0.0949892
+estimator_unit_tests 6 0.0501273
+controller_unit_tests 6 0.390364
+partial_prefix_recovery_tests 6 0.0843221
+partial_acceptance_tests 6 0.10232
+selective_recovery_tests 6 0.0849596
+cost_transaction_tests 6 0.022374
+release_harness_intentional_failure 6 0.0133623
+recovery_correctness_tests 6 0.893218
+---
