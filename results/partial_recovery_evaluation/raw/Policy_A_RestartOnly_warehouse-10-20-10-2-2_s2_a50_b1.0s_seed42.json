@@ -1,0 +1,92 @@
+{
+  "map_path": "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/data/validation/maps/warehouse-10-20-10-2-2.map",
+  "scen_path": "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/data/validation/scenarios/warehouse-10-20-10-2-2-random-2.scen",
+  "map_name": "warehouse-10-20-10-2-2.map",
+  "scenario_name": "warehouse-10-20-10-2-2-random-2.scen",
+  "agent_count": 50,
+  "budget_s": 1.0,
+  "seed": 42,
+  "policy": "SCORE_BASED_ADAPTIVE",
+  "estimator_mode": "RIDGE_REGRESSION",
+  "validation_policy": "discard_on_change",
+  "timing_protocol": "refinement",
+  "initial_plan_source": "LOADED_FROM_FILE",
+  "initial_plan_found": true,
+  "final_solution_valid": true,
+  "validation_error": "",
+  "initial_cost": 4799,
+  "final_cost": 4621,
+  "total_improvement": 178,
+  "time_of_last_accepted_commit_s": 0.227551,
+  "total_solve_time_s": 0.997586,
+  "initial_planning_time_s": 0.0,
+  "initial_validation_time_s": 0.000172,
+  "total_active_search_time_s": 0.021788,
+  "total_decision_time_s": 0.161135,
+  "deadline_overshoot_s": 0.0,
+  "total_decisions": 8401,
+  "fresh_actions_count": 8310,
+  "resumed_actions_count": 90,
+  "accepted_repairs": 6,
+  "accepted_from_resumed": 0,
+  "accepted_from_fresh": 6,
+  "non_improving_repairs": 8280,
+  "interrupted_slices": 114,
+  "interrupted_with_nonempty_prefix": 99,
+  "interrupted_with_empty_prefix": 15,
+  "incompatible_checkpoints_discarded": 0,
+  "partial_recovery_count": 0,
+  "total_salvaged_prefix_agents": 0,
+  "stagnant_checkpoints_evicted": 23,
+  "late_commits_rejected": 0,
+  "fallback_decisions_count": 8396,
+  "total_expansions": 45163,
+  "repeated_expansions": 36368,
+  "repeated_work_ratio": 0.805261,
+  "fixed_bookkeeping_memory_bytes": 488,
+  "peak_payload_memory_bytes": 11692,
+  "peak_checkpoint_memory_bytes": 12180,
+  "median_decision_latency_us": 18.875,
+  "p95_decision_latency_us": 26.375,
+  "max_decision_latency_us": 55.5,
+  "slice_durations_selected_count": {
+    "2ms": 154,
+    "10ms": 8245,
+    "50ms": 1
+  },
+  "anytime_cost_trajectory": [
+    {
+      "timestamp_s": 0.000172,
+      "cost": 4799
+    },
+    {
+      "timestamp_s": 0.078882,
+      "cost": 4790
+    },
+    {
+      "timestamp_s": 0.103154,
+      "cost": 4775
+    },
+    {
+      "timestamp_s": 0.127321,
+      "cost": 4740
+    },
+    {
+      "timestamp_s": 0.142436,
+      "cost": 4708
+    },
+    {
+      "timestamp_s": 0.182477,
+      "cost": 4623
+    },
+    {
+      "timestamp_s": 0.227551,
+      "cost": 4621
+    }
+  ],
+  "run_key": "Policy_A_RestartOnly_warehouse-10-20-10-2-2_s2_a50_b1.0s_seed42",
+  "policy_label": "Policy_A_RestartOnly",
+  "independent_validation_passed": true,
+  "independent_validation_error": "",
+  "host_runtime_s": 1.0516180992126465
+}

@@ -1,0 +1,121 @@
+{
+  "map_path": "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/data/validation/maps/random-64-64-10.map",
+  "scen_path": "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/data/validation/scenarios/random-64-64-10-random-1.scen",
+  "map_name": "random-64-64-10.map",
+  "scenario_name": "random-64-64-10-random-1.scen",
+  "agent_count": 50,
+  "budget_s": 1.0,
+  "seed": 42,
+  "policy": "SCORE_BASED_ADAPTIVE",
+  "estimator_mode": "RIDGE_REGRESSION",
+  "validation_policy": "partial_prefix",
+  "timing_protocol": "refinement",
+  "initial_plan_source": "LOADED_FROM_FILE",
+  "initial_plan_found": true,
+  "final_solution_valid": true,
+  "validation_error": "",
+  "initial_cost": 2213,
+  "final_cost": 2082,
+  "total_improvement": 131,
+  "time_of_last_accepted_commit_s": 0.276316,
+  "total_solve_time_s": 0.997512,
+  "initial_planning_time_s": 0.0,
+  "initial_validation_time_s": 7.4e-05,
+  "total_active_search_time_s": 0.00145,
+  "total_decision_time_s": 0.236185,
+  "deadline_overshoot_s": 0.0,
+  "total_decisions": 16947,
+  "fresh_actions_count": 16939,
+  "resumed_actions_count": 7,
+  "accepted_repairs": 13,
+  "accepted_from_resumed": 1,
+  "accepted_from_fresh": 12,
+  "non_improving_repairs": 16926,
+  "interrupted_slices": 7,
+  "interrupted_with_nonempty_prefix": 7,
+  "interrupted_with_empty_prefix": 0,
+  "incompatible_checkpoints_discarded": 0,
+  "partial_recovery_count": 0,
+  "total_salvaged_prefix_agents": 0,
+  "stagnant_checkpoints_evicted": 0,
+  "late_commits_rejected": 0,
+  "fallback_decisions_count": 16940,
+  "total_expansions": 2882,
+  "repeated_expansions": 988,
+  "repeated_work_ratio": 0.342817,
+  "fixed_bookkeeping_memory_bytes": 488,
+  "peak_payload_memory_bytes": 6204,
+  "peak_checkpoint_memory_bytes": 6692,
+  "median_decision_latency_us": 13.75,
+  "p95_decision_latency_us": 17.708,
+  "max_decision_latency_us": 76.25,
+  "slice_durations_selected_count": {
+    "2ms": 156,
+    "10ms": 16786,
+    "20ms": 1,
+    "50ms": 3
+  },
+  "anytime_cost_trajectory": [
+    {
+      "timestamp_s": 7.4e-05,
+      "cost": 2213
+    },
+    {
+      "timestamp_s": 0.001453,
+      "cost": 2211
+    },
+    {
+      "timestamp_s": 0.004915,
+      "cost": 2209
+    },
+    {
+      "timestamp_s": 0.005807,
+      "cost": 2202
+    },
+    {
+      "timestamp_s": 0.031444,
+      "cost": 2199
+    },
+    {
+      "timestamp_s": 0.032049,
+      "cost": 2198
+    },
+    {
+      "timestamp_s": 0.03385,
+      "cost": 2197
+    },
+    {
+      "timestamp_s": 0.038211,
+      "cost": 2168
+    },
+    {
+      "timestamp_s": 0.062352,
+      "cost": 2166
+    },
+    {
+      "timestamp_s": 0.068721,
+      "cost": 2163
+    },
+    {
+      "timestamp_s": 0.074311,
+      "cost": 2131
+    },
+    {
+      "timestamp_s": 0.258428,
+      "cost": 2120
+    },
+    {
+      "timestamp_s": 0.262296,
+      "cost": 2091
+    },
+    {
+      "timestamp_s": 0.276316,
+      "cost": 2082
+    }
+  ],
+  "run_key": "Policy_C_PartialPrefix_random-64-64-10_s1_a50_b1.0s_seed42",
+  "policy_label": "Policy_C_PartialPrefix",
+  "independent_validation_passed": true,
+  "independent_validation_error": "",
+  "host_runtime_s": 1.020644187927246
+}

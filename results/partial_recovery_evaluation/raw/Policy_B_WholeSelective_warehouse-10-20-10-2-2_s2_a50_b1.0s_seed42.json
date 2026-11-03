@@ -1,0 +1,92 @@
+{
+  "map_path": "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/data/validation/maps/warehouse-10-20-10-2-2.map",
+  "scen_path": "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/data/validation/scenarios/warehouse-10-20-10-2-2-random-2.scen",
+  "map_name": "warehouse-10-20-10-2-2.map",
+  "scenario_name": "warehouse-10-20-10-2-2-random-2.scen",
+  "agent_count": 50,
+  "budget_s": 1.0,
+  "seed": 42,
+  "policy": "SCORE_BASED_ADAPTIVE",
+  "estimator_mode": "RIDGE_REGRESSION",
+  "validation_policy": "selective",
+  "timing_protocol": "refinement",
+  "initial_plan_source": "LOADED_FROM_FILE",
+  "initial_plan_found": true,
+  "final_solution_valid": true,
+  "validation_error": "",
+  "initial_cost": 4799,
+  "final_cost": 4621,
+  "total_improvement": 178,
+  "time_of_last_accepted_commit_s": 0.226336,
+  "total_solve_time_s": 0.997528,
+  "initial_planning_time_s": 0.0,
+  "initial_validation_time_s": 0.000173,
+  "total_active_search_time_s": 0.021606,
+  "total_decision_time_s": 0.159618,
+  "deadline_overshoot_s": 0.0,
+  "total_decisions": 8415,
+  "fresh_actions_count": 8326,
+  "resumed_actions_count": 88,
+  "accepted_repairs": 6,
+  "accepted_from_resumed": 0,
+  "accepted_from_fresh": 6,
+  "non_improving_repairs": 8296,
+  "interrupted_slices": 112,
+  "interrupted_with_nonempty_prefix": 97,
+  "interrupted_with_empty_prefix": 15,
+  "incompatible_checkpoints_discarded": 0,
+  "partial_recovery_count": 0,
+  "total_salvaged_prefix_agents": 0,
+  "stagnant_checkpoints_evicted": 23,
+  "late_commits_rejected": 0,
+  "fallback_decisions_count": 8410,
+  "total_expansions": 44761,
+  "repeated_expansions": 35932,
+  "repeated_work_ratio": 0.802752,
+  "fixed_bookkeeping_memory_bytes": 488,
+  "peak_payload_memory_bytes": 11692,
+  "peak_checkpoint_memory_bytes": 12180,
+  "median_decision_latency_us": 18.667,
+  "p95_decision_latency_us": 26.0,
+  "max_decision_latency_us": 40.875,
+  "slice_durations_selected_count": {
+    "2ms": 154,
+    "10ms": 8259,
+    "50ms": 1
+  },
+  "anytime_cost_trajectory": [
+    {
+      "timestamp_s": 0.000173,
+      "cost": 4799
+    },
+    {
+      "timestamp_s": 0.078089,
+      "cost": 4790
+    },
+    {
+      "timestamp_s": 0.102235,
+      "cost": 4775
+    },
+    {
+      "timestamp_s": 0.126405,
+      "cost": 4740
+    },
+    {
+      "timestamp_s": 0.141507,
+      "cost": 4708
+    },
+    {
+      "timestamp_s": 0.181426,
+      "cost": 4623
+    },
+    {
+      "timestamp_s": 0.226336,
+      "cost": 4621
+    }
+  ],
+  "run_key": "Policy_B_WholeSelective_warehouse-10-20-10-2-2_s2_a50_b1.0s_seed42",
+  "policy_label": "Policy_B_WholeSelective",
+  "independent_validation_passed": true,
+  "independent_validation_error": "",
+  "host_runtime_s": 1.05186128616333
+}

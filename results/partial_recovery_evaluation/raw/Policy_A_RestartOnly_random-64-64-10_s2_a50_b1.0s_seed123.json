@@ -1,0 +1,89 @@
+{
+  "map_path": "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/data/validation/maps/random-64-64-10.map",
+  "scen_path": "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/data/validation/scenarios/random-64-64-10-random-2.scen",
+  "map_name": "random-64-64-10.map",
+  "scenario_name": "random-64-64-10-random-2.scen",
+  "agent_count": 50,
+  "budget_s": 1.0,
+  "seed": 123,
+  "policy": "SCORE_BASED_ADAPTIVE",
+  "estimator_mode": "RIDGE_REGRESSION",
+  "validation_policy": "discard_on_change",
+  "timing_protocol": "refinement",
+  "initial_plan_source": "LOADED_FROM_FILE",
+  "initial_plan_found": true,
+  "final_solution_valid": true,
+  "validation_error": "",
+  "initial_cost": 2176,
+  "final_cost": 2135,
+  "total_improvement": 41,
+  "time_of_last_accepted_commit_s": 0.568888,
+  "total_solve_time_s": 0.997526,
+  "initial_planning_time_s": 0.0,
+  "initial_validation_time_s": 7.5e-05,
+  "total_active_search_time_s": 0.001532,
+  "total_decision_time_s": 0.228361,
+  "deadline_overshoot_s": 0.0,
+  "total_decisions": 16070,
+  "fresh_actions_count": 16059,
+  "resumed_actions_count": 10,
+  "accepted_repairs": 5,
+  "accepted_from_resumed": 1,
+  "accepted_from_fresh": 4,
+  "non_improving_repairs": 16051,
+  "interrupted_slices": 13,
+  "interrupted_with_nonempty_prefix": 10,
+  "interrupted_with_empty_prefix": 3,
+  "incompatible_checkpoints_discarded": 0,
+  "partial_recovery_count": 0,
+  "total_salvaged_prefix_agents": 0,
+  "stagnant_checkpoints_evicted": 2,
+  "late_commits_rejected": 0,
+  "fallback_decisions_count": 16063,
+  "total_expansions": 3026,
+  "repeated_expansions": 1771,
+  "repeated_work_ratio": 0.585261,
+  "fixed_bookkeeping_memory_bytes": 488,
+  "peak_payload_memory_bytes": 5756,
+  "peak_checkpoint_memory_bytes": 6244,
+  "median_decision_latency_us": 14.041,
+  "p95_decision_latency_us": 17.792,
+  "max_decision_latency_us": 37.416,
+  "slice_durations_selected_count": {
+    "2ms": 144,
+    "10ms": 15922,
+    "20ms": 1,
+    "50ms": 2
+  },
+  "anytime_cost_trajectory": [
+    {
+      "timestamp_s": 7.5e-05,
+      "cost": 2176
+    },
+    {
+      "timestamp_s": 0.001117,
+      "cost": 2172
+    },
+    {
+      "timestamp_s": 0.011081,
+      "cost": 2171
+    },
+    {
+      "timestamp_s": 0.022828,
+      "cost": 2145
+    },
+    {
+      "timestamp_s": 0.500089,
+      "cost": 2139
+    },
+    {
+      "timestamp_s": 0.568888,
+      "cost": 2135
+    }
+  ],
+  "run_key": "Policy_A_RestartOnly_random-64-64-10_s2_a50_b1.0s_seed123",
+  "policy_label": "Policy_A_RestartOnly",
+  "independent_validation_passed": true,
+  "independent_validation_error": "",
+  "host_runtime_s": 1.0212090015411377
+}
