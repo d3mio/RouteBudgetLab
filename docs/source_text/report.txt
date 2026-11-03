@@ -1,0 +1,2079 @@
+                             6SENG010C Software Engineering Final Project Proposal | RouteBudget Lab
+
+INFORMATICS INSTITUTE OF TECHNOLOGY (IIT)
+IN AFFILIATION WITH THE UNIVERSITY OF WESTMINSTER, UK
+BEng (Hons) Software Engineering — Level 6 Final Year Project (40 Credits / 400 Indicative Learning Hours)
+Module Code: 6SENG010C / 6SENG010W • Academic Year 2026/27
+
+PROJECT PROPOSAL (FORMATIVE SUBMISSION) — RESEARCH & DESIGN EVIDENCE
+REPORT
+
+Constraint-Validated Resumption of Interrupted Repairs for
+Deadline-Aware Multi-Agent Path Finding
+Proposed Software Engineering Research Artefact: RouteBudget Lab
+
+ Project Metadata Field                     Specification & Submission Details
+
+ Student Name                               P. G. Disas Sethnada
+
+ IIT Student ID / UoW Student ID            20231323 / w2119964
+
+ Degree Programme                           BEng (Hons) Software Engineering (Full-Time)
+
+ Module Code & Title                        6SENG010C / 6SENG010W — Software Engineering Final Project
+
+ Project Supervisor                         Mr. Maninda Edirisooriya
+
+                                            RouteBudget Lab (Proposed C++17 Resumable MAPF-LNS Engine, Constraint Validator,
+ Proposed Software Product
+                                            Controller & 2D Replay Suite)
+
+                                            Automated Planning, Multi-Agent Path Finding (MAPF), Anytime Algorithms & Empirical
+ Core Research Domain
+                                            Software Systems
+
+                                            PP Formative Submission: 19 Oct 2026 | Planned Implementation & Evaluation: WP1–
+ Submission Stage & Planned Milestones      WP6 (Late Oct 2026 – 5 Apr 2027; Summative PP: 5 Nov 2026; IPD: 28 Jan 2027; Final
+                                            Submission: 5 Apr 2027; Viva: 19 Apr – 14 May 2027)
+
+
+
+  CURRENT PROJECT STATUS (19 OCTOBER 2026) & END-TO-END RESEARCH PROGRESSION
+  As of 19 October 2026, I am finalising the literature review, candidate research gap, technical design and evaluation
+  methodology. Implementation is the next phase and has not yet started. The architecture, controller formulation and
+  experimental procedures presented here are proposed designs. No prototype performance measurements or
+  experimental results are claimed in this submission.
+
+  End-to-End Research & Software Engineering Progression:
+    -> Problem & Evidence (Completed / Finalising): Interrupted MAPF-LNS repair searches discard partial search state
+  on timeout, whereas naive state reuse risks collision violations when external agent trajectories change across
+  iterations (8 core studies reviewed across Adaptive MAPF-LNS, Search Reuse, and Runtime Scheduling).
+    -> Candidate Research Gap & Aim (Finalising): Within the reviewed 2019–2026 literature, lack of an integrated
+  MAPF-LNS mechanism combining bounded repair checkpointing, conservative external-constraint validation, and
+  progress-informed resume-or-start control under a global wall-clock deadline; operationalised via SMART Objectives
+  O1–O6 and Research Questions RQ1–RQ3.
+    -> Proposed Requirements & Indicative Solution (Provisional Design): Stakeholder-mapped requirements (FR-01–FR-
+  07, NFR-01–NFR-04, DR-01, SR-01) and the proposed RouteBudget Lab architecture (4 C++17 modules, post-repair
+  collision validator, and offline 2D replay viewer).
+    -> Planned Methodology, Evaluation & Schedule (Next Phase — Not Yet Started): Design Science Research (DSR) with
+  planned Experiments E1–E6 on public Moving AI benchmarks across Work Packages WP1–WP6 (Late Oct 2026 – 5 Apr
+  2027), governed by an end-of-WP1 Go/No-Go feasibility gate.
+
+
+
+
+ P. G. Disas Sethnada (IIT: 20231323 | UoW: w2119964) • BEng (Hons) Software Engineering • Supervisor: Mr. Maninda Edirisooriya
+                            6SENG010C Software Engineering Final Project Proposal | RouteBudget Lab
+
+
+
+Executive Overview of Formative Evidence & Report Structure
+                                                      Research Preparation & Proposed Design Evidence
+ Core Evidence Component        Report Section                                                                  6SENG010C Criterion
+                                                      Provided
+
+                                                      Inventory of ten substantive prepared
+                                                      slides, indicative current-draft
+                                                      presentation timing, and assessment
+1. Current Presentation
+                                Section 2 (2.1–2.3)   mapping. Reference pages are                              Communication (10%)
+Slides & Alignment
+                                                      supplementary. Planned later
+                                                      presentation sections are supported
+                                                      by the relevant report evidence.
+
+                                                      Literature review questions (LRQ1–LRQ4), Boolean
+                                                                                                                Background &
+                                                      search strings, inclusion/exclusion criteria, thematic
+2. Literature Review Evidence   Section 3 (3.1–3.3)                                                             Evidence (10%)
+                                                      synthesis across 3 streams, and 8-study comparative
+                                                                                                                Referencing (5%)
+                                                      survey matrix.
+
+                                                      MAPF-LNS mathematical formulation, formal
+3. Research Problem &                                 problem statement, 7-dimension candidate gap              Problem & Goal (10%)
+                                Section 4 (4.1–4.7)
+Candidate Gap Analysis                                justification matrix, explicit novelty boundaries, aim,   Scope (10%)
+                                                      SMART objectives (O1–O6), and RQ1–RQ3.
+
+                                                      Candidate dataset evaluation & Moving AI leakage-         Initial Requirements
+4. Research & Technical                               safe split, technology alternatives trade-off analysis,   & Solution (20%)
+                                Section 5 (5.1–5.4)
+Investigations                                        proposed C++ checkpoint tuple C_i, end-of-                Feasibility & Risk
+                                                      WP1/WP4 feasibility gates, and risk register.             (10%)
+
+                                                      Design Science Research (DSR) and iterative C++
+                                                                                                                Methodology &
+5. Research & Development                             prototyping plan, Objective-to-Method-to-Planned-
+                                Section 6 (6.1–6.4)                                                             Development
+Methodology                                           Evidence matrix, planned Experiments E1–E6,
+                                                                                                                Approach (15%)
+                                                      evaluation metrics, and AI verification protocol.
+
+                                                      Stakeholder workflows, proposed requirements
+                                                                                                                Requirements &
+6. Proposed Designs,                                  (FR/NFR), consolidated 4-component specification,
+                                                                                                                Solution (20%)
+Requirements, Schedule &        Section 7 (7.1–7.7)   proposed architecture & flowchart (Figs 7.1–7.2),
+                                                                                                                Responsible Practice
+Governance                                            proposed Algorithm 1, planned WP1–WP6 schedule
+                                                                                                                (10%)
+                                                      (Fig 7.3), LESP/BCS governance, and references.
+
+
+
+
+ P. G. Disas Sethnada (IIT: 20231323 | UoW: w2119964) • BEng (Hons) Software Engineering • Supervisor: Mr. Maninda Edirisooriya
+                                               6SENG010C Software Engineering Final Project Proposal | RouteBudget Lab
+
+
+
+
+TABLE OF CONTENTS
+    Executive Overview of Formative Evidence & Report Structure ........................................................................................................... 2
+1. Executive Abstract and Domain Motivation ......................................................................................................................................4
+    1.1 Executive Abstract .................................................................................................................................................................................. 4
+    1.2 Domain Context and Industrial Significance ...................................................................................................................................... 4
+2. Current Project Proposal Presentation Slides ....................................................................................................................................5
+    2.1 Slide-by-Slide Inventory of Current Formative Presentation Deck................................................................................................. 5
+    2.2 Proposed Presentation Timing and Delivery Strategy (For Later Completed Deck) .................................................................... 6
+    2.3 Traceability to 6SENG010C Software Engineering Assessment Criteria ........................................................................................ 6
+3. Literature Review Evidence....................................................................................................................................................................7
+    3.1 Literature Review Research Questions, Search Strategy, and Screening Protocol ...................................................................... 7
+         Table 3.2: Literature Inclusion and Exclusion Criteria ........................................................................................................................................................ 8
+    3.2 Thematic Synthesis of Prior Art ............................................................................................................................................................ 8
+         Theme 1: Adaptive Neighbourhood and Seed Selection in Anytime MAPF-LNS ...................................................................................................... 8
+         Theme 2: Search-Information Reuse and Constraint-Aware Caching in MAPF ......................................................................................................... 9
+         Theme 3: Runtime Prediction and Computational Scheduling Under Deadlines ..................................................................................................... 9
+    3.3 Comprehensive Literature Survey Matrix ........................................................................................................................................ 10
+4. Research Problem and Gap Analysis................................................................................................................................................. 11
+    4.1 Classical One-Shot MAPF Formulation ............................................................................................................................................. 11
+    4.2 Anytime Large Neighbourhood Search (MAPF-LNS) ...................................................................................................................... 11
+    4.3 The Computational Problem: Interrupted Repairs vs. Evolving Constraints ............................................................................. 11
+    4.4 Candidate Research Gap Analysis and Proposed Contribution .................................................................................................... 12
+         Table 4.1: Seven-Dimension Candidate Research Gap Justification Matrix ............................................................................................................ 13
+    4.5 Explicit Novelty Boundaries (Distinguishing Prior Art from Proposed Work) ............................................................................ 13
+    4.6 Project Goal, Overarching Aim, and Measurable SMART Objectives (O1–O6).......................................................................... 14
+    4.7 Research Questions (RQ1–RQ3) and Falsifiable Hypotheses (H1–H3) ........................................................................................ 15
+5. Research and Technical Investigations............................................................................................................................................. 15
+    5.1 Candidate Dataset Comparison and Moving AI Benchmark Selection ....................................................................................... 15
+    5.2 Tools, Technology Alternatives Analysis, and Scope Justification ............................................................................................... 16
+         Appropriateness of Scope for a 40-Credit Level 6 Software Engineering Project ................................................................................................. 17
+    5.3 Technical Investigation of Low-Level Solver Checkpointing Granularities ................................................................................. 17
+    5.4 Provisional Technical Decisions, Feasibility Gates, and Risk Management ............................................................................... 18
+6. Research and Development Methodology ...................................................................................................................................... 19
+    6.1 Distinction Between Research Methodology, Software Development Lifecycle, and Methods ............................................ 19
+    6.2 Objective -> Research Method -> Planned Evidence Alignment Matrix ..................................................................................... 19
+    6.3 Planned Experimental Evaluation Protocol (Experiments E1–E6) and Baseline Controls ....................................................... 20
+    6.4 Planned Evaluation Metrics and Statistical Protocol ..................................................................................................................... 20
+7. Supporting Engineering Evidence: Requirements, Architecture, Schedule & Governance ................................................... 21
+    7.1 Stakeholders, User Interaction Workflows, and Proposed Initial Requirements ..................................................................... 21
+    7.2 Proposed Technical Specification of the Four Core Research Components ............................................................................... 23
+         Component 1: Proposed Resumable Repair Engine (Bounded Store K <= 2) ......................................................................................................... 23
+         Component 2: Proposed Conservative Constraint Validator & Safeguard Separation ........................................................................................ 23
+         Component 3: Proposed Lightweight Remaining-Work Estimator ............................................................................................................................. 23
+         Component 4: Proposed Overhead-Aware Resume-or-Start Controller Heuristic ............................................................................................... 24
+    7.3 Proposed System Architecture Diagrams and Runtime Controller Pseudocode....................................................................... 25
+    7.4 Planned Implementation and Evaluation Schedule ....................................................................................................................... 26
+    7.5 Responsible Project Considerations: LESP, Ethics, Cybersecurity, EDI, Sustainability & BCS Code ........................................ 28
+    7.6 Anticipated Contributions and Formative Conclusion ................................................................................................................... 29
+    7.7 References............................................................................................................................................................................................. 29
+
+
+
+
+  P. G. Disas Sethnada (IIT: 20231323 | UoW: w2119964) • BEng (Hons) Software Engineering • Supervisor: Mr. Maninda Edirisooriya
+                           6SENG010C Software Engineering Final Project Proposal | RouteBudget Lab
+
+
+1. Executive Abstract and Domain Motivation
+
+1.1 Executive Abstract
+As of 19 October 2026, I am finalising the literature review, candidate research gap, technical design and evaluation
+methodology. Implementation is the next phase and has not yet started. The architecture, controller formulation
+and experimental procedures presented here are proposed designs. No prototype performance measurements or
+experimental results are claimed in this submission. Anytime Multi-Agent Path Finding (MAPF) planners based on
+Large Neighbourhood Search (MAPF-LNS) iteratively improve an initial collision-free route plan by repeatedly
+destroying and replanning subsets of agent trajectories within a fixed wall-clock computation deadline. In congested
+grid environments such as automated fulfilment warehouses, individual repair searches frequently consume
+substantial computation and are interrupted by per-iteration time cutoffs before finding an improving path set.
+Existing anytime MAPF controllers reviewed in this study discard internal search progress upon interruption, losing
+expanded search nodes and already-routed sub-neighbourhood trajectories. However, naively saving and resuming
+an interrupted repair search across later LNS iterations is unsafe: if intervening accepted repairs modify the
+trajectories of external agents outside the saved neighbourhood, the dynamic space-time reservation table changes,
+which can invalidate the saved search state and introduce vertex or edge-swap collisions.
+In this project, I propose to investigate, design, implement, and empirically evaluate RouteBudget Lab, a standalone
+software engineering research artefact centred on a constraint-validated repair-resumption mechanism for
+deadline-aware anytime MAPF. The proposed architecture comprises four core components to be integrated into an
+established C++17 MAPF-LNS backbone: (1) a proposed Resumable Repair Engine designed to suspend, checkpoint,
+and restore a low-level Prioritized Planning / Safe Interval Path Planning (SIPP) repair solver within a bounded in-
+memory store (maximum K = 2 checkpoints); (2) a proposed Conservative Constraint Validator designed to test
+compatibility between a saved checkpoint's external spatio-temporal reservation footprint and the current
+incumbent plan, discarding any checkpoint whose compatibility cannot be conservatively verified; (3) a proposed
+Lightweight Remaining-Work Estimator that extracts internal search-progress features (expanded node count, open-
+list frontier size, sequential prefix progress, and heuristic delay gap) to predict expected accepted cost improvement
+and remaining active search time; and (4) a proposed Overhead-Aware Resume-or-Start Controller heuristic that
+arbitrates between resuming a validated checkpoint and initiating a fresh repair neighbourhood under the
+remaining wall-clock deadline while accounting for validation, restoration, initialisation, estimation, controller, and
+conditional checkpoint-saving overheads.
+Following Design Science Research (DSR) coupled with quantitative empirical algorithmics on public Moving AI
+MAPF benchmarks (50–100 agents across warehouse, random, maze, room, and city topologies), I plan to execute
+six controlled experiments (E1–E6) testing pause/resume equivalence, restart-only versus checkpoint-enabled
+repair, fixed round-robin versus adaptive resume-or-start control, conservative validation versus unconditional
+discard, progress-feature ablations, and end-to-end comparisons against published adaptive baselines (BALANCE,
+ADDRESS, TACKLE, and delay-based heuristics). Technical uncertainties regarding low-level C++ state-cloning
+overhead and constraint invalidation rates will be managed through a planned Gate 1 feasibility check at the
+completion of Work Package 1 (WP1, Mid November 2026) and a proposed macro-prefix checkpointing fallback.
+
+1.2 Domain Context and Industrial Significance
+Multi-Agent Path Finding (MAPF) is a core coordination problem in artificial intelligence, robotics, and real-time
+software systems engineering, requiring the computation of collision-free discrete-time trajectories for multiple
+autonomous agents navigating a shared graph from assigned start vertices to goal vertices (Stern et al., 2019; Li et
+al., 2021). In high-density industrial deployments—such as automated guided vehicle (AGV) fleets in e-commerce
+fulfilment centres, airport surface movement control, and multi-robot manufacturing cells—route planners operate
+under strict real-time dispatch deadlines (typically 1 to 30 seconds). Because computing optimal collision-free
+trajectories minimizing Sum of Costs or Total Delay is NP-hard (Yu and LaValle, 2013), optimal solvers such as
+Conflict-Based Search (CBS) rarely scale to 50–100+ agents within tight operational cutoffs.
+
+
+
+
+ P. G. Disas Sethnada (IIT: 20231323 | UoW: w2119964) • BEng (Hons) Software Engineering • Supervisor: Mr. Maninda Edirisooriya
+                           6SENG010C Software Engineering Final Project Proposal | RouteBudget Lab
+
+Consequently, practical systems rely on anytime MAPF-LNS planners (Li et al., 2021; Phan et al., 2024, 2025, 2026;
+Tan et al., 2025), which rapidly compute an initial feasible plan and dedicate the remaining wall-clock budget to
+iterative destroy-and-repair refinement. In this operational regime, every millisecond of wasted low-level search
+directly degrades the quality of the routes dispatched at the deadline, increasing fleet travel delay, energy
+consumption, and aisle congestion. Investigating whether interrupted repair searches can be safely validated and
+resumed rather than discarded addresses a concrete algorithmic and software systems bottleneck with direct
+relevance to both automated planning researchers and fleet simulation engineers.
+
+
+2. Current Project Proposal Presentation Slides
+This section records the ten substantive slides prepared for the current formative presentation. The inventory
+describes research preparation and proposed designs rather than completed implementation. Methodology,
+evaluation, responsible practice, schedule and risk evidence are provided in Sections 5–7 of this report. Reference
+pages may accompany the presentation and are supplementary to the ten-slide content inventory; no fixed total
+deck length is assumed.
+
+2.1 Slide-by-Slide Inventory of Current Formative Presentation Deck
+
+              Prepared Slide Title /
+   Slide #                                       Current Formative Content                                               Status
+              Topic
+
+
+              Constraint-Validated Resumption    Prepared draft: Student, programme, IDs,
+   Slide 1
+              of Interrupted Repairs for         supervisor, research focus, and formative status                      Prepared—
+              Deadline-Aware Multi-Agent Path                                                                         current draft
+                                                 note.
+              Finding
+
+              Background and Motivation:         Prepared draft: Classical one-shot MAPF formulation,
+                                                                                                                       Prepared—
+   Slide 2    Multi-Agent Path Finding Under     vertex/edge-swap conflict constraints, anytime MAPF-LNS loop,
+                                                                                                                      current draft
+              Deadlines                          and simulated 2D warehouse grid illustration.
+
+              Problem Statement: Interrupted     Prepared draft: 6-step interruption lifecycle diagram, Failure
+                                                                                                                       Prepared—
+   Slide 3    Repairs — Wasted Work or Unsafe    Mode A (wasted search work on restart), Failure Mode B (unsafe
+                                                                                                                      current draft
+              Reuse?                             reuse under mutated CAT), and formal problem statement.
+
+                                                 Prepared draft: Thematic synthesis across adaptive MAPF-LNS
+              Existing Research: Literature                                                                            Prepared—
+   Slide 4                                       (BALANCE, ADDRESS, TACKLE), search/heuristic reuse (X*, CAHC),
+              Review & Prior Art Comparison                                                                           current draft
+                                                 runtime scheduling (Run2Survive), and Tan et al. (2025).
+
+              Research Gap: Constraint-Valid     Prepared draft: Candidate research gap statement, explicit list of
+                                                                                                                       Prepared—
+   Slide 5    Reuse of Interrupted MAPF          established prior art not claimed as new, and domain-specific
+                                                                                                                      current draft
+              Repairs                            coupling analysis.
+
+                                                 Prepared draft: Overview of the 4 proposed components
+              Proposed Novelty: Constraint-
+                                                 (Resumable Repair Engine, Constraint Validator, Remaining-Work        Prepared—
+   Slide 6    Validated Resume-or-Start
+                                                 Estimator, Resume-or-Start Controller) and conceptual 400 ms         current draft
+              Controller
+                                                 walkthrough.
+
+                                                 Prepared draft: Overarching research aim, 8
+              Research Aim, Research Questions
+                                                 presentation objectives mapped to report                              Prepared—
+   Slide 7                                       SMART objectives O1–O6, and Research
+              & Measurable Objectives                                                                                 current draft
+                                                 Questions RQ1–RQ3.
+
+                                                 Prepared draft: Intended users, traceable functional (FR-01–FR-
+              Stakeholders, Traceable                                                                                  Prepared—
+   Slide 8                                       07) and non-functional (NFR-01–NFR-02) requirements table, and
+              Requirements & Scope Boundaries                                                                         current draft
+                                                 in-scope vs. out-of-scope boundaries.
+
+
+
+
+ P. G. Disas Sethnada (IIT: 20231323 | UoW: w2119964) • BEng (Hons) Software Engineering • Supervisor: Mr. Maninda Edirisooriya
+                               6SENG010C Software Engineering Final Project Proposal | RouteBudget Lab
+
+
+                 Prepared Slide Title /
+     Slide #                                        Current Formative Content                                             Status
+                 Topic
+
+                                                    Prepared draft: 11-block closed-loop architecture diagram,
+                 Proposed System Architecture:      decision branches (valid/invalid checkpoint, validated             Prepared—
+      Slide 9
+                 RouteBudget Lab                    improvement vs. preserve incumbent), and offline replay           current draft
+                                                    separation.
+
+                                                    Prepared draft: Controller decision rule, two-
+     Slide 10
+                 Controller Decision Rule &         stage constraint validation overview, and                          Prepared—
+                 Technology Stack Justification                                                                       current draft
+                                                    technology stack comparison table.
+
+
+
+2.2 Proposed Presentation Timing and Delivery Strategy
+•      Proposed pacing for the current ten-slide draft: title and status (0.5 minutes), background and problem (2
+       minutes), literature and candidate gap (2.5 minutes), proposed solution and objectives (2 minutes),
+       requirements and architecture (2 minutes), and controller formulation (2 minutes). Total indicative briefing
+       time: approximately 11 minutes. These are planning estimates rather than a record of a rehearsed
+       presentation.
+•      The later completed presentation will include methodology, evaluation design, responsible project
+       considerations, implementation schedule and risks. Its final slide sequence and timings will be established
+       when those sections are prepared.
+
+2.3 Traceability to 6SENG010C Software Engineering Assessment Criteria
+                                                                                                       Presentation Slide Coverage
+ 6SENG010C Assessment Criterion                       Weight      Report Section Coverage
+                                                                                                       (Prepared Draft vs. Planned)
+
+                                                                                                       Prepared draft: Slides
+1. Problem or Opportunity and Project Goal              10%       Sections 1.2, 4.1–4.3, 4.6           2, 3 and 7.
+
+                                                                                                       Prepared draft: Slides
+                                                                                                       2 and 4. Supporting
+2. Background and Evidence                              10%       Sections 3.1–3.3, 4.1                references are listed
+                                                                                                       in Section 7.7.
+
+                                                                                                       Prepared draft: Slides
+3. Initial Requirements and Indicative Solution         20%       Sections 5.2, 5.3, 7.1–7.3           6, 8, 9 and 10.
+
+                                                                                                       Planned later
+                                                                                                       presentation section.
+4. Methodology and Development Approach                 15%       Sections 6.1–6.4                     Current evidence:
+                                                                                                       Sections 6.1–6.4.
+
+                                                                                                       Planned later
+                                                                                                       presentation section.
+5. Project Plan Feasibility and Risk                    10%       Sections 5.4, 7.4                    Current evidence:
+                                                                                                       Sections 5.4 and 7.4.
+
+
+
+    P. G. Disas Sethnada (IIT: 20231323 | UoW: w2119964) • BEng (Hons) Software Engineering • Supervisor: Mr. Maninda Edirisooriya
+                               6SENG010C Software Engineering Final Project Proposal | RouteBudget Lab
+
+
+                                                                                                      Presentation Slide Coverage
+ 6SENG010C Assessment Criterion                       Weight      Report Section Coverage
+                                                                                                      (Prepared Draft vs. Planned)
+
+                                                                                                      Planned later
+                                                                                                      presentation section.
+ 6. Responsible Project Considerations                  10%       Section 7.5                         Current evidence:
+                                                                                                      Section 7.5.
+
+                                                                                                      Prepared draft: Slides
+                                                                                                      5 and 8. Additional
+ 7. Appropriateness of Scope                            10%       Sections 4.5, 5.2, 5.4              feasibility evidence:
+                                                                                                      Sections 5.2–5.4.
+
+                                                                                                      Prepared draft:
+                                                                                                      citations on Slide 4.
+ 8. Academic Practice and Referencing                    5%       Section 7.7, Tables 3.1–3.3         Full report
+                                                                                                      references: Section
+                                                                                                      7.7.
+
+                                                                                                      Prepared draft: Slides
+ 9. Communication of the Proposal                       10%       Section 2, Figures 7.1–7.3          1–10. Later sections
+                                                                                                      remain planned.
+
+
+
+
+3. Literature Review Evidence
+
+3.1 Literature Review Research Questions, Search Strategy, and Screening Protocol
+To ensure a systematic, evidence-led investigation rather than an ad-hoc collection of paper summaries, the
+literature review was guided by four dedicated Literature Review Questions (LRQs):
+•      LRQ1 (Adaptive Anytime MAPF-LNS): How do current state-of-the-art anytime MAPF-LNS planners select
+       destroy neighbourhoods and seed agents, and how do they handle low-level repair searches that are
+       interrupted by per-iteration time cutoffs?
+•      LRQ2 (Search & Heuristic Reuse Under Evolving Constraints): What mechanisms exist in MAPF for reusing
+       search trees or heuristic distance estimates across planning episodes when collision constraints change, and
+       why do they not directly resolve interrupted sequential LNS repair resumption?
+•      LRQ3 (Runtime Prediction & Deadline Scheduling): How have algorithm selection and survival-based runtime
+       scheduling been applied to anytime or timeout-bounded planning, and what assumptions do they make
+       regarding constraint stationarity?
+•      LRQ4 (Benchmarking & Overhead Accounting): What experimental protocols, benchmark suites, and wall-clock
+       accounting rules are required to evaluate adaptive MAPF-LNS controllers fairly against rule-based baselines?
+A structured search was executed across IEEE Xplore, ACM Digital Library, AAAI/IJCAI/ICAPS/SoCS proceedings,
+ScienceDirect (Artificial Intelligence), and arXiv preprints (cross-checked via DBLP and Google Scholar) using three
+Boolean query groups:
+
+
+
+
+    P. G. Disas Sethnada (IIT: 20231323 | UoW: w2119964) • BEng (Hons) Software Engineering • Supervisor: Mr. Maninda Edirisooriya
+                               6SENG010C Software Engineering Final Project Proposal | RouteBudget Lab
+
+
+                                                                                                   Primary Peer-Reviewed Works
+ Query Group & LRQ Link              Boolean Search String Applied
+                                                                                                   Selected
+
+                                                                                                   MAPF-LNS (Li et al., 2021, IJCAI);
+ Query Group 1 (Addresses LRQ1
+                                     ("Multi-Agent Path Finding" OR MAPF) AND ("Large              BALANCE (Phan et al., 2024, AAAI);
+ & LRQ4:
+                                     Neighborhood Search" OR LNS) AND (adaptive OR bandit          ADDRESS (Phan et al., 2025, AAAI);
+ Adaptive MAPF-LNS & Fair
+                                     OR counterfactual OR heuristic)                               TACKLE (Phan et al., 2026, AAAI);
+ Benchmarking)
+                                                                                                   Tan et al. (2025, SoCS).
+
+ Query Group 2 (Addresses LRQ2:      ("Multi-Agent Path Finding" OR MAPF) AND ("search reuse"      X* (Vedder & Biswas, 2021, Artif.
+ Search Reuse & Constraint           OR "tree transformation" OR "X*" OR "heuristic caching"       Intell.); CAHC (To, Nguyen & Pham,
+ Caching)                            OR CAHC OR incremental)                                       2025, arXiv:2512.12243).
+
+                                                                                                   Kaduri, Boyarski & Stern (2020,
+ Query Group 3 (Addresses LRQ3:      ("algorithm selection" OR "algorithm scheduling" OR           ICAPS); Run2Survive (Tornede et al.,
+ Runtime Prediction &                "anytime planning") AND ("survival analysis" OR "censored"    2020, ACML);
+ Scheduling)                         OR "resume" OR "checkpoint")                                  RunAndSchedule2Survive (Margraf
+                                                                                                   et al., 2025, ACM TELO).
+
+
+
+Table 3.2: Literature Inclusion and Exclusion Criteria
+ Criterion Dimension             Inclusion Criteria (Included in Synthesis)           Exclusion Criteria (Excluded from Synthesis)
+
+                                 Peer-reviewed journal/conference papers (IJCAI,
+                                                                                      Non-peer-reviewed blog posts, unverified
+                                 AAAI, ICAPS, SoCS, AIJ, ACM TELO) or verifiable
+ Publication Venue & Quality                                                          student theses, or papers lacking
+                                 preprints with complete algorithmic
+                                                                                      mathematical/algorithmic detail.
+                                 specifications.
+
+                                 Recent state-of-the-art studies (2020–2026) plus     Superseded early heuristics whose limitations
+ Recency & Foundational
+                                 foundational benchmark/solver definitions (Stern     have already been resolved by 2021–2026 MAPF-
+ Scope
+                                 et al., 2019).                                       LNS literature.
+
+                                 Discrete-time graph MAPF anytime refinement,         Continuous-space single-robot kinematics,
+ Technical Problem
+                                 search-tree/heuristic reuse under changing           hardware motor control, or unconstrained static
+ Alignment
+                                 constraints, or timeout-aware solver scheduling.     shortest-path routing.
+
+                                 Studies reporting Moving AI benchmark                Purely conceptual papers without empirical
+ Empirical Reproducibility       evaluations, clear baseline comparisons, or public   evaluation or reproducible benchmark
+                                 C++ source repositories.                             configurations.
+
+
+
+
+3.2 Thematic Synthesis of Prior Art
+
+Theme 1: Adaptive Neighbourhood and Seed Selection in Anytime MAPF-LNS
+The foundational MAPF-LNS framework (Li et al., 2021) introduced an anytime loop combining three handwritten
+destroy heuristics (random, agent-based delay, and map-based intersection) selected via a roulette-wheel weight
+update. Subsequent AAAI papers by Phan et al. progressively refined how candidate repairs are chosen before each
+repair execution:
+•      BALANCE (Phan et al., 2024, AAAI): Replaces roulette-wheel selection with a two-level multi-armed bandit
+       (Thompson Sampling for destroy-heuristic choice coupled with alpha-decaying Gaussian bandits for
+       neighbourhood size N). BALANCE demonstrates that online adaptation of destroy heuristic and neighbourhood
+       size is established prior art.
+•      ADDRESS (Phan et al., 2025, AAAI): Identifies that selecting which specific delayed 'seed' agent anchors the
+       neighbourhood is critical, restricting Thompson Sampling to a dynamic top-K candidate set of maximally
+       delayed agents to avoid large neural overhead.
+•      TACKLE (Phan et al., 2026, AAAI): Combines heuristic delay preference with truncated counterfactual learning
+       over the top-K seed pool and resets bandit parameters when the candidate pool shifts. Importantly, 'truncated'
+
+
+    P. G. Disas Sethnada (IIT: 20231323 | UoW: w2119964) • BEng (Hons) Software Engineering • Supervisor: Mr. Maninda Edirisooriya
+                              6SENG010C Software Engineering Final Project Proposal | RouteBudget Lab
+
+       in TACKLE refers to candidate-pool restriction, not interrupting and resuming an in-progress low-level repair
+       search.
+•      Reevaluation of LNS for MAPF (Tan et al., 2025, SoCS): Conducts a rigorous empirical re-evaluation of MAPF-
+       LNS across standardized C++ implementations, demonstrating that well-tuned rule-based delay heuristics
+       remain highly competitive with learning-based selectors when wall-clock controller overhead is fairly counted.
+       This directly motivates our requirement to measure all save, restore, validation, and decision overheads inside
+       the wall-clock deadline.
+Critical Synthesis of Theme 1: Where the papers agree is that focusing LNS effort on high-delay agents significantly
+accelerates anytime convergence. Where they share a common structural limitation is that MAPF-LNS, BALANCE,
+ADDRESS, and TACKLE all treat every repair execution as an atomic, start-from-scratch black-box call. Whenever a
+repair is interrupted by a per-iteration time cutoff, its internal search frontier and any partially routed sub-
+neighbourhood paths are discarded completely.
+
+Theme 2: Search-Information Reuse and Constraint-Aware Caching in MAPF
+A second literature stream investigates reusing search effort across planning episodes in MAPF:
+•      X* (Vedder and Biswas, 2021, Artificial Intelligence): Embeds optimal MAPF solvers within a Windowed
+       Anytime Multiagent Planning Framework (WAMPF) for sparse domains. When local repair windows expand
+       over time, X* applies an A* search-tree transformation to reuse previously expanded nodes and heuristic
+       evaluations across growing spatial-temporal windows.
+•      CAHC — Conflict-Aware Heuristic Caching (To, Nguyen and Pham, 2025, arXiv:2512.12243): Addresses the
+       limitation that traditional heuristic caches fail when high-level conflict constraints alter the reachable state
+       space. CAHC introduces a compact conflict fingerprint encoding active constraints and a spatial-temporal-
+       geometric relevance filter to cache and retrieve conflict-dependent heuristic values in constraint-based MAPF
+       (evaluated in a CAR-CHASE case study on 480 car-like robot CL-CBS benchmark instances, with the general
+       architecture positioned for CBS and MAPF-LNS).
+Critical Synthesis of Theme 2: X* and CAHC demonstrate that reusing search information across changing constraint
+contexts is theoretically viable and computationally beneficial. However, X* is engineered for expanding spatial
+windows in joint-state A* rather than sequential prioritized LNS repairs. Conversely, CAHC caches scalar heuristic
+distance estimates indexed by conflict fingerprints, but still restarts the low-level repair search from the initial state.
+Neither method suspends an active LNS repair execution state (open/closed lists and completed sequential agent
+prefixes), validates its spatio-temporal reservation footprint against external LNS plan mutations, or schedules
+resumption against fresh candidate neighbourhoods.
+
+Theme 3: Runtime Prediction and Computational Scheduling Under Deadlines
+Outside MAPF-LNS, algorithm selection and scheduling under timeouts have been studied extensively:
+•      Algorithm Selection for Optimal MAPF (Kaduri, Boyarski and Stern, 2020, ICAPS): Demonstrated supervised
+       machine learning for selecting among optimal MAPF solvers on static instances.
+•      Run2Survive (Tornede et al., 2020, ACML): Introduced survival analysis to model right-censored solver
+       runtimes (runs terminated by timeouts) for decision-theoretic algorithm selection.
+•      RunAndSchedule2Survive (Margraf et al., 2025, ACM TELO): Combined survival-based runtime models with
+       evolutionary optimization to compute static or dynamic solver schedules under time budgets.
+Critical Synthesis of Theme 3: Classical algorithm scheduling assumes that pausing and later resuming a solver
+operates on a static problem instance whose external constraints never mutate while the solver is suspended. In
+anytime MAPF-LNS, every accepted repair mutates the shared incumbent plan P_inc, creating a dynamic state-
+invalidation coupling between accepted repairs and suspended checkpoints that generic algorithm schedulers cannot
+handle without domain-specific constraint validation.
+
+
+
+
+    P. G. Disas Sethnada (IIT: 20231323 | UoW: w2119964) • BEng (Hons) Software Engineering • Supervisor: Mr. Maninda Edirisooriya
+                                6SENG010C Software Engineering Final Project Proposal | RouteBudget Lab
+
+3.3 Comprehensive Literature Survey Matrix
+                     Problem              Dataset /                                Key Findings &        Identified            Relevance to
+ Paper & Venue                                               Core Method
+                     Addressed            Benchmark                                Contribution          Limitations           RouteBudget Lab
+
+                                                                                                         Discards              Candidate C++
+                                          Moving AI          Destroy-and-          Scales anytime
+                     Anytime cost                                                                        interrupted repair    search backbone
+MAPF-LNS                                  (empty, random,    repair LNS with       refinement to
+                     refinement for                                                                      searches upon         and baseline
+(Li et al., 2021)                         warehouse, city;   roulette-wheel        hundreds of
+                     large-scale                                                                         timeout; no           control for
+IJCAI                                     up to 800          over 3 heuristics +   agents within 1–
+                     MAPF                                                                                checkpointing or      planned
+                                          agents)            PP/SIPP               60s deadlines
+                                                                                                         resumption            implementation
+
+                                          Moving AI                                Automates             Treats each repair    Primary adaptive
+BALANCE              Online                                  Two-level bandit
+                                          (random,                                 heuristic and         as start-from-        baseline;
+(Phan et al.,        adaptation of                           (Thompson
+                                          warehouse,                               neighbourhood-        scratch; no state     establishes that
+2024)                destroy heuristic                       Sampling +
+                                          Paris, Ost003d;                          size adaptation       preservation on       adaptive sizing is
+AAAI                 & size N                                Gaussian bandit)
+                                          100–400 agents)                          online                cutoff                prior art
+
+                                                                                   Lightweight                                 Primary
+                                          Moving AI                                                      Does not save,
+ADDRESS                                                      Top-K delayed         adaptive seed                               comparison
+                     Selecting high-      benchmark                                                      validate, or resume
+(Phan et al.,                                                agent candidate       selection                                   baseline; informs
+                     value delayed        maps (50–400                                                   interrupted low-
+2025)                                                        pool + Thompson       outperforming                               fresh repair
+                     seed agents          agents; 60s                                                    level repair
+AAAI                                                         Sampling              heavier neural                              candidate
+                                          budget)                                                        searches
+                                                                                   selectors                                   generation
+
+                                                             Heuristic delay                             Truncation refers
+                                          Moving AI                                                                            Latest 2026
+TACKLE               Credit                                  preference +          Improves sample       to candidate set,
+                                          benchmark suite                                                                      baseline;
+(Phan et al.,        assignment for                          truncated             efficiency on top-    not runtime
+                                          (random,                                                                             candidate C++
+2026)                seed-agent                              counterfactual        K delayed seed        interruption;
+                                          warehouse,                                                                           codebase for WP1
+AAAI                 selection                               learning with         candidates            discards timed-out
+                                          room, maze)                                                                          investigation
+                                                             resets                                      state
+
+                                                                                   Rule-based delay                            Motivates strict
+                                          Standardized       Unified C++                                 Evaluates
+Reevaluation of      Fair                                                          heuristics rival ML                         monotonic wall-
+                                          Moving AI          comparing bandit                            memoryless
+LNS                  benchmarking of                                               selectors when                              clock overhead
+                                          benchmark          selectors and                               restart-only LNS;
+(Tan et al., 2025)   learning vs. rule-                                            wall-clock                                  accounting
+                                          instances in       rule-based delay                            no repair state
+SoCS                 based LNS                                                     overhead is                                 (proposed NFR-
+                                          unified C++        heuristics                                  reuse
+                                                                                   counted                                     01)
+
+                                                                                                                               Establishes
+                     Anytime MAPF                            Windowed                                    Designed for
+X*                                                                                 Reuses A* search                            search-tree reuse
+                     in sparse            Grid maps with     Anytime MAPF                                window growth in
+(Vedder &                                                                          tree nodes when                             concept;
+                     domains via          localized multi-   (WAMPF) + A*                                joint A*, not
+Biswas, 2021)                                                                      local repair                                contrasts with
+                     expanding            agent collisions   tree                                        sequential LNS
+Artif. Intell.                                                                     windows grow                                LNS
+                     windows                                 transformation                              repair resumption
+                                                                                                                               checkpointing
+
+                                          480 CL-CBS car-                                                                      Informs the
+                                                                                   Reduces               Caches scalar
+                                          like robot MAPF    Conflict                                                          proposed
+CAHC                 Heuristic caching                                             redundant             heuristic values
+                                          instances          fingerprint +                                                     conservative
+(To et al., 2025)    under changing                                                heuristic lookups     rather than active
+                                          (framework         spatial-temporal-                                                 spatio-temporal
+arXiv:2512.1224      conflict                                                      across changing       LNS repair
+                                          positioned for     geometric                                                         reservation
+3                    constraints                                                   constraint            frontiers or routed
+                                          CBS & MAPF-        relevance filter                                                  compatibility
+                                                                                   contexts              prefixes
+                                          LNS)                                                                                 check
+
+Run2Survive /
+                                          SAT /              Survival analysis     Principled runtime    Assumes static
+Schedule             Algorithm                                                                                                 Informs proposed
+                                          combinatorial      on right-censored     estimation and        problem instances;
+(Tornede 2020;       selection &                                                                                               remaining-work
+                                          optimization       runtimes +            solver scheduling     does not model
+Margraf 2025)        scheduling                                                                                                estimation under
+                                          benchmark          schedule              under time            MAPF external
+ACML / ACM           under timeouts                                                                                            deadlines
+                                          suites             optimization          budgets               path invalidation
+TELO
+
+
+
+
+ P. G. Disas Sethnada (IIT: 20231323 | UoW: w2119964) • BEng (Hons) Software Engineering • Supervisor: Mr. Maninda Edirisooriya
+                              6SENG010C Software Engineering Final Project Proposal | RouteBudget Lab
+
+
+4. Research Problem and Gap Analysis
+
+4.1 Classical One-Shot MAPF Formulation
+In classical one-shot Multi-Agent Path Finding (Stern et al., 2019), we are given an unweighted, four-connected
+undirected grid graph G = (V, E) and a set of m agents A = {a_1, a_2, ..., a_m}. Each agent a_i has a distinct start
+vertex s_i in V and a distinct goal vertex g_i in V. Time is discretised into integer steps t = 0, 1, 2, .... At each step t,
+an agent located at vertex p_i(t) in V can either move to an adjacent vertex p_i(t+1) in V such that (p_i(t), p_i(t+1))
+in E, or wait in place such that p_i(t+1) = p_i(t). Under the standard stay-at-goal convention (Stern et al., 2019; Li et
+al., 2021), an agent reaching its goal g_i at arrival time T_i remains at g_i for all subsequent steps t >= T_i, continuing
+to occupy that vertex.
+A joint route plan P = {p_1, p_2, ..., p_m} is collision-free (valid) if and only if for all distinct agent pairs (a_i, a_j) with
+i != j and all time steps t >= 0:
+•      Vertex Conflict Constraint: p_i(t) != p_j(t) (no two agents occupy the same vertex at the same time step); and
+•      Edge Swap Conflict Constraint: not (p_i(t) = p_j(t+1) and p_i(t+1) = p_j(t)) (no two agents traverse the same
+       undirected edge in opposite directions simultaneously).
+The standard objective in anytime MAPF is to minimise the Sum of Costs (SoC), denoted C(P), or equivalently the
+Total Delay D(P) relative to individual shortest-path distances LB_i = dist_G(s_i, g_i):
+
+
+
+    Anytime MAPF Cost and Delay Objectives
+    C(P) = sum_{i=1..m} T_i
+    LB = sum_{i=1..m} dist_G(s_i, g_i)
+    D(P) = C(P) - LB = sum_{i=1..m} (T_i - dist_G(s_i, g_i))
+
+
+
+
+4.2 Anytime Large Neighbourhood Search (MAPF-LNS)
+Because finding an optimal collision-free plan P* minimizing C(P) is NP-hard (Yu and LaValle, 2013), Anytime MAPF-
+LNS (Li et al., 2021) decouples initial feasibility from iterative cost refinement. First, an initial solver (such as
+Prioritized Planning with Safe Interval Path Planning, PP+SIPP, or EECBS) computes an initial collision-free incumbent
+plan P_inc. Thereafter, while wall-clock time remains before the global deadline B, the planner executes a destroy-
+and-repair loop:
+•      1. Destroy Step: A destroy heuristic selects a subset (neighbourhood) of Nk agents A_k subset A (typically |A_k|
+       in {4, 8, 16, 32}) whose current trajectories exhibit high delay or path congestion.
+•      2. External Constraint Freezing: The trajectories of all external agents A \ A_k are held fixed in a spatio-
+       temporal Reservation Table (or Conflict Avoidance Table, CAT), representing dynamic obstacles.
+•      3. Repair Step: A low-level repair solver (typically sequential Prioritized Planning with SIPP or space-time A*
+       over a specified ordering of A_k) searches for new collision-free paths P'_{A_k} that avoid all external
+       reservations in A \ A_k and reduce the neighbourhood cost sum_{i in A_k} T_i.
+•      4. Acceptance Check: If the repair completes within its allocated per-iteration time slice and achieves C(P') <
+       C(P_inc), P_inc is updated to P'; otherwise, the candidate repair is discarded and P_inc is retained.
+
+4.3 The Computational Problem: Interrupted Repairs vs. Evolving Constraints
+In deadline-aware anytime MAPF, each repair attempt operates under a local time slice or global deadline
+constraint so that a single hard subproblem does not monopolise the entire planning budget (Li et al., 2021; Tan et
+al., 2025). When a repair search on neighbourhood A_c is interrupted before completion, standard MAPF-LNS
+implementations discard the entire partial search state—including expanded space-time A* or SIPP nodes, open
+priority queues, closed sets, and already-replanned prefix agents within the sequential priority ordering of A_c.
+
+
+
+    P. G. Disas Sethnada (IIT: 20231323 | UoW: w2119964) • BEng (Hons) Software Engineering • Supervisor: Mr. Maninda Edirisooriya
+                              6SENG010C Software Engineering Final Project Proposal | RouteBudget Lab
+
+Discarding interrupted repairs wastes computation when the search was close to resolving a local bottleneck.
+However, preserving and later resuming a suspended repair checkpoint C_i introduces a fundamental correctness
+and scheduling dilemma:
+•      1. External Constraint Invalidation Hazard: Between the time checkpoint C_i is suspended at iteration k1 and
+       considered for resumption at a later iteration k2 > k1, other accepted repairs may have modified the
+       trajectories of external agents in A \ A_c. Because the search nodes stored inside C_i were expanded under the
+       reservation table of iteration k1, resuming C_i without verifying whether the modified external paths intersect
+       C_i's spatial-temporal search space can produce invalid, colliding routes or corrupted heuristic bounds.
+•      2. Opportunity Cost and Overhead Trade-off: Even if a saved checkpoint C_i remains compatible with current
+       external constraints, resuming it is not guaranteed to be optimal: serialising, restoring, and validating C_i incurs
+       wall-clock and memory overhead, and a newly generated repair neighbourhood N_j might yield a larger
+       expected cost reduction per unit of remaining time than continuing C_i.
+
+    FORMAL PROBLEM STATEMENT (CURRENT SITUATION -> LIMITATION -> CONSEQUENCE -> NEED)
+    Current Situation: Anytime Multi-Agent Path Finding planners (such as MAPF-LNS and its adaptive variants BALANCE,
+    ADDRESS, and TACKLE) iteratively improve collision-free plans by executing time-bounded destroy-and-repair
+    searches over selected agent neighbourhoods.
+
+    Limitation / Challenge: When a repair search is interrupted by a per-iteration cutoff or budget allocation decision,
+    existing MAPF-LNS controllers discard the ongoing search state entirely. Conversely, naively checkpointing and
+    resuming an interrupted repair across iterations is unsafe because intermediate accepted repairs alter external
+    agents' paths and spatio-temporal reservation tables, potentially invalidating saved search states.
+
+    Consequence: Planners either suffer wasted search computation from repeated scratch restarts on complex
+    bottlenecks, or risk collision-safety violations and net wall-clock slowdowns if search states are reused without formal
+    constraint verification and remaining-work valuation.
+
+    Need for Investigation: There is a need to investigate a constraint-validated repair-resumption mechanism and
+    resume-or-start controller that (i) safely checkpoints and restores interrupted repair searches, (ii) conservatively
+    validates saved states against evolving planning constraints, and (iii) determines whether resuming an eligible
+    checkpoint yields higher expected net improvement within a global deadline than starting a fresh repair.
+
+
+
+
+4.4 Candidate Research Gap Analysis and Proposed Contribution
+
+    CANDIDATE RESEARCH GAP & PROPOSED CONTRIBUTION STATEMENT
+    Within the 2019–2026 literature reviewed in Section 3, established research provides adaptive neighbourhood and
+    seed-agent selection for MAPF-LNS (BALANCE, ADDRESS, TACKLE), search-tree transformation across expanding
+    spatial windows (X*), conflict-fingerprinted heuristic value caching (CAHC), and survival-based algorithm scheduling
+    on static problem instances (Run2Survive, RunAndSchedule2Survive). However, the reviewed studies do not present
+    an integrated mechanism within anytime MAPF-LNS that (1) suspends and checkpoints interrupted sequential repair
+    searches, (2) conservatively validates whether saved search states remain conflict-compatible after external agent
+    trajectories change in the incumbent plan, and (3) arbitrates between resuming a validated checkpoint and starting a
+    fresh repair using internal search-progress features and explicit wall-clock overhead accounting under a global
+    planning deadline. Addressing this candidate research gap is the proposed contribution of RouteBudget Lab and is
+    framed as a falsifiable empirical hypothesis to be tested during implementation.
+
+
+
+
+    P. G. Disas Sethnada (IIT: 20231323 | UoW: w2119964) • BEng (Hons) Software Engineering • Supervisor: Mr. Maninda Edirisooriya
+                                6SENG010C Software Engineering Final Project Proposal | RouteBudget Lab
+
+Table 4.1: Seven-Dimension Candidate Research Gap Justification Matrix
+ Analytical Gap Dimension         Evidence from Reviewed Literature                      Implications for Proposed Contribution
+
+                                  Interrupted low-level LNS repair searches lose
+                                  expanded nodes and partial multi-agent priority        Motivates a proposed mechanism coupling
+ 1. What is the unresolved
+                                  progress upon slice timeout, yet cannot be naively     bounded state checkpointing with external
+ problem?
+                                  resumed because accepted repairs mutate external       reservation compatibility verification.
+                                  reservations.
+
+                                  Li et al. (2021) and Tan et al. (2025) document per-
+                                                                                         Grounds the problem in peer-reviewed MAPF-
+ 2. Which papers provide          iteration cutoffs and controller overhead trade-
+                                                                                         LNS mechanics rather than unsupported
+ evidence of the problem?         offs; To et al. (2025) show that changing conflict
+                                                                                         assumptions.
+                                  constraints alter state-level heuristic validity.
+
+                                  Phan et al. (2024, 2025, 2026) optimised pre-repair
+                                                                                         Demonstrates established techniques for pre-
+                                  bandit and counterfactual seed selection; Vedder &
+ 3. What have existing                                                                   repair selection and heuristic/tree reuse, while
+                                  Biswas (2021) transformed A* trees for expanding
+ researchers attempted?                                                                  none of the reviewed works addresses mid-
+                                  windows; To et al. (2025) cached conflict-
+                                                                                         repair LNS checkpoint resumption.
+                                  fingerprinted heuristics.
+
+                                  In the reviewed studies, bandit selectors discard
+                                  timed-out repairs; X* targets windowed joint A*
+                                                                                         Leaves mid-repair execution progress
+ 4. Why are existing              rather than sequential LNS mutations; CAHC caches
+                                                                                         unrecovered or unvalidated under dynamic LNS
+ approaches insufficient?         scalar h-values rather than active open/closed
+                                                                                         trajectory updates.
+                                  frontiers and routed prefixes; Run2Survive assumes
+                                  static instances.
+
+                                  In congested warehouse and room maps with 50–
+                                  100 agents, bottleneck repairs are frequently          Tests the hypothesis that selectively recovering
+ 5. Why is the unresolved
+                                  interrupted by slice cutoffs. Repeatedly restarting    valid partial repairs can convert interrupted
+ issue important?
+                                  them from scratch consumes limited deadline            slices into completed trajectory improvements.
+                                  budget B.
+
+                                  RouteBudget Lab (proposed contribution): a 4-
+                                  component C++17 design combining (1) bounded K
+                                                                                         Distinguishes the proposed integration of
+ 6. What specific                 <= 2 repair checkpointing, (2) two-stage
+                                                                                         checkpointing, validation, and control from
+ contribution is proposed?        conservative constraint validation, (3) progress-
+                                                                                         established individual techniques.
+                                  feature remaining-work estimation, and (4)
+                                  Score(a, Delta) resume-or-start control.
+
+                                  Six planned experiments (E1–E6) on Moving AI
+ 7. How will the contribution     benchmarks testing pause/resume parity, collision      Provides a falsifiable evaluation protocol in
+ be evaluated                     safety, checkpoint survival rates, overhead            which all actual overheads are charged to the
+ experimentally?                  breakdowns, and deadline cost C(P_B) against           wall-clock deadline.
+                                  BALANCE, ADDRESS, and TACKLE.
+
+
+
+
+4.5 Explicit Novelty Boundaries (Distinguishing Prior Art from Proposed Work)
+ Boundary Category                          Explicit Technical & Academic Position
+
+                                            Anytime MAPF-LNS destroy-and-repair paradigm (Li et al., 2021); adaptive bandit and
+ Established Prior Art                      counterfactual neighbourhood/seed selection (BALANCE, ADDRESS, TACKLE); A* tree
+ (Sourced Evidence — Not Claimed as         transformation in windowed MAPF (X*); conflict-aware heuristic value caching (CAHC);
+ Student Invention)                         survival analysis and runtime-aware algorithm scheduling (Run2Survive,
+                                            RunAndSchedule2Survive); general operating-system and database checkpointing.
+
+
+
+
+ P. G. Disas Sethnada (IIT: 20231323 | UoW: w2119964) • BEng (Hons) Software Engineering • Supervisor: Mr. Maninda Edirisooriya
+                            6SENG010C Software Engineering Final Project Proposal | RouteBudget Lab
+
+
+Boundary Category                        Explicit Technical & Academic Position
+
+                                         The proposed domain-specific architectural design, planned C++17 implementation, and
+                                         planned empirical evaluation within Anytime MAPF-LNS of: (1) controlled mid-repair
+Proposed Contribution                    suspension and bounded state checkpointing (K <= 2 slots supporting micro-frontier or
+(Planned Software Engineering &          macro-prefix granularity), (2) a proposed two-stage conservative spatio-temporal external-
+Algorithmic Work)                        constraint compatibility validator prior to resumption, and (3) a proposed overhead-aware
+                                         resume-or-start heuristic controller driven by internal search-progress features under a
+                                         strict wall-clock deadline.
+
+
+
+
+4.6 Project Goal, Overarching Aim, and Measurable SMART Objectives (O1–O6)
+
+ OVERARCHING RESEARCH AIM
+ To investigate, design, implement, and empirically evaluate a constraint-validated repair-resumption mechanism and
+ overhead-aware resume-or-start controller for anytime Multi-Agent Path Finding (embodied in the standalone
+ software engineering artefact RouteBudget Lab) to determine whether selectively validating and resuming
+ interrupted repair searches improves collision-free solution quality within fixed wall-clock computation deadlines.
+
+
+
+         Research & Engineering                                                          Planned Verification &           Planned
+  ID                                   Measurable Specification (SMART)
+         Objective                                                                       Target Evidence                  Window
+
+                                       Investigate and compile one public C++17
+                                       MAPF-LNS solver backbone on Moving AI             Reproducible C++ baseline
+                                                                                                                             WP1
+         Investigate & Profile MAPF-   benchmarks (50–100 agents), instrument per-       + WP1 profiling dataset &
+  O1                                                                                                                   (Late Oct – Mid
+         LNS Baseline Dynamics         iteration repair runtimes and timeout             Gate 1 feasibility report
+                                                                                                                          Nov 2026)
+                                       frequencies, and evaluate micro- vs. macro-       (end of WP1)
+                                       prefix checkpoint feasibility.
+
+                                       Design and implement controlled mid-repair        Proposed pause/resume
+         Design & Implement            suspension, bounded in-memory                     C++ module evaluated in             WP2
+  O2     Resumable Repair Engine       checkpointing (max K = 2 slots), and state        planned Experiment E1         (Late Nov – Mid
+         (Comp. 1)                     restoration for the selected low-level SIPP/A*    (target: path parity and         Dec 2026)
+                                       repair solver.                                    <10% slice overhead)
+
+                                       Develop a proposed two-stage spatio-              Proposed validator
+                                       temporal constraint validator that checks         module evaluated in
+         Develop & Test                                                                                                     WP3
+                                       saved checkpoints against updated external        planned Experiment E4
+  O3     Conservative Constraint                                                                                       (Late Dec 2026
+                                       agent trajectories and reservations, discarding   perturbation audits
+         Validator (Comp. 2)                                                                                           – Mid Jan 2027)
+                                       states whose compatibility cannot be              (target: 0 invalid path
+                                       conservatively verified.                          commits)
+
+                                       Implement lightweight search-progress             Integrated controller
+                                       feature extraction and the proposed Score(a,      module logging per-
+         Formulate & Integrate                                                                                               WP4
+                                       Delta) heuristic controller to arbitrate          iteration feature vectors,
+  O4     Estimator & Controller                                                                                        (Late Jan – Early
+                                       between validated checkpoint resumption and       validation status, and
+         (Comps. 3 & 4)                                                                                                   Feb 2027)
+                                       fresh repair generation (design target: <= 1.0    measured decision
+                                       ms decision latency).                             overhead (Gate 2)
+
+                                       Execute planned Experiments E1–E6
+                                                                                         Planned paired Wilcoxon
+                                       comparing RouteBudget Lab against restart-
+                                                                                         statistical tables, anytime         WP5
+         Evaluate & Benchmark          only LNS, fixed round-robin resumption, and
+  O5                                                                                     AUC curves, checkpoint          (Mid Feb –
+         Against Published Baselines   published baselines (BALANCE, ADDRESS,
+                                                                                         survival rates, and           Early Mar 2027)
+                                       TACKLE, delay heuristic) under matched wall-
+                                                                                         overhead breakdowns
+                                       clock deadlines.
+
+
+
+
+ P. G. Disas Sethnada (IIT: 20231323 | UoW: w2119964) • BEng (Hons) Software Engineering • Supervisor: Mr. Maninda Edirisooriya
+                            6SENG010C Software Engineering Final Project Proposal | RouteBudget Lab
+
+
+          Research & Engineering                                                            Planned Verification &            Planned
+   ID                                   Measurable Specification (SMART)
+          Objective                                                                         Target Evidence                   Window
+
+                                       Package RouteBudget Lab with the proposed          Complete source
+                                       independent path validator, automated              repository, 2D replay                 WP6
+          Package Software Artefact
+  O6                                   regression test suite, CSV/SQLite telemetry        viewer demonstration,             (Mid Mar – 5
+          & Complete Dissertation
+                                       exporter, and local 2D grid replay UI, alongside   and 10,000–12,000-word             Apr 2027)
+                                       the final dissertation.                            final dissertation
+
+
+
+
+4.7 Research Questions (RQ1–RQ3) and Falsifiable Hypotheses (H1–H3)
+ Research Question       Formal Question Statement                            Falsifiable Hypothesis & Null / Failure Condition
+
+                                                                              H1 (Test Hypothesis): When external agent paths A \ A_c
+                         Can a low-level MAPF-LNS repair search be
+                                                                              are unchanged, resuming a saved repair checkpoint
+                         suspended at an arbitrary cutoff and resumed
+ RQ1 (Checkpoint                                                              produces valid collision-free trajectories with
+                         under unchanged external constraints to
+ Feasibility &                                                                save/restore latency under the design target of 10% of
+                         produce valid, collision-free solutions consistent
+ Equivalence)                                                                 the active repair slice Delta. (Falsified in E1 if restoration
+                         with uninterrupted execution, and what memory
+                                                                              corrupts search invariants or overhead exceeds the slice
+                         and latency overheads are incurred?
+                                                                              threshold.)
+
+                         What fraction of saved repair checkpoints remain     H2 (Test Hypothesis): Combining pre-resumption
+                         compatible with evolving external agent              conservative reservation-footprint validation with post-
+ RQ2 (Constraint         reservations across subsequent LNS iterations,       repair collision checking prevents unsafe path commits
+ Validation Dynamics)    and does conservative constraint validation          while retaining a non-trivial fraction (>15%) of saved
+                         prevent invalid solution commits compared with       checkpoints as eligible across congested warehouse and
+                         unvalidated reuse?                                   random maps. (Tested in E4.)
+
+                         Does an overhead-aware resume-or-start
+                                                                              H3 (Test Hypothesis): On benchmark instances where
+                         heuristic controller informed by lightweight
+                                                                              repair timeouts occur regularly, constraint-validated
+                         search-progress features achieve lower deadline
+ RQ3 (Resume-or-Start                                                         adaptive resumption yields a statistically significant
+                         solution cost (Sum of Costs / Total Delay) than
+ Controller Utility)                                                          reduction in normalized excess cost at fixed wall-clock
+                         restart-only LNS, fixed round-robin resumption,
+                                                                              budgets (1s, 5s, 10s, 30s) after charging all actual
+                         and published adaptive baselines within identical
+                                                                              overheads to the deadline. (Tested in E2, E3, E5, E6.)
+                         wall-clock deadlines?
+
+
+
+
+5. Research and Technical Investigations
+
+5.1 Candidate Dataset Comparison and Moving AI Benchmark Selection
+Rather than selecting a dataset merely on convenience, three candidate evaluation data sources were
+systematically compared against criteria of peer-reviewed standardization, structural diversity, licensing, and
+baseline comparability:
+
+                           Topology & Scale              Licence &                                            Limitations & Selection
+ Candidate Data Source                                                          Strengths
+                           Coverage                      Accessibility                                        Decision
+
+                           33+ standardized 2D grids                            Standard benchmark
+                                                        Open Data
+ Option 1 (Selected):      (warehouse, random,                                  used by MAPF-LNS,            SELECTED: Standard
+                                                        Commons
+ Moving AI MAPF            room, maze, city/game                                BALANCE, ADDRESS,            benchmark supporting
+                                                        Attribution License
+ Benchmark Suite           maps); up to 1,000 agents                            and Tan et al.; enables      reproducibility and low
+                                                        (ODC-By); publicly
+ (Stern et al., 2019)      per scenario (25 random +                            paired instance              ethics risk.
+                                                        hosted.
+                           25 even scenarios/map).                              comparison.
+
+
+
+
+ P. G. Disas Sethnada (IIT: 20231323 | UoW: w2119964) • BEng (Hons) Software Engineering • Supervisor: Mr. Maninda Edirisooriya
+                                6SENG010C Software Engineering Final Project Proposal | RouteBudget Lab
+
+
+                              Topology & Scale             Licence &                                          Limitations & Selection
+ Candidate Data Source                                                             Strengths
+                              Coverage                     Accessibility                                      Decision
+
+                                                                                                              REJECTED as primary
+ Option 2:
+                              Arbitrary user-generated                                                        benchmark: Lacks external
+ Custom Unstandardized                                     Student-owned /         Unlimited synthetic
+                              obstacle grids and random                                                       validity and prevents direct
+ Synthetic Grid                                            MIT.                    map generation.
+                              start/goal placements.                                                          comparison against
+ Generator
+                                                                                                              published baselines.
+
+                                                                                                              REJECTED: Out of scope for
+ Option 3:                    Continuous 3D robot                                                             discrete graph MAPF-LNS;
+                                                           Proprietary /
+ Physical Warehouse           kinematics and                                       Captures physical wheel    introduces proprietary data
+                                                           restricted industrial
+ Fleet Telemetry / ROS2       proprietary warehouse                                slip and sensor noise.     barriers and unmanageable
+                                                           data.
+ Gazebo Logs                  floorplans.                                                                     scope within the planned
+                                                                                                              WP1–WP6 schedule.
+
+
+
+To prevent data leakage between offline estimator fitting/threshold tuning and final controller evaluation, Moving
+AI maps are partitioned strictly at the map-file level:
+
+ Partition Role                     Exact Moving AI Map Files                        Planned Experimental Protocol & Leakage Control
+
+                                                                                     Planned for exclusive use in WP1 runtime/timeout
+                                    warehouse-10-20-10-2-1.map, random-32-
+ Training & Trace Profiling                                                          profiling, collecting interrupted repair traces, and
+                                    32-20.map, maze-32-32-2.map, empty-32-
+ Partition (4 Maps)                                                                  fitting the Remaining-Work Estimator parameters in
+                                    32.map
+                                                                                     WP4.
+
+                                                                                     Planned for tuning slice cutoffs Delta, checkpoint
+ Validation & Hyperparameter        warehouse-10-20-10-2-2.map, random-64-
+                                                                                     slot eviction policy (K = 1 vs. K = 2), and estimator
+ Partition (2 Maps)                 64-10.map
+                                                                                     regularisation at Gate 2 without touching test maps.
+
+ Primary Held-Out Test                                                               Reserved for WP5 evaluation of deadline
+                                    warehouse-20-40-10-2-1.map, random-64-
+ Partition — Seen Families (2                                                        performance across 25 published random scenarios
+                                    64-20.map
+ Maps)                                                                               per map at 50 and 100 agents.
+
+                                                                                     Reserved for WP5 stress-testing of whether
+ Out-of-Family Generalisation       room-64-64-8.map, ost003d.map (or                checkpoint validation and resumption generalise to
+ Test Partition (2 Maps)            Paris_1_256.map)                                 narrow doorway bottlenecks (room) and unseen
+                                                                                     layouts.
+
+
+
+
+5.2 Tools, Technology Alternatives Analysis, and Scope Justification
+                                                      Option 2                Option 3               Comparative Evaluation &
+ System Layer           Option 1 (Selected)
+                                                      (Alternative)           (Alternative)          Justification
+
+                                                                                                    Published baselines (Li et al., 2021;
+                                                                                                    Tan et al., 2025) are implemented in
+                        C++17 adapting a public
+ Core MAPF-LNS                                                               Scratch                C++. Adapting an established C++17
+                        MAPF-LNS / TACKLE /           Pure Python MAPF
+ Backbone & Repair                                                           implementation in      backbone avoids spending multiple
+                        mapf-lns-unified              solver
+ Solver                                                                      Rust or Java           work packages re-implementing SIPP
+                        codebase (Boost, CMake)
+                                                                                                    from scratch and avoids interpreter
+                                                                                                    overhead distortions.
+
+                                                                                                    In-memory C++ struct
+                                                                                                    snapshot/restoration is selected to
+                                                                                                    avoid file I/O serialisation and OS
+                        In-process C++17                                     OS-level process
+ Checkpoint Store &                                   Protobuf / JSON                               process-forking overhead; actual
+                        arena/struct snapshot                                fork / CRIU
+ State Snapshot                                       disk serialisation                            t_save and t_restore latencies will be
+                        (max K = 2 slots in RAM)                             snapshot
+                                                                                                    measured empirically in Experiment
+                                                                                                    E1 against the <10% slice design
+                                                                                                    target.
+
+
+
+ P. G. Disas Sethnada (IIT: 20231323 | UoW: w2119964) • BEng (Hons) Software Engineering • Supervisor: Mr. Maninda Edirisooriya
+                               6SENG010C Software Engineering Final Project Proposal | RouteBudget Lab
+
+
+                                                       Option 2            Option 3              Comparative Evaluation &
+ System Layer            Option 1 (Selected)
+                                                       (Alternative)       (Alternative)         Justification
+
+                                                                                                 Per-iteration Python inter-process
+                                                                                                 communication or deep GNN
+                                                                                                 inference would add runtime latency
+                         In-process C++
+                                                                           Deep Graph Neural     and training complexity. Offline
+ Remaining-Work          ridge/linear or calibrated    2-Layer small MLP
+                                                                           Network (PyTorch      fitting in Python with in-process C++
+ Estimator               tabular scorer (fit offline   in C++ (Eigen)
+                                                                           IPC)                  evaluation is chosen to target a
+                         in scikit-learn)
+                                                                                                 combined estimation and decision
+                                                                                                 latency <= 1.0 ms (audited at Gate
+                                                                                                 2).
+
+                         Append-only CSV/JSONL                                                   Zero-configuration local storage
+ Telemetry &
+                         + SQLite + Python             PostgreSQL /        Manual                supporting scripted Wilcoxon signed-
+ Experiment
+                         (pandas, scipy,               MongoDB server      spreadsheet logging   rank tests, Holm corrections, and
+ Database
+                         matplotlib)                                                             bootstrap confidence intervals.
+
+                                                                                                 An offline 2D grid replay viewer
+                         Lightweight 2D Grid                                                     supports visual inspection of
+ Demonstration &         Replay Viewer (HTML5          3D Unity / Unreal   Terminal-only text    trajectories and bottleneck
+ Replay Interface        Canvas / Python local         Engine simulation   output                resolution while keeping primary
+                         server)                                                                 engineering effort focused on the
+                                                                                                 C++ planning core.
+
+
+
+Appropriateness of Scope for a 40-Credit Level 6 Software Engineering Project
+To maintain substantive software engineering depth while remaining achievable within the 400 indicative module
+learning hours across the planned Work Packages WP1–WP6 (Late October 2026 to 5 April 2027), the project
+defines clear scope boundaries:
+•      Substantive Software Engineering Depth (In-Scope): (1) Extending a complex C++17 anytime heuristic search
+       codebase; (2) Engineering memory-safe state suspension and restoration for pointer-linked search queues (K =
+       2 slots); (3) Implementing a two-stage spatio-temporal constraint validator; (4) Building an overhead-aware
+       decision controller with monotonic nanosecond telemetry; (5) Constructing an independent trajectory collision
+       verifier, automated test suite, and 2D replay visualizer.
+•      Deliberate Exclusions (Out-of-Scope): (1) Re-implementing optimal CBS/EECBS solvers from scratch; (2)
+       Unbounded checkpoint pools (K > 2) that risk RAM exhaustion; (3) Continuous 3D robot kinematics, wheel
+       dynamics, or ROS2 hardware deployment; (4) Heavy GPU-dependent Graph Neural Networks.
+
+5.3 Technical Investigation of Low-Level Solver Checkpointing Granularities
+In MAPF-LNS, a repair attempt replans a destroyed neighbourhood A_c = (a_(1), ..., a_(N)) sequentially using
+Prioritized Planning with Safe Interval Path Planning (SIPP) or Space-Time A*. When interrupted at active search
+slice cutoff Delta, two candidate checkpointing granularities are identified for investigation in WP1: (a) micro-level
+search-frontier checkpointing, which saves both the r_done < N already-replanned prefix trajectories P'_{1..r_done}
+and the active open/closed search structures (Open_{r+1}, Closed_{r+1}) of the currently expanding agent
+a_(r_done+1); and (b) macro-level prefix checkpointing (Fallback 1A), which saves only the completed sequential
+prefix trajectories P'_{1..r_done} and resumes from agent a_(r_done+1). Both granularities are captured by the
+proposed in-memory checkpoint tuple C_i:
+
+    Proposed In-Memory C++ Checkpoint State Tuple Specification (Table 5.3)
+    C_i = (id_i, A_c, ord(A_c), r_done, P'_{1..r_done}, Open_{r+1}, Closed_{r+1}, sig_ext(A \ A_c), u_spent, c_base,
+    rng_state)
+    Note: Under Macro-Prefix Checkpointing (Fallback 1A), Open_{r+1} and Closed_{r+1} are empty, and resumption
+    restarts agent r_done + 1 while preserving P'_{1..r_done}.
+
+
+
+    P. G. Disas Sethnada (IIT: 20231323 | UoW: w2119964) • BEng (Hons) Software Engineering • Supervisor: Mr. Maninda Edirisooriya
+                                6SENG010C Software Engineering Final Project Proposal | RouteBudget Lab
+
+Here sig_ext(A \ A_c) records the external constraint context (per-agent trajectory version counters and spatio-
+temporal reservation footprint R(C_i)) against which C_i was expanded or last validated, u_spent is the cumulative
+active search time already expended on C_i in prior slices, and c_base is the pre-repair cost of A_c. During Work
+Package 1 (WP1, Late Oct – Mid Nov 2026), planned profiling experiments will measure the empirical memory and
+latency cost of micro-level frontier cloning versus macro-level prefix checkpointing.
+
+5.4 Provisional Technical Decisions, Feasibility Gates, and Risk Management
+In accordance with rigorous software engineering practice, key technical uncertainties are recognised upfront as
+provisional decisions governed by two formal verification gates:
+•      Gate 1 (Completion of WP1, Mid Nov 2026 — Checkpoint Granularity Verification): Will profile the selected
+       C++ repair engine on the training map partition to measure repair timeout frequencies and compare micro-level
+       open/closed list cloning against macro-level prefix checkpointing. If micro-level state cloning exceeds the
+       proposed design target of 10% of the active repair slice Delta, the architecture will adopt Macro-Prefix
+       Checkpointing (Fallback 1A), which stores only the completed sub-neighbourhood agent trajectories
+       P'_{1..r_done} rather than pointer-linked open/closed queues while retaining the exact same validator and
+       controller pipeline.
+•      Gate 2 (Completion of WP4, Early Feb 2027 — Net Overhead & Invalidation Audit): Will audit measured save,
+       restore, initialisation, validation, estimation, and controller latencies across validation scenarios after the
+       Interim Progress Demonstration (28 Jan 2027) to tune checkpoint admission thresholds before freezing the
+       codebase for held-out test benchmarking in WP5.
+ Risk Description &
+                                  Likelihood      Impact     Preventive Mitigation             Contingency / Fallback Arrangement
+ Technical Trigger
+
+                                                                                               Fallback 1A (Macro-Prefix Checkpointing
+                                                             Target a single repair solver;
+                                                                                               at Gate 1): Save only completed
+ R1: Low-level C++ SIPP/A*                                   use contiguous arena
+                                                                                               sequential agent trajectories
+ open/closed lists incur high      Medium          High      allocation and in-memory
+                                                                                               P'_{1..r_done} within A_c and resume
+ cloning latency                                             struct copying rather than
+                                                                                               from agent r_done + 1 under the same
+                                                             pointer graphs or disk I/O.
+                                                                                               validator and controller pipeline.
+
+                                                             Track per-agent spatio-           Report empirical invalidation and
+ R2: External trajectory
+                                                             temporal bounding boxes and       survival rates across congestion regimes
+ changes invalidate a large
+                                   Medium          High      favour spatially disjoint         as a diagnostic finding for RQ2 and
+ fraction of saved
+                                                             neighbourhoods during             restrict resumption to low-overlap
+ checkpoints
+                                                             candidate generation.             neighbourhoods.
+
+                                                             Cap checkpoint store at K = 2;    Enforce a minimum progress threshold
+ R3: Save, restore, and
+                                                             use O(|A|) trajectory version     before admitting a checkpoint into
+ validation overheads
+                                   Medium          High      counters in Stage 1 validation;   S_chk so trivial searches are not stored;
+ outweigh computation
+                                                             execute controller natively in    report overhead ablations in
+ saved
+                                                             C++.                              Experiment E5.
+
+                                                             Bound evaluation to 50–100
+                                                             agents, 4 test maps, K = 2
+ R4: Schedule or scope                                                                         Drop optional 200-agent stress tests
+                                                             checkpoints, and scripted
+ compression across C++                                                                        and drive the offline 2D replay viewer
+                                   Medium        Medium      batch runners across the
+ engine, experiments &                                                                         directly from exported CSV/SQLite trace
+                                                             planned WP1–WP6 schedule
+ dissertation                                                                                  logs.
+                                                             (proposed 400-hour effort
+                                                             estimate).
+
+                                                             Use C++17 RAII containers,        Require every completed candidate plan
+ R5: Memory leaks or state                                   isolated working copies for       to pass the proposed Independent Path
+ corruption during repeated          Low           High      every repair attempt, and         Validator (FR-06) before commit, with
+ pause/restore cycles                                        AddressSanitizer (ASan) in unit   automatic rollback to P_inc on any
+                                                             tests.                            failure.
+
+
+
+
+    P. G. Disas Sethnada (IIT: 20231323 | UoW: w2119964) • BEng (Hons) Software Engineering • Supervisor: Mr. Maninda Edirisooriya
+                             6SENG010C Software Engineering Final Project Proposal | RouteBudget Lab
+
+
+6. Research and Development Methodology
+
+6.1 Distinction Between Research Methodology, Software Development Lifecycle, and Methods
+A critical distinction is maintained between the overarching Research Methodology (how new knowledge and
+empirical answers to RQ1–RQ3 are generated), the Software Development Process (how the RouteBudget Lab
+software artefact is engineered, integrated, and tested), and the specific Research Methods executed:
+
+
+ Methodological Layer          Selected Approach                         Project-Specific Justification & Planned Management
+
+                                                                         RQ1–RQ3 ask whether a proposed computational mechanism
+                               Design Science Research (DSR)             (constraint-validated repair resumption) can be engineered
+ Overarching Research          (Hevner et al., 2004; Peffers et al.,     into MAPF-LNS and whether it improves deadline solution
+ Methodology                   2007) + Quantitative Empirical            quality. DSR structures the artefact design-build-evaluate cycle,
+                               Algorithmics                              while quantitative experimental algorithmics provides
+                                                                         falsifiable hypothesis testing.
+
+                                                                         Modifying stateful C++ search structures requires incremental
+                               Iterative, Test-Driven Research
+                                                                         vertical slices: Baseline Reproduction (WP1) -> Resumable
+ Software Engineering          Prototyping (TDD) across Work
+                                                                         Engine (WP2) -> Constraint Validator (WP3) -> Estimator &
+ Development Approach          Packages WP1–WP6 with Two
+                                                                         Controller (WP4) -> Comparative Benchmarking (WP5) -> 2D
+                               Feasibility Gates
+                                                                         Replay UI & Dissertation (WP6).
+
+                                                                         Proposed requirements (FR-01–FR-07, NFR-01–NFR-04) will be
+                               Traceable Requirements Backlog +
+                                                                         version-controlled alongside code. Empirical findings at Gate 1
+ Requirements, Feedback &      Bi-Weekly Supervisor Review
+                                                                         (completion of WP1, Mid Nov 2026) and the Interim Progress
+ Change Management             Checkpoints + Gate-Controlled
+                                                                         Demonstration (IPD, 28 Jan 2027 in WP4) govern checkpoint
+                               Scope Adaptation
+                                                                         granularity and estimator refinement.
+
+                                                                         AI is not used as an unverified source of citations, experimental
+                               Assistive use for boilerplate             data, or unchecked solver logic. During implementation, C++
+ Planned Use of Generative     scaffolding, Python plotting scripts,     solver and validator code will be tested via (1) pause/resume
+ AI & Output Verification      and editorial refinement;                 parity tests (planned E1), (2) AddressSanitizer memory checks,
+ Protocol                      deterministic testing of all code         and (3) the proposed Independent Path Validator (FR-06). Cited
+                               outputs                                   references have been cross-checked against publisher records
+                                                                         and arXiv/DOI entries.
+
+
+
+
+6.2 Objective -> Research Method -> Planned Evidence Alignment Matrix
+To ensure every stated objective leads to verifiable research and software engineering outputs during execution,
+Table 6.2 maps Objectives O1–O6 to their planned methods and target deliverables:
+
+                        Planned Research & Engineering
+ Objective                                                       Why Method is Appropriate             Planned Evidence / Deliverable
+                        Method
+
+                        Compile C++17 MAPF-LNS backbone
+                                                                 Establishes empirical baseline       Planned baseline verification log +
+ O1: Baseline &         on 4 training maps; log repair
+                                                                 timeout frequencies before           end-of-WP1 Gate 1 profiling
+ Profiling (WP1)        runtimes, cutoff rates, and state
+                                                                 modifying low-level solver state.    report.
+                        sizes.
+
+                        Implement in-memory C_i state            Isolates state restoration
+ O2: Resumable                                                                                        Planned C++ Resumable Engine
+                        snapshot/restore (K <= 2); run           behaviour under static external
+ Repair Engine                                                                                        module + E1 equivalence and
+                        planned pause-and-resume parity          constraints before introducing
+ (WP2)                                                                                                latency test report.
+                        tests (E1).                              dynamic changes.
+
+                        Implement proposed Stage 1 version       Tests whether external trajectory
+                                                                                                      Planned C++ Validator module +
+ O3: Constraint         check and Stage 2 reservation-           mutations are detected
+                                                                                                      E4 safety audit & checkpoint
+ Validator (WP3)        footprint check; run planned             conservatively and quantifies
+                                                                                                      survival curves.
+                        perturbation suite (E4).                 checkpoint survival rates.
+
+
+
+ P. G. Disas Sethnada (IIT: 20231323 | UoW: w2119964) • BEng (Hons) Software Engineering • Supervisor: Mr. Maninda Edirisooriya
+                              6SENG010C Software Engineering Final Project Proposal | RouteBudget Lab
+
+
+                      Planned Research & Engineering
+ Objective                                                      Why Method is Appropriate             Planned Evidence / Deliverable
+                      Method
+
+                      Fit lightweight progress estimator on     Tests whether decision and
+                                                                                                      Planned integrated controller
+O4: Estimator &       training traces; implement Score(a,       estimation latency stays within the
+                                                                                                      module + E3/E5 ablation &
+Controller (WP4)      Delta) in C++; profile decision           <= 1.0 ms target while
+                                                                                                      latency logs.
+                      latency at Gate 2.                        conditioning on search progress.
+
+                      Execute paired runs across 4 held-        Paired instance testing with
+O5: Comparative                                                                                       Planned SQLite/CSV results
+                      out test maps (50 & 100 agents,           Wilcoxon signed-rank tests
+Benchmarking                                                                                          archive + statistical significance
+                      budgets 1s–30s) against BALANCE,          controls for scenario-level
+(WP5)                                                                                                 tables (E2, E3, E6).
+                      ADDRESS, and TACKLE.                      difficulty variance.
+
+                      Build local 2D grid replay viewer,        Supports visual trajectory
+                                                                                                      Planned GitHub repository,
+O6: Artefact &        automated CMake/pytest suite, and         inspection, reproducibility
+                                                                                                      recorded demo, and Final
+Dissertation (WP6)    complete 10,000–12,000-word final         verification, and full academic
+                                                                                                      Dissertation (5 Apr 2027).
+                      dissertation.                             reporting.
+
+
+
+
+6.3 Planned Experimental Evaluation Protocol (Experiments E1–E6) and Baseline Controls
+ Planned Experiment ID &        Planned Compared Configurations /                 Primary Evaluation Purpose & Research Question
+ Name                           Controls                                          Link
+
+                                Uninterrupted repair execution vs. mid-
+E1: Pause/Resume                                                                 Test path validity, cost parity, and measure actual
+                                search pause, checkpoint save, immediate
+Correctness & Equivalence                                                        t_save and t_restore latency against the <10% slice
+                                restore, and continuation under identical
+(Planned — WP2)                                                                  design target (Addresses RQ1).
+                                static external constraints.
+
+E2: Restart-Only vs.            Standard restart-only MAPF-LNS (discarding       Evaluate whether reusing validated repair progress
+Checkpoint-Enabled Repair       interrupted repairs) vs. resumable MAPF-LNS      improves cost-vs-time AUC and deadline cost C(P_B)
+(Planned — WP5)                 under matched per-attempt slice cutoffs.         (Addresses RQ1, RQ3).
+
+E3: Fixed Round-Robin vs.       Fixed round-robin/FIFO checkpoint                Test whether overhead-aware utility scoring between
+Adaptive Resume-or-Start        resumption vs. the proposed Score(a, Delta)      resuming C_i and starting fresh N_j outperforms naive
+(Planned — WP5)                 Resume-or-Start Controller heuristic.            resumption (Addresses RQ3).
+
+E4: Conservative Validation     (a) Unconditional checkpoint discard on any
+                                                                                 Measure checkpoint survival/reuse rates, invalidation
+vs. Discard / Unvalidated       external change, (b) proposed Conservative
+                                                                                 causes, validation latency t_val, and test collision-
+Reuse (Planned —                Constraint Validator, and (c) diagnostic
+                                                                                 prevention safeguards (Addresses RQ2).
+WP3/WP5)                        unvalidated reuse in an isolated sandbox.
+
+E5: Progress-Feature            Proposed controller using full progress          Evaluate whether internal search-progress features
+Ablation Study (Planned —       features (N_exp, |Open|, r_done, heuristic       materially improve resume-or-start decisions and
+WP4/WP5)                        delay gap) vs. elapsed-time-only heuristic.      deadline cost (Addresses RQ3).
+
+                                RouteBudget Lab compared against MAPF-
+E6: Comparison Against          LNS (Li et al., 2021), rule-based delay          Evaluate end-to-end solution quality at wall-clock
+Published MAPF Baselines        heuristic (Tan et al., 2025), and C++            budgets B in {1s, 5s, 10s, 30s} for 50 and 100 agents
+(Planned — WP5)                 configurations of BALANCE (2024), ADDRESS        (Addresses RQ3).
+                                (2025), and TACKLE (2026).
+
+
+
+
+6.4 Planned Evaluation Metrics and Statistical Protocol
+ Metric / Protocol Category     Mathematical / Operational Definition                  Interpretation & Planned Evaluation Role
+
+Deadline Solution Cost          Sum of arrival times C(P_B) and normalized gap
+                                                                                       Primary solution quality indicator; compared on
+C(P_B) & Normalized Excess      (C(P_B) - LB) / max(LB, 1) at wall-clock deadlines B
+                                                                                       a paired basis across jointly solved instances.
+Cost                            in {1, 5, 10, 30} seconds.
+
+Anytime Area-Under-Curve        Time-integral of normalized excess cost over [0, B]    Captures how rapidly the planner reduces
+(AUC)                           divided by B.                                          trajectory cost across the wall-clock deadline.
+
+
+ P. G. Disas Sethnada (IIT: 20231323 | UoW: w2119964) • BEng (Hons) Software Engineering • Supervisor: Mr. Maninda Edirisooriya
+                                6SENG010C Software Engineering Final Project Proposal | RouteBudget Lab
+
+
+ Metric / Protocol Category        Mathematical / Operational Definition                  Interpretation & Planned Evaluation Role
+
+                                   Percentage of runs returning a plan verified
+ Valid-Solution Rate &                                                                    Target design invariant: 100% collision-free
+                                   collision-free by the proposed Independent Path
+ Collision Audit                                                                          validity across all committed incumbent plans.
+                                   Validator.
+
+                                   Total checkpoints saved, % validated as
+                                                                                          Quantifies how often saved search progress
+ Checkpoint Reuse &                compatible, % discarded by Conservative Validator,
+                                                                                          survives external constraint updates across
+ Invalidation Rates                % selected for resumption, and % yielding accepted
+                                                                                          congestion levels.
+                                   improvements.
+
+                                   Wall-clock fraction and per-call latency for t_save,   Tests whether any algorithmic gain from
+ Comprehensive Overhead
+                                   t_restore, t_init, t_val, t_est, t_ctrl, and path      resumption outweighs the systems overhead
+ Breakdown
+                                   verification, plus peak RAM footprint (MB).            charged to B.
+
+                                   4 test maps x 25 scenarios x 2 agent counts (50,
+                                   100) x 3 seeds = 600 planned runs/method/budget
+                                   (sized for single-workstation execution in WP5);       Non-parametric paired inference resilient to
+ Statistical Testing Protocol
+                                   paired Wilcoxon signed-rank tests with Holm step-      skewed MAPF cost distributions.
+                                   down correction and 95% bootstrap confidence
+                                   intervals.
+
+
+
+
+7. Supporting Engineering Evidence: Requirements, Architecture, Schedule &
+Governance
+
+7.1 Stakeholders, User Interaction Workflows, and Proposed Initial Requirements
+In the 6SENG010C assessment structure, 'Initial Requirements and Indicative Solution' carries a 20% weighting.
+RouteBudget Lab is designed as a modular command-line and offline visual benchmark workbench intended to
+serve three actor groups:
+•      Primary Actor 1 — Automated Planning & MAPF Researchers: Configure benchmark batches (.map, .scen,
+       agent count m, deadline B, checkpoint capacity K), run paired comparisons between restart-only and resumable
+       controllers, and export per-iteration CSV/SQLite telemetry for statistical analysis.
+•      Primary Actor 2 — Autonomous Fleet & Simulation Software Engineers: Profile solver behaviour under
+       dispatch cutoffs (1–30s), inspect measured overhead breakdowns (t_save, t_restore, t_init, t_val, t_est, t_ctrl),
+       check discrete collision validity via the proposed independent path validator, and step through congestion
+       bottlenecks in the offline 2D replay UI.
+•      Secondary Actor — Academic Assessors & Reproducibility Auditors: Execute scripted CMake/Python test
+       runners to inspect planned pause/resume equivalence tests (E1) and perturbation audits (E4).
+                                                                                                                   Planned Verification &
+     Req ID     Category               Proposed Requirement Specification                 Evidence / Gap Source
+                                                                                                                   Target Criterion
+
+                                       Moving AI Benchmark Importer: Parse standard
+                                       .map and .scen files; reject out-of-bounds         Benchmark                Planned unit tests on
+                Functional (Input &
+      FR-01                            coordinates, blocked start/goal cells, and         compatibility & input    valid and malformed
+                Data)
+                                       duplicate agent starts with descriptive error      integrity                .map/.scen fixtures
+                                       codes.
+
+                                       Resumable Repair Engine (Comp. 1): Support
+                                                                                                                   Planned Experiment E1
+                                       cooperative interruption at active search slice
+                Functional (Core                                                          Gap Dimension 1 & 3 /    pause-and-resume
+      FR-02                            Delta, saving repair state into a bounded in-
+                Engine)                                                                   Objective O2 / RQ1       equivalence and latency
+                                       memory checkpoint slot (max K = 2) and
+                                                                                                                   test
+                                       restoring state on demand.
+
+
+
+
+    P. G. Disas Sethnada (IIT: 20231323 | UoW: w2119964) • BEng (Hons) Software Engineering • Supervisor: Mr. Maninda Edirisooriya
+                               6SENG010C Software Engineering Final Project Proposal | RouteBudget Lab
+
+
+                                                                                                                      Planned Verification &
+ Req ID     Category                 Proposed Requirement Specification                    Evidence / Gap Source
+                                                                                                                      Target Criterion
+
+                                     Conservative Constraint Validator (Comp. 2):
+                                     Before resuming checkpoint C_i, check via Stage
+                                                                                                                      Planned Experiment E4
+                                     1 (version counters) and Stage 2 (reservation
+            Functional (State                                                              Gap Dimension 4 /          perturbation audit
+  FR-03                              footprint R(C_i)) whether modified external paths
+            Validation)                                                                    Objective O3 / RQ2         (target: 0 invalid
+                                     A \ A_c conflict with C_i's prefix paths or
+                                                                                                                      commits)
+                                     explored search state; discard C_i if compatibility
+                                     cannot be conservatively verified.
+
+                                     Remaining-Work Estimator (Comp. 3): Extract
+                                     progress features from C_i (expanded nodes
+                                                                                                                      Planned Experiment E5
+            Functional               N_exp, open-list size |Open|, heuristic delay gap,    Gap Dimension 5 /
+  FR-04                                                                                                               progress-feature
+            (Estimation)             elapsed active search time u_spent, prefix            Objective O4 / RQ3
+                                                                                                                      ablation study
+                                     progress r_done) to predict expected accepted
+                                     improvement and remaining active search time.
+
+                                     Resume-or-Start Controller (Comp. 4): Score
+                                                                                                                      Planned Experiments E2,
+                                     validated checkpoints and candidate fresh repairs     Gap Dimension 5 /
+  FR-05     Functional (Control)                                                                                      E3, E6 comparative
+                                     via the proposed Score(a, Delta) heuristic subject    Objective O4 / RQ3
+                                                                                                                      benchmarks
+                                     to Delta + Overhead_hat(a) + t_reserve <= b_k.
+
+                                     Independent Path & Collision Validator: Check
+                                                                                                                      Target: 100% validation
+                                     every initial and completed candidate plan            BCS Public Interest /
+            Functional (Path                                                                                          pass rate on all
+  FR-06                              P_cand for vertex conflicts, edge swaps, legal grid   Proposed Post-Repair
+            Verification)                                                                                             committed incumbent
+                                     transitions, and stay-at-goal occupancy before        Safeguard
+                                                                                                                      plans
+                                     updating P_inc.
+
+                                     Telemetry Exporter & 2D Replay UI: Export per-
+                                     iteration CSV/SQLite logs and provide a local 2D                                 Planned end-to-end
+            Functional (UI &                                                               Software product
+  FR-07                              grid replay viewer with play/pause/step controls                                 replay demonstration
+            Telemetry)                                                                     deliverable (O6) / EDI
+                                     and colour-blind-safe conflict highlights outside                                from exported trace
+                                     the timed loop.
+
+                                     Strict Monotonic Wall-Clock Accounting: All
+                                     actual elapsed times (t_val, t_pool, t_est, t_ctrl,                              Planned monotonic
+            Non-Functional           t_restore, t_init, active search, t_verify, and       Tan et al. (2025) fair     timer audit in logs;
+ NFR-01
+            (Timing)                 t_save) shall be measured via                         evaluation protocol        target t_est + t_ctrl <=
+                                     std::chrono::steady_clock and charged to the                                     1.0 ms
+                                     global deadline B.
+
+                                     Bounded Checkpoint Footprint: The checkpoint
+                                                                                           Prevent memory             Planned memory
+            Non-Functional           store S_chk shall cap concurrent saved states at K
+ NFR-02                                                                                    exhaustion on 50–100       profiling under Valgrind
+            (Memory)                 = 2 and enforce a proposed RAM ceiling (<= 256
+                                                                                           agents                     / AddressSanitizer
+                                     MB) with lowest-score eviction.
+
+                                     Transactional Incumbent Rollback: Candidate
+                                     repairs and resumptions shall execute on isolated                                Planned fault-injection
+            Non-Functional                                                                 Desired anytime validity
+ NFR-03                              working copies so timeouts, exceptions, or                                       and forced-timeout
+            (Reliability)                                                                  invariant
+                                     rejected plans roll back cleanly without mutating                                recovery tests
+                                     P_inc.
+
+                                     Deterministic Execution under Fixed Seeds: Given
+                                     identical map, scenario, agent count, random                                     Planned repeated-run
+            Non-Functional
+ NFR-04                              seed, and step/expansion cutoff, solver               Scientific repeatability   parity check across
+            (Reproducibility)
+                                     initialisation and validation are designed to                                    identical seeds
+                                     execute deterministically.
+
+                                     Map-Level Partition Isolation: Training,
+                                                                                                                      Planned build-script
+            Data & Leakage           validation, and held-out test maps shall be stored    Experimental validity
+ DR-01                                                                                                                check verifying
+            Requirement              in separate directories; estimator parameters         (Section 5.1)
+                                                                                                                      train/test separation
+                                     shall never be fit on test maps.
+
+
+
+
+P. G. Disas Sethnada (IIT: 20231323 | UoW: w2119964) • BEng (Hons) Software Engineering • Supervisor: Mr. Maninda Edirisooriya
+                              6SENG010C Software Engineering Final Project Proposal | RouteBudget Lab
+
+
+                                                                                                              Planned Verification &
+     Req ID     Category             Proposed Requirement Specification               Evidence / Gap Source
+                                                                                                              Target Criterion
+
+                                    Simulation-Only Operational Boundary: The
+                                    software shall display an explicit notice                                 Planned inspection of
+                Boundary & Safety                                                     Responsible Computing
+      SR-01                         confirming that output plans are discrete grid                            CLI banner, UI header,
+                Requirement                                                           / BCS Code
+                                    simulations and require kinematic certification                           and documentation
+                                    before physical robot use.
+
+
+
+
+7.2 Proposed Technical Specification of the Four Core Research Components
+
+Component 1: Proposed Resumable Repair Engine (Bounded Store K <= 2)
+Building on the checkpoint state tuple C_i defined in Section 5.3 (Table 5.3), the proposed Resumable Repair Engine
+instruments the low-level Prioritized Planning + SIPP / Space-Time A* solver to check a cooperative interruption
+condition at each node expansion or agent-level step against the allocated active repair-search slice Delta. Every
+repair or resumption executes on an isolated working copy so that an interruption never leaves the incumbent plan
+P_inc partially modified. When interrupted at active search time Delta, if the search meets a minimum progress
+threshold, its state tuple C_i is saved into the bounded in-memory checkpoint store S_chk (capacity K <= 2, evicting
+the lowest-scored entry when full), and the actual elapsed checkpoint-saving time t_save is charged immediately to
+the global wall-clock deadline B.
+
+Component 2: Proposed Conservative Constraint Validator & Safeguard Separation
+Suppose checkpoint C_i was saved at iteration k_1 and is reconsidered at a later iteration k_2 > k_1 under the
+current incumbent plan P_inc^(k_2). Let A_mod subset (A \ A_c) denote the subset of external agents whose
+trajectories in P_inc^(k_2) have changed since C_i was saved or last validated. Crucially, post-repair final-path
+collision checking (the proposed Independent Path Validator, FR-06) only inspects a completed candidate plan
+P_cand before commit; final-path collision checking alone does not prove that a resumed checkpoint's internal
+search state (its open/closed lists, safe intervals, g-values, and pruning decisions) remained valid under mutated
+external reservations. Therefore, Component 2 is proposed as a pre-resumption safeguard that executes a two-
+stage compatibility check (requiring soundness justification and empirical testing in Experiment E4):
+•      Stage 1 — Trajectory Version Screen: Each agent a in A maintains a monotonic version counter v_traj[a]
+       incremented whenever an accepted repair modifies its path in P_inc. If v_traj[e] matches C_i's recorded version
+       for all external agents e in A \ A_c (A_mod is empty), C_i's external reservation table is unchanged and C_i is
+       marked VALID in O(|A|) time.
+•      Stage 2 — Conservative Spatio-Temporal Footprint Check: If A_mod is non-empty, the validator tests whether
+       any modified external agent's old trajectory p_e^(k_1) or new trajectory p_e^(k_2) intersects the recorded
+       spatio-temporal reservation footprint R(C_i) covering C_i's routed prefix paths P'_{1..r_done} and explored
+       search states. Under the proposed conservative policy, if any reservation in R(C_i) was added, removed, or
+       altered such that internal search-state consistency or prefix collision-freedom cannot be verified without re-
+       expanding nodes, the validator marks C_i INVALID and evicts it from S_chk. While conservative screening may
+       incur false rejections (discarding a checkpoint that might still have led to a valid path), it is designed to prevent
+       resuming corrupted search states, complemented by the Independent Path Validator (FR-06) as a final post-
+       repair check before any completed plan updates P_inc.
+
+Component 3: Proposed Lightweight Remaining-Work Estimator
+For each validated checkpoint C_i in C_valid(k) and each candidate fresh repair neighbourhood N_j in {N_1, ...,
+N_M}, the proposed estimator extracts a compact feature vector phi(a) (comprising neighbourhood size |A_c|,
+completed prefix ratio r_done / |A_c|, cumulative expanded nodes N_exp, open-list frontier size |Open|, current
+heuristic delay gap of remaining agents in A_c, cumulative active search time already spent u_spent, local
+congestion density, and remaining budget ratio b_k / B; for a fresh repair N_j, r_done = N_exp = |Open| = u_spent =
+0). Given a candidate active repair-search slice Delta, a lightweight linear/ridge or calibrated tabular model (to be fit
+offline on the training map partition during WP4; no fitted estimator or measured coefficients exist at this stage)
+
+    P. G. Disas Sethnada (IIT: 20231323 | UoW: w2119964) • BEng (Hons) Software Engineering • Supervisor: Mr. Maninda Edirisooriya
+                           6SENG010C Software Engineering Final Project Proposal | RouteBudget Lab
+
+predicts two quantities: (i) E_hat[AcceptedImprovement(a, Delta)], the expected reduction in incumbent Sum of
+Costs max(0, C(P_inc) - C(P_cand)) accepted within active search time Delta, where AcceptedImprovement(a, Delta)
+is defined as zero whenever no valid improving repair is completed and accepted within Delta; and (ii)
+E_hat[min(T_rem(a), Delta)], the expected active low-level search time expended during slice Delta, where T_rem(a)
+denotes the remaining active repair-search time required for action a to reach completion (excluding action
+overhead).
+
+Component 4: Proposed Overhead-Aware Resume-or-Start Controller Heuristic
+At iteration k, let B denote the global wall-clock deadline, t_now the elapsed monotonic wall-clock time, b_k = B -
+t_now the remaining global wall-clock budget, and t_reserve > 0 a safety buffer reserved to finalise incumbent
+commitment before B expires. In Step A of each iteration, stored checkpoints in S_chk are screened by Component
+2 (incurring actual validation time t_val), and in Step B the fresh candidate pool {N_1, ..., N_M} is generated
+(incurring t_pool), features are evaluated (incurring t_est), and candidate actions a in A_elig(k) = C_valid(k) union
+{N_1, ..., N_M} are scored across a discrete slice grid D_grid (incurring t_ctrl). Because t_val, t_pool, t_est, and t_ctrl
+are executed once during this pre-decision sweep, their actual elapsed time immediately advances t_now and
+reduces b_k; to avoid charging already-incurred or shared sweep costs a second time, they are not re-added inside
+the per-action prospective overhead term Overhead_hat(a). (If lazy validation were used instead of Step A
+screening, estimated validation cost t_hat_val(C_i) would be included once inside Overhead_hat(C_i).) For any
+candidate pair (a, Delta) where Delta is the maximum active repair-search time (excluding action overhead), the
+provisional controller heuristic requires budget admissibility and evaluates expected accepted improvement per
+unit of expected total action time:
+
+  Proposed Overhead-Aware Controller Decision Heuristic (Provisional Design)
+  Score(a, Delta) = E_hat[ AcceptedImprovement(a, Delta) ] / ( E_hat[ min(T_rem(a), Delta) ] + Overhead_hat(a) )
+
+  Budget Admissibility Constraint:
+   Delta + Overhead_hat(a) + t_reserve <= b_k        (where b_k = B - t_now is the remaining global wall-clock budget)
+
+  Symbol Definitions & One-Time Overhead Accounting:
+   • a in A_elig(k) = C_valid(k) union {N_1, ..., N_M}: Candidate action (resuming validated checkpoint C_i or starting
+  fresh repair N_j).
+   • Delta > 0: Maximum active low-level repair-search time allocated to action a, excluding explicitly accounted action
+  overhead.
+   • T_rem(a) >= 0: Remaining active low-level repair-search time required for action a to complete (excluding action
+  overhead).
+   • AcceptedImprovement(a, Delta): Accepted reduction in Sum of Costs max(0, C(P_inc) - C(P_cand)) if action a
+  completes within active
+     search time Delta and passes independent collision validation; defined as 0 whenever no valid improving repair is
+  accepted within Delta.
+   • Overhead_hat(a): Estimated additional action-specific overhead incurred upon executing action a, counted strictly
+  once:
+      Overhead_hat(C_i) = t_hat_restore(C_i) + t_hat_save_cond(C_i, Delta) [state restoration + conditional
+  checkpoint save if interrupted]
+      Overhead_hat(N_j) = t_hat_init(N_j) + t_hat_save_cond(N_j, Delta) [neighbourhood/solver init + conditional
+  checkpoint save]
+     (Pre-decision sweep costs t_val, t_pool, t_est, t_ctrl are already deducted from b_k = B - t_now and are not double-
+  counted here.)
+
+
+
+The controller selects (a*, Delta*) = argmax_{(a, Delta)} Score(a, Delta) over all admissible pairs satisfying Delta +
+Overhead_hat(a) + t_reserve <= b_k (with a planned end-game ablation comparing Score(a, Delta) against direct
+expected improvement when b_k allows only one final attempt). Crucially, Score(a, Delta) is a proposed heuristic
+policy to be implemented and empirically evaluated in Experiments E3 and E5, not a proven optimal policy. During
+
+
+ P. G. Disas Sethnada (IIT: 20231323 | UoW: w2119964) • BEng (Hons) Software Engineering • Supervisor: Mr. Maninda Edirisooriya
+                            6SENG010C Software Engineering Final Project Proposal | RouteBudget Lab
+
+execution, all actual elapsed wall-clock time—including pre-decision validation (t_val), candidate pool generation
+(t_pool), feature estimation (t_est), controller scoring (t_ctrl), state restoration (t_restore) or fresh solver
+initialisation (t_init), active repair search, independent path validation (t_verify), and conditional checkpoint saving
+(t_save)—is measured via std::chrono::steady_clock and charged directly to the global deadline B.
+
+7.3 Proposed System Architecture Diagrams and Runtime Controller Pseudocode
+Figure 7.1 illustrates the proposed closed-loop runtime architecture of RouteBudget Lab, separating the
+input/initialisation layer, the proposed research core (Components 1–4 and the bounded K <= 2 checkpoint store),
+and the proposed post-repair collision verification and offline 2D replay layer. Figure 7.2 details the proposed
+checkpoint constraint-validation and resume-or-start decision lifecycle, and Algorithm 1 specifies the proposed
+runtime control loop using the exact symbol definitions from Section 7.2.
+
+
+
+
+    Figure 7.1: Proposed RouteBudget Lab System Architecture showing the closed feedback loop between Incumbent Plan updates,
+                     Conservative Constraint Validation, Remaining-Work Estimation, and Resume-or-Start Control.
+
+
+
+
+ P. G. Disas Sethnada (IIT: 20231323 | UoW: w2119964) • BEng (Hons) Software Engineering • Supervisor: Mr. Maninda Edirisooriya
+                           6SENG010C Software Engineering Final Project Proposal | RouteBudget Lab
+
+                   Figure 7.2: Proposed Checkpoint Constraint Validation and Resume-or-Start Decision Lifecycle.
+
+
+  Algorithm 1: Proposed Constraint-Validated Resume-or-Start Anytime MAPF Controller
+  Input: Grid G=(V,E), starts/goals {(s_i,g_i)}, global wall-clock deadline B, reserve buffer t_reserve, max checkpoints
+  K=2, slice grid D_grid
+  Output: Validated collision-free incumbent plan P_inc, telemetry log L
+
+  1: Start monotonic wall-clock timer t_now; initialise empty checkpoint store S_chk (capacity K=2)
+  2: P_inc <- InitialMAPFPlanner(G, {(s_i,g_i)}, budget = B - t_reserve)
+  3: if P_inc is None or not IndependentPathValidator(P_inc) then return NO_VALID_SOLUTION
+  4: Initialise trajectory version vector v_traj[1..m] <- 0
+  5: while (B - t_now) > t_reserve do
+  6: // Step A: Pre-Decision Conservative Constraint Validation (actual t_val charged to t_now)
+  7: for each saved checkpoint C_i in S_chk do
+  8:      status, t_val <- ConservativeConstraintValidator(C_i, P_inc, v_traj)
+  9:      if status == INVALID then Evict(S_chk, C_i); LogInvalidation(L, C_i, t_val)
+  10: C_valid(k) <- S_chk
+  11: // Step B: Candidate Pool & Heuristic Scoring (actual t_pool, t_est, t_ctrl charged to t_now)
+  12: Pool_fresh <- GenerateCandidateNeighbourhoods(P_inc, M)
+  13: A_elig(k) <- C_valid(k) union Pool_fresh; b_k <- B - t_now
+  14: for each action a in A_elig(k) and active search slice Delta in D_grid do
+  15:      Compute Overhead_hat(a) (= t_hat_restore + t_hat_save_cond for C_i; t_hat_init + t_hat_save_cond for N_j)
+  16:      if Delta + Overhead_hat(a) + t_reserve <= b_k then
+  17:         Score(a, Delta) <- E_hat[AcceptedImprovement(a, Delta)] / (E_hat[min(T_rem(a), Delta)] +
+  Overhead_hat(a))
+  18: if no admissible (a, Delta) exists then break
+  19: Select (a*, Delta*) <- argmax_{(a, Delta)} Score(a, Delta)
+  20: // Step C: Execute Resumption or Fresh Repair on Isolated Working Copy (max active search time Delta*)
+  21: if a* is a validated checkpoint C_i in C_valid(k) then
+  22:      RestoreState(C_i) [incurs t_restore]; outcome, P_cand, C_new <- ContinueRepair(C_i, min(Delta*, B - t_now -
+  t_reserve))
+  23: else
+  24:      InitialiseRepair(a*) [incurs t_init]; outcome, P_cand, C_new <- StartFreshRepair(P_inc, a*, min(Delta*, B -
+  t_now - t_reserve))
+  25: // Step D: Post-Repair Independent Collision Validation or Conditional Checkpointing
+  26: if outcome == COMPLETED and Cost(P_cand) < Cost(P_inc) and IndependentPathValidator(P_cand) [incurs
+  t_verify] then
+  27:      Increment v_traj[u] for modified agents u; P_inc <- P_cand
+  28: else if outcome == INTERRUPTED and ShouldCheckpoint(C_new) and (B - t_now) > t_reserve then
+  29:      InsertOrReplaceBounded(S_chk, C_new, max_capacity = K) [incurs t_save]
+  30: LogIterationTelemetry(L, a*, Delta*, outcome, Cost(P_inc), actual_overheads)
+  31: return P_inc, L
+
+
+
+
+7.4 Planned Implementation and Evaluation Schedule
+Table 7.2 and Figure 7.3 present the planned implementation and evaluation schedule across six sequential Work
+Packages (WP1–WP6) from late October 2026 to 5 April 2027 (spanning approximately 23–24 calendar weeks across
+Semester 1, the December–January development period, and Semester 2, followed by the 19 April – 14 May 2027
+viva window). While the University of Westminster 6SENG010W Module Proforma specifies 400 indicative total
+student learning and teaching hours (30 scheduled hours and 370 independent study hours), the work-package hour
+breakdown in Table 7.2 is presented as a proposed project effort estimate (70 + 75 + 65 + 60 + 65 + 65 = 400 hours).
+Implementation has not yet started; all tasks in WP1–WP6 are planned future activities:
+
+
+ P. G. Disas Sethnada (IIT: 20231323 | UoW: w2119964) • BEng (Hons) Software Engineering • Supervisor: Mr. Maninda Edirisooriya
+                             6SENG010C Software Engineering Final Project Proposal | RouteBudget Lab
+
+
+                                                                                                                            Planned
+   Work Package &        Workstream Title &
+                                                       Planned Tasks & Milestones                    Dependencies         Deliverable /
+  Calendar Window        Proposed Effort Estimate
+                                                                                                                              Gate
+
+                                                       Complete summative PP (5 Nov 2026);
+                                                       compile C++17 MAPF-LNS backbone; build                             Gate 1 Verdict
+        WP1              Baseline Reproduction,                                                      Completion of PP
+                                                       Moving AI importer & independent path                             (End of WP1) &
+ (Late Oct – Mid Nov     Profiling & Gate 1                                                          Research
+                                                       validator; profile repair timeout rates;                           Reproducible
+        2026)            (70 Hours Est.)                                                             Preparation
+                                                       compare micro vs. macro-prefix                                       Baseline
+                                                       checkpointing.
+
+                                                       Implement cooperative repair suspension,                             Planned
+        WP2              Resumable Repair Engine       bounded K = 2 checkpoint store S_chk, and                          Component 1
+                                                                                                     WP1 & Gate 1
+ (Late Nov – Mid Dec     (Component 1)                 state restoration; execute planned                                 Module + E1
+                                                                                                     Completion
+        2026)            (75 Hours Est.)               Experiment E1 pause/resume equivalence                            Test Suite (End
+                                                       and latency tests.                                                   of WP2)
+
+                                                       Implement trajectory version tracking                                Planned
+         WP3             Conservative Constraint       (Stage 1) and spatio-temporal reservation-                         Component 2
+ (Late Dec 2026 – Mid    Validator (Component 2)       footprint validation (Stage 2); run planned   WP2 Completion       Module + E4
+       Jan 2027)         (65 Hours Est.)               Experiment E4 perturbation and safety                              Audit (End of
+                                                       audits.                                                               WP3)
+
+                                                                                                                           Integrated
+                                                       Fit lightweight progress estimator on
+                                                                                                                          RouteBudget
+         WP4             Remaining-Work Estimator      training traces; integrate proposed
+                                                                                                     WP2 & WP3           Lab Core + IPD
+ (Late Jan – Early Feb   & Controller (Comps. 3 & 4)   Score(a, Delta) controller; deliver Interim
+                                                                                                     Completion          (28 Jan 2027) +
+         2027)           (60 Hours Est.)               Progress Demonstration (IPD: 28 Jan
+                                                                                                                          Gate 2 (End of
+                                                       2027); run Gate 2 overhead audit.
+                                                                                                                              WP4)
+
+                                                       Execute planned paired benchmark suite
+                                                                                                                             Complete
+                                                       across 4 held-out test maps (50 & 100
+        WP5              Comparative Benchmarking                                                    WP4 & Gate 2          Experimental
+                                                       agents) against restart-only, fixed round-
+ (Mid Feb – Early Mar    & Ablation Suite (E2–E6)                                                    Completion;             Dataset &
+                                                       robin, and published baselines (BALANCE,
+        2027)            (65 Hours Est.)                                                             Frozen Test Split   Statistical Tables
+                                                       ADDRESS, TACKLE); compute Wilcoxon &
+                                                                                                                           (End of WP5)
+                                                       bootstrap statistics.
+
+                                                       Build local 2D grid replay viewer; finalise
+                                                                                                                              Final
+                         2D Replay UI,                 automated regression tests; write 10,000–
+                                                                                                                          Dissertation,
+        WP6              Reproducibility Packaging &   12,000-word final dissertation and record     WP5 Experiments
+                                                                                                                          Code Repo &
+(Mid Mar – 5 Apr 2027)   Final Report                  demonstration video; submit on 5 Apr          Completed
+                                                                                                                         Recorded Demo
+                         (65 Hours Est.)               2027 and prepare for Viva (19 Apr – 14
+                                                                                                                          (5 Apr 2027)
+                                                       May 2027).
+
+                         400 Hours Proposed
+                                                       270 hrs (67.5%) across WP1–WP4
+                         Estimate                                                                                         Full Alignment
+                                                       (Baseline, C++ Engine, Validator,
+Total Proposed Effort    (6SENG010W Indicative                                                       Ongoing Bi-Weekly     with Official
+                                                       Estimator, Controller & IPD); 130 hrs
+       Estimate          Module Hours: 30                                                            Supervision         2026/27 Module
+                                                       (32.5%) across WP5–WP6 (Benchmarking,
+                         Scheduled + 370                                                                                     Calendar
+                                                       2D Replay UI & Final Dissertation).
+                         Independent)
+
+
+
+
+P. G. Disas Sethnada (IIT: 20231323 | UoW: w2119964) • BEng (Hons) Software Engineering • Supervisor: Mr. Maninda Edirisooriya
+                               6SENG010C Software Engineering Final Project Proposal | RouteBudget Lab
+
+
+
+
+Figure 7.3: Planned Implementation and Evaluation Schedule (WP1–WP6, Late October 2026 – 5 April 2027), showing Summative PP (5
+Nov 2026), Gate 1 (End of WP1), Interim Progress Demonstration (28 Jan 2027), Gate 2 (End of WP4), and Final Submission (5 Apr 2027).
+
+
+7.5 Responsible Project Considerations: LESP, Ethics, Cybersecurity, EDI, Sustainability & BCS Code
+Responsible software engineering considerations directly shape the architecture, data governance, and evaluation
+design of RouteBudget Lab:
+
+                         BCS Code of Conduct                                               Concrete Design, Methodology & Governance
+ Dimension                                     Project-Specific Risk / Context
+                         Pillar                                                            Decision
+
+                                               Moving AI benchmarks use the ODC-By         Preserve all copyright headers, benchmark
+                         Duty to Relevant
+ Legal, Licensing &                            license; public C++ repositories (MAPF-     filenames, and attribution citations; clearly
+                         Authority & Duty to
+ Intellectual Property                         LNS, BALANCE, ADDRESS, TACKLE) carry        separate reused C++ baseline solver files from
+                         the Profession
+                                               open-source licenses.                       student-authored RouteBudget Lab modules.
+
+                                                                                           Purely computational simulation study using
+                                                                                           public 2D grid benchmarks with no human
+                                                                                           participants, personal data, or GDPR risk. The
+                         Professional          Mandatory university research ethics
+ Research Ethics &                                                                         mandatory signed UoW Ethics Application will be
+                         Competence and        compliance; risk of selective benchmark
+ Data Governance                                                                           completed and submitted by the 5 November
+                         Integrity             reporting.
+                                                                                           2026 summative PP deadline. Pre-register the 4
+                                                                                           test maps and 25 scenario IDs and report
+                                                                                           negative or neutral regimes transparently.
+
+                                                                                           Enforce parser bounds checking in proposed FR-
+                                               Malformed .map/.scen files or
+                         Public Interest &                                                 01 (rejecting out-of-bounds coordinates), C++17
+ Cybersecurity &                               unbounded checkpoint allocation could
+                         Professional                                                      RAII containers, AddressSanitizer checks, and a
+ Input Integrity                               trigger buffer overflows or memory
+                         Competence                                                        bounded K = 2 / 256 MB memory ceiling
+                                               exhaustion.
+                                                                                           (proposed NFR-02).
+
+                                                                                           Enforce proposed SR-01: explicit disclaimers in
+                                               Discrete grid MAPF assumes                  the RouteBudget Lab UI and documentation
+ Social Impact &                               synchronous point agents without            confirming that output plans are discrete
+ Physical Safety         Public Interest       kinematic momentum, wheel slip,             algorithmic simulations requiring kinematic
+ Boundary                                      sensor noise, or human-robot collision      certification before physical robot use. Proposed
+                                               sensors.                                    FR-06 checks completed discrete plans for grid
+                                                                                           collisions prior to commit.
+
+                                               Visual trajectory replay tools often rely   Use colour-blind-safe palettes (Okabe-Ito /
+ Equality, Diversity,                          solely on red/green colour coding to        Viridis), distinct geometric markers, and tabular
+ Inclusion (EDI) &       Public Interest       indicate congestion or invalidation;        summaries in the planned 2D replay UI (FR-07);
+ Accessibility                                 single-topology evaluation biases           evaluate across diverse topologies (warehouse,
+                                               conclusions.                                random, room, city).
+
+
+
+
+ P. G. Disas Sethnada (IIT: 20231323 | UoW: w2119964) • BEng (Hons) Software Engineering • Supervisor: Mr. Maninda Edirisooriya
+                               6SENG010C Software Engineering Final Project Proposal | RouteBudget Lab
+
+
+                         BCS Code of Conduct                                               Concrete Design, Methodology & Governance
+ Dimension                                        Project-Specific Risk / Context
+                         Pillar                                                            Decision
+
+                                                                                           Adopt a CPU-first in-process C++17 design (no
+                                                                                           GPU cluster dependency), cap K = 2 checkpoints,
+ Environmental                                    Unbounded benchmark sweeps and
+                                                                                           and bound WP5 evaluation to ~600
+ Sustainability & UN     Public Interest & Duty   GPU-heavy neural schedulers consume
+                                                                                           runs/method/budget, supporting UN SDG 9
+ SDGs (SDG 9 & SDG       to the Profession        substantial energy and compute
+                                                                                           (efficient logistics routing research) and SDG 12
+ 12)                                              resources.
+                                                                                           (reducing wasted compute cycles from discarded
+                                                                                           searches).
+
+
+
+
+7.6 Anticipated Contributions and Formative Conclusion
+•      1. Proposed Algorithmic & Methodological Contribution: A formal design specification and planned empirical
+       investigation of bounded mid-repair checkpoint suspension, conservative external-constraint validation, and
+       overhead-aware resume-or-start heuristic control within anytime MAPF-LNS.
+•      2. Planned Empirical & Diagnostic Contribution: Planned quantitative experiments (E1–E6) on public Moving AI
+       benchmarks designed to measure how frequently interrupted MAPF repairs remain constraint-compatible
+       across iterations and identify under which congestion regimes resumption helps or fails relative to scratch
+       restarts.
+•      3. Proposed Software Engineering Artefact Contribution: RouteBudget Lab — a planned modular C++17 and
+       offline 2D-replay software engineering benchmark workbench featuring post-repair collision checking and
+       monotonic wall-clock overhead telemetry.
+Conclusion: This formative report documents the completed literature synthesis, candidate research gap analysis,
+mathematical problem formulation, and proposed technical and experimental design for RouteBudget Lab as of 19
+October 2026. By separating pre-resumption checkpoint compatibility validation from post-repair path verification
+and accounting for all runtime overheads within the global wall-clock deadline, the proposal defines a falsifiable,
+appropriately scoped Level 6 Software Engineering project ready to enter Work Package 1 implementation.
+
+7.7 References
+[1] Phan, T., Huang, T., Dilkina, B. and Koenig, S. (2024) 'Adaptive Anytime Multi-Agent Path Finding Using Bandit-Based Large
+Neighborhood Search', Proceedings of the AAAI Conference on Artificial Intelligence, 38(16), pp. 17514–17522. Available at:
+https://doi.org/10.1609/aaai.v38i16.29701 (Accessed: 18 October 2026).
+[2] Phan, T., Zhang, B., Chan, S.-H. and Koenig, S. (2025) 'Anytime Multi-Agent Path Finding with an Adaptive Delay-Based Heuristic',
+Proceedings of the AAAI Conference on Artificial Intelligence, 39(22), pp. 23286–23294. Available at:
+https://doi.org/10.1609/aaai.v39i22.34495 (Accessed: 18 October 2026).
+[3] Phan, T., Chan, S.-H. and Koenig, S. (2026) 'Truncated Counterfactual Learning for Anytime Multi-Agent Path Finding', Proceedings of
+the AAAI Conference on Artificial Intelligence, 40(35), pp. 29633–29641. Available at: https://doi.org/10.1609/aaai.v40i35.40207
+(Accessed: 18 October 2026).
+[4] Tan, J., Luo, Y., Li, J. and Ma, H. (2025) 'Reevaluation of Large Neighborhood Search for MAPF: Findings and Opportunities',
+Proceedings of the International Symposium on Combinatorial Search (SoCS), 18(1), pp. 212–220 (arXiv:2407.09451v2). Available at:
+https://doi.org/10.1609/socs.v18i1.35996 (Accessed: 18 October 2026).
+[5] Vedder, K. and Biswas, J. (2021) 'X*: Anytime Multi-Agent Path Finding for Sparse Domains using Window-Based Iterative Repairs',
+Artificial Intelligence, 291, 103417. Available at: https://doi.org/10.1016/j.artint.2020.103417 (Accessed: 18 October 2026).
+[6] To, H. T., Nguyen, S. and Pham, N. H. (2025) 'CAHC: A General Conflict-Aware Heuristic Caching Framework for Multi-Agent Path
+Finding', arXiv preprint arXiv:2512.12243. Available at: https://arxiv.org/abs/2512.12243 (Accessed: 18 October 2026).
+[7] Tornede, A., Wever, M., Werner, S., Mohr, F. and Hüllermeier, E. (2020) 'Run2Survive: A Decision-theoretic Approach to Algorithm
+Selection based on Survival Analysis', Proceedings of the Asian Conference on Machine Learning (ACML) / arXiv:2007.02816. Available at:
+https://arxiv.org/abs/2007.02816 (Accessed: 18 October 2026).
+[8] Margraf, V., Koerner, T., Tornede, A. and Wever, M. (2025) 'RunAndSchedule2Survive: Algorithm Scheduling Based on Run2Survive',
+ACM Transactions on Evolutionary Learning and Optimization, 5(3), pp. 1–17. Available at: https://doi.org/10.1145/3737705 (Accessed:
+18 October 2026).
+[9] Kaduri, O., Boyarski, E. and Stern, R. (2020) 'Algorithm Selection for Optimal Multi-Agent Pathfinding', Proceedings of the
+International Conference on Automated Planning and Scheduling (ICAPS), 30(1), pp. 161–165. Available at:
+https://doi.org/10.1609/icaps.v30i1.6657 (Accessed: 18 October 2026).
+
+    P. G. Disas Sethnada (IIT: 20231323 | UoW: w2119964) • BEng (Hons) Software Engineering • Supervisor: Mr. Maninda Edirisooriya
+                               6SENG010C Software Engineering Final Project Proposal | RouteBudget Lab
+
+[10] Li, J., Chen, Z., Harabor, D., Stuckey, P. J. and Koenig, S. (2021) 'Anytime Multi-Agent Path Finding via Large Neighborhood Search',
+Proceedings of the International Joint Conference on Artificial Intelligence (IJCAI 2021), pp. 4127–4135. Available at:
+https://www.ijcai.org/proceedings/2021/568 (Accessed: 18 October 2026).
+[11] Stern, R. et al. (2019) 'Multi-Agent Pathfinding: Definitions, Variants, and Benchmarks', Proceedings of the International Symposium
+on Combinatorial Search (SoCS), 10(1), pp. 151–158. Benchmark Portal: https://movingai.com/benchmarks/mapf/index.html (Accessed:
+18 October 2026).
+[12] Hevner, A. R., March, S. T., Park, J. and Ram, S. (2004) 'Design Science in Information Systems Research', MIS Quarterly, 28(1), pp.
+75–105.
+[13] Peffers, K., Tuunanen, T., Rothenberger, M. A. and Chatterjee, S. (2007) 'A Design Science Research Methodology for Information
+Systems Research', Journal of Management Information Systems, 24(3), pp. 45–77.
+[14] Yu, J. and LaValle, S. M. (2013) 'Structure and Intractability of Optimal Multi-Robot Path Planning on Graphs', Proceedings of the
+AAAI Conference on Artificial Intelligence, 27(1), pp. 1443–1449.
+[15] Public Author Source Repositories (Candidate Baseline Codebases for Planned WP1 Investigation): TACKLE
+(https://github.com/thomyphan/counterfactual-mapf-lns), BALANCE (https://github.com/thomyphan/anytime-mapf), ADDRESS
+(https://github.com/JimyZ13/ADDRESS), Unified MAPF-LNS (https://github.com/ChristinaTan0704/mapf-lns-unified).
+[16] BCS, The Chartered Institute for IT (2022) BCS Code of Conduct. Available at: https://www.bcs.org/membership-and-
+registrations/become-a-member/bcs-code-of-conduct (Accessed: 18 October 2026).
+
+
+
+
+ P. G. Disas Sethnada (IIT: 20231323 | UoW: w2119964) • BEng (Hons) Software Engineering • Supervisor: Mr. Maninda Edirisooriya
+

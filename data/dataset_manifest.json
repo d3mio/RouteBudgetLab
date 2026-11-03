@@ -1,0 +1,1052 @@
+{
+  "partitions": {
+    "training": {
+      "maps": {
+        "warehouse-10-20-10-2-1.map": {
+          "path": "data/training/maps/warehouse-10-20-10-2-1.map"
+        },
+        "random-32-32-20.map": {
+          "path": "data/training/maps/random-32-32-20.map"
+        },
+        "maze-32-32-2.map": {
+          "path": "data/training/maps/maze-32-32-2.map"
+        },
+        "empty-32-32.map": {
+          "path": "data/training/maps/empty-32-32.map"
+        }
+      },
+      "scenarios": {
+        "warehouse-10-20-10-2-1-random-1.scen": {
+          "path": "data/training/scenarios/warehouse-10-20-10-2-1-random-1.scen",
+          "map": "warehouse-10-20-10-2-1.map"
+        },
+        "warehouse-10-20-10-2-1-random-2.scen": {
+          "path": "data/training/scenarios/warehouse-10-20-10-2-1-random-2.scen",
+          "map": "warehouse-10-20-10-2-1.map"
+        },
+        "warehouse-10-20-10-2-1-random-3.scen": {
+          "path": "data/training/scenarios/warehouse-10-20-10-2-1-random-3.scen",
+          "map": "warehouse-10-20-10-2-1.map"
+        },
+        "warehouse-10-20-10-2-1-random-4.scen": {
+          "path": "data/training/scenarios/warehouse-10-20-10-2-1-random-4.scen",
+          "map": "warehouse-10-20-10-2-1.map"
+        },
+        "warehouse-10-20-10-2-1-random-5.scen": {
+          "path": "data/training/scenarios/warehouse-10-20-10-2-1-random-5.scen",
+          "map": "warehouse-10-20-10-2-1.map"
+        },
+        "warehouse-10-20-10-2-1-random-6.scen": {
+          "path": "data/training/scenarios/warehouse-10-20-10-2-1-random-6.scen",
+          "map": "warehouse-10-20-10-2-1.map"
+        },
+        "warehouse-10-20-10-2-1-random-7.scen": {
+          "path": "data/training/scenarios/warehouse-10-20-10-2-1-random-7.scen",
+          "map": "warehouse-10-20-10-2-1.map"
+        },
+        "warehouse-10-20-10-2-1-random-8.scen": {
+          "path": "data/training/scenarios/warehouse-10-20-10-2-1-random-8.scen",
+          "map": "warehouse-10-20-10-2-1.map"
+        },
+        "warehouse-10-20-10-2-1-random-9.scen": {
+          "path": "data/training/scenarios/warehouse-10-20-10-2-1-random-9.scen",
+          "map": "warehouse-10-20-10-2-1.map"
+        },
+        "warehouse-10-20-10-2-1-random-10.scen": {
+          "path": "data/training/scenarios/warehouse-10-20-10-2-1-random-10.scen",
+          "map": "warehouse-10-20-10-2-1.map"
+        },
+        "warehouse-10-20-10-2-1-random-11.scen": {
+          "path": "data/training/scenarios/warehouse-10-20-10-2-1-random-11.scen",
+          "map": "warehouse-10-20-10-2-1.map"
+        },
+        "warehouse-10-20-10-2-1-random-12.scen": {
+          "path": "data/training/scenarios/warehouse-10-20-10-2-1-random-12.scen",
+          "map": "warehouse-10-20-10-2-1.map"
+        },
+        "warehouse-10-20-10-2-1-random-13.scen": {
+          "path": "data/training/scenarios/warehouse-10-20-10-2-1-random-13.scen",
+          "map": "warehouse-10-20-10-2-1.map"
+        },
+        "warehouse-10-20-10-2-1-random-14.scen": {
+          "path": "data/training/scenarios/warehouse-10-20-10-2-1-random-14.scen",
+          "map": "warehouse-10-20-10-2-1.map"
+        },
+        "warehouse-10-20-10-2-1-random-15.scen": {
+          "path": "data/training/scenarios/warehouse-10-20-10-2-1-random-15.scen",
+          "map": "warehouse-10-20-10-2-1.map"
+        },
+        "warehouse-10-20-10-2-1-random-16.scen": {
+          "path": "data/training/scenarios/warehouse-10-20-10-2-1-random-16.scen",
+          "map": "warehouse-10-20-10-2-1.map"
+        },
+        "warehouse-10-20-10-2-1-random-17.scen": {
+          "path": "data/training/scenarios/warehouse-10-20-10-2-1-random-17.scen",
+          "map": "warehouse-10-20-10-2-1.map"
+        },
+        "warehouse-10-20-10-2-1-random-18.scen": {
+          "path": "data/training/scenarios/warehouse-10-20-10-2-1-random-18.scen",
+          "map": "warehouse-10-20-10-2-1.map"
+        },
+        "warehouse-10-20-10-2-1-random-19.scen": {
+          "path": "data/training/scenarios/warehouse-10-20-10-2-1-random-19.scen",
+          "map": "warehouse-10-20-10-2-1.map"
+        },
+        "warehouse-10-20-10-2-1-random-20.scen": {
+          "path": "data/training/scenarios/warehouse-10-20-10-2-1-random-20.scen",
+          "map": "warehouse-10-20-10-2-1.map"
+        },
+        "warehouse-10-20-10-2-1-random-21.scen": {
+          "path": "data/training/scenarios/warehouse-10-20-10-2-1-random-21.scen",
+          "map": "warehouse-10-20-10-2-1.map"
+        },
+        "warehouse-10-20-10-2-1-random-22.scen": {
+          "path": "data/training/scenarios/warehouse-10-20-10-2-1-random-22.scen",
+          "map": "warehouse-10-20-10-2-1.map"
+        },
+        "warehouse-10-20-10-2-1-random-23.scen": {
+          "path": "data/training/scenarios/warehouse-10-20-10-2-1-random-23.scen",
+          "map": "warehouse-10-20-10-2-1.map"
+        },
+        "warehouse-10-20-10-2-1-random-24.scen": {
+          "path": "data/training/scenarios/warehouse-10-20-10-2-1-random-24.scen",
+          "map": "warehouse-10-20-10-2-1.map"
+        },
+        "warehouse-10-20-10-2-1-random-25.scen": {
+          "path": "data/training/scenarios/warehouse-10-20-10-2-1-random-25.scen",
+          "map": "warehouse-10-20-10-2-1.map"
+        },
+        "random-32-32-20-random-1.scen": {
+          "path": "data/training/scenarios/random-32-32-20-random-1.scen",
+          "map": "random-32-32-20.map"
+        },
+        "random-32-32-20-random-2.scen": {
+          "path": "data/training/scenarios/random-32-32-20-random-2.scen",
+          "map": "random-32-32-20.map"
+        },
+        "random-32-32-20-random-3.scen": {
+          "path": "data/training/scenarios/random-32-32-20-random-3.scen",
+          "map": "random-32-32-20.map"
+        },
+        "random-32-32-20-random-4.scen": {
+          "path": "data/training/scenarios/random-32-32-20-random-4.scen",
+          "map": "random-32-32-20.map"
+        },
+        "random-32-32-20-random-5.scen": {
+          "path": "data/training/scenarios/random-32-32-20-random-5.scen",
+          "map": "random-32-32-20.map"
+        },
+        "random-32-32-20-random-6.scen": {
+          "path": "data/training/scenarios/random-32-32-20-random-6.scen",
+          "map": "random-32-32-20.map"
+        },
+        "random-32-32-20-random-7.scen": {
+          "path": "data/training/scenarios/random-32-32-20-random-7.scen",
+          "map": "random-32-32-20.map"
+        },
+        "random-32-32-20-random-8.scen": {
+          "path": "data/training/scenarios/random-32-32-20-random-8.scen",
+          "map": "random-32-32-20.map"
+        },
+        "random-32-32-20-random-9.scen": {
+          "path": "data/training/scenarios/random-32-32-20-random-9.scen",
+          "map": "random-32-32-20.map"
+        },
+        "random-32-32-20-random-10.scen": {
+          "path": "data/training/scenarios/random-32-32-20-random-10.scen",
+          "map": "random-32-32-20.map"
+        },
+        "random-32-32-20-random-11.scen": {
+          "path": "data/training/scenarios/random-32-32-20-random-11.scen",
+          "map": "random-32-32-20.map"
+        },
+        "random-32-32-20-random-12.scen": {
+          "path": "data/training/scenarios/random-32-32-20-random-12.scen",
+          "map": "random-32-32-20.map"
+        },
+        "random-32-32-20-random-13.scen": {
+          "path": "data/training/scenarios/random-32-32-20-random-13.scen",
+          "map": "random-32-32-20.map"
+        },
+        "random-32-32-20-random-14.scen": {
+          "path": "data/training/scenarios/random-32-32-20-random-14.scen",
+          "map": "random-32-32-20.map"
+        },
+        "random-32-32-20-random-15.scen": {
+          "path": "data/training/scenarios/random-32-32-20-random-15.scen",
+          "map": "random-32-32-20.map"
+        },
+        "random-32-32-20-random-16.scen": {
+          "path": "data/training/scenarios/random-32-32-20-random-16.scen",
+          "map": "random-32-32-20.map"
+        },
+        "random-32-32-20-random-17.scen": {
+          "path": "data/training/scenarios/random-32-32-20-random-17.scen",
+          "map": "random-32-32-20.map"
+        },
+        "random-32-32-20-random-18.scen": {
+          "path": "data/training/scenarios/random-32-32-20-random-18.scen",
+          "map": "random-32-32-20.map"
+        },
+        "random-32-32-20-random-19.scen": {
+          "path": "data/training/scenarios/random-32-32-20-random-19.scen",
+          "map": "random-32-32-20.map"
+        },
+        "random-32-32-20-random-20.scen": {
+          "path": "data/training/scenarios/random-32-32-20-random-20.scen",
+          "map": "random-32-32-20.map"
+        },
+        "random-32-32-20-random-21.scen": {
+          "path": "data/training/scenarios/random-32-32-20-random-21.scen",
+          "map": "random-32-32-20.map"
+        },
+        "random-32-32-20-random-22.scen": {
+          "path": "data/training/scenarios/random-32-32-20-random-22.scen",
+          "map": "random-32-32-20.map"
+        },
+        "random-32-32-20-random-23.scen": {
+          "path": "data/training/scenarios/random-32-32-20-random-23.scen",
+          "map": "random-32-32-20.map"
+        },
+        "random-32-32-20-random-24.scen": {
+          "path": "data/training/scenarios/random-32-32-20-random-24.scen",
+          "map": "random-32-32-20.map"
+        },
+        "random-32-32-20-random-25.scen": {
+          "path": "data/training/scenarios/random-32-32-20-random-25.scen",
+          "map": "random-32-32-20.map"
+        },
+        "maze-32-32-2-random-1.scen": {
+          "path": "data/training/scenarios/maze-32-32-2-random-1.scen",
+          "map": "maze-32-32-2.map"
+        },
+        "maze-32-32-2-random-2.scen": {
+          "path": "data/training/scenarios/maze-32-32-2-random-2.scen",
+          "map": "maze-32-32-2.map"
+        },
+        "maze-32-32-2-random-3.scen": {
+          "path": "data/training/scenarios/maze-32-32-2-random-3.scen",
+          "map": "maze-32-32-2.map"
+        },
+        "maze-32-32-2-random-4.scen": {
+          "path": "data/training/scenarios/maze-32-32-2-random-4.scen",
+          "map": "maze-32-32-2.map"
+        },
+        "maze-32-32-2-random-5.scen": {
+          "path": "data/training/scenarios/maze-32-32-2-random-5.scen",
+          "map": "maze-32-32-2.map"
+        },
+        "maze-32-32-2-random-6.scen": {
+          "path": "data/training/scenarios/maze-32-32-2-random-6.scen",
+          "map": "maze-32-32-2.map"
+        },
+        "maze-32-32-2-random-7.scen": {
+          "path": "data/training/scenarios/maze-32-32-2-random-7.scen",
+          "map": "maze-32-32-2.map"
+        },
+        "maze-32-32-2-random-8.scen": {
+          "path": "data/training/scenarios/maze-32-32-2-random-8.scen",
+          "map": "maze-32-32-2.map"
+        },
+        "maze-32-32-2-random-9.scen": {
+          "path": "data/training/scenarios/maze-32-32-2-random-9.scen",
+          "map": "maze-32-32-2.map"
+        },
+        "maze-32-32-2-random-10.scen": {
+          "path": "data/training/scenarios/maze-32-32-2-random-10.scen",
+          "map": "maze-32-32-2.map"
+        },
+        "maze-32-32-2-random-11.scen": {
+          "path": "data/training/scenarios/maze-32-32-2-random-11.scen",
+          "map": "maze-32-32-2.map"
+        },
+        "maze-32-32-2-random-12.scen": {
+          "path": "data/training/scenarios/maze-32-32-2-random-12.scen",
+          "map": "maze-32-32-2.map"
+        },
+        "maze-32-32-2-random-13.scen": {
+          "path": "data/training/scenarios/maze-32-32-2-random-13.scen",
+          "map": "maze-32-32-2.map"
+        },
+        "maze-32-32-2-random-14.scen": {
+          "path": "data/training/scenarios/maze-32-32-2-random-14.scen",
+          "map": "maze-32-32-2.map"
+        },
+        "maze-32-32-2-random-15.scen": {
+          "path": "data/training/scenarios/maze-32-32-2-random-15.scen",
+          "map": "maze-32-32-2.map"
+        },
+        "maze-32-32-2-random-16.scen": {
+          "path": "data/training/scenarios/maze-32-32-2-random-16.scen",
+          "map": "maze-32-32-2.map"
+        },
+        "maze-32-32-2-random-17.scen": {
+          "path": "data/training/scenarios/maze-32-32-2-random-17.scen",
+          "map": "maze-32-32-2.map"
+        },
+        "maze-32-32-2-random-18.scen": {
+          "path": "data/training/scenarios/maze-32-32-2-random-18.scen",
+          "map": "maze-32-32-2.map"
+        },
+        "maze-32-32-2-random-19.scen": {
+          "path": "data/training/scenarios/maze-32-32-2-random-19.scen",
+          "map": "maze-32-32-2.map"
+        },
+        "maze-32-32-2-random-20.scen": {
+          "path": "data/training/scenarios/maze-32-32-2-random-20.scen",
+          "map": "maze-32-32-2.map"
+        },
+        "maze-32-32-2-random-21.scen": {
+          "path": "data/training/scenarios/maze-32-32-2-random-21.scen",
+          "map": "maze-32-32-2.map"
+        },
+        "maze-32-32-2-random-22.scen": {
+          "path": "data/training/scenarios/maze-32-32-2-random-22.scen",
+          "map": "maze-32-32-2.map"
+        },
+        "maze-32-32-2-random-23.scen": {
+          "path": "data/training/scenarios/maze-32-32-2-random-23.scen",
+          "map": "maze-32-32-2.map"
+        },
+        "maze-32-32-2-random-24.scen": {
+          "path": "data/training/scenarios/maze-32-32-2-random-24.scen",
+          "map": "maze-32-32-2.map"
+        },
+        "maze-32-32-2-random-25.scen": {
+          "path": "data/training/scenarios/maze-32-32-2-random-25.scen",
+          "map": "maze-32-32-2.map"
+        },
+        "empty-32-32-random-1.scen": {
+          "path": "data/training/scenarios/empty-32-32-random-1.scen",
+          "map": "empty-32-32.map"
+        },
+        "empty-32-32-random-2.scen": {
+          "path": "data/training/scenarios/empty-32-32-random-2.scen",
+          "map": "empty-32-32.map"
+        },
+        "empty-32-32-random-3.scen": {
+          "path": "data/training/scenarios/empty-32-32-random-3.scen",
+          "map": "empty-32-32.map"
+        },
+        "empty-32-32-random-4.scen": {
+          "path": "data/training/scenarios/empty-32-32-random-4.scen",
+          "map": "empty-32-32.map"
+        },
+        "empty-32-32-random-5.scen": {
+          "path": "data/training/scenarios/empty-32-32-random-5.scen",
+          "map": "empty-32-32.map"
+        },
+        "empty-32-32-random-6.scen": {
+          "path": "data/training/scenarios/empty-32-32-random-6.scen",
+          "map": "empty-32-32.map"
+        },
+        "empty-32-32-random-7.scen": {
+          "path": "data/training/scenarios/empty-32-32-random-7.scen",
+          "map": "empty-32-32.map"
+        },
+        "empty-32-32-random-8.scen": {
+          "path": "data/training/scenarios/empty-32-32-random-8.scen",
+          "map": "empty-32-32.map"
+        },
+        "empty-32-32-random-9.scen": {
+          "path": "data/training/scenarios/empty-32-32-random-9.scen",
+          "map": "empty-32-32.map"
+        },
+        "empty-32-32-random-10.scen": {
+          "path": "data/training/scenarios/empty-32-32-random-10.scen",
+          "map": "empty-32-32.map"
+        },
+        "empty-32-32-random-11.scen": {
+          "path": "data/training/scenarios/empty-32-32-random-11.scen",
+          "map": "empty-32-32.map"
+        },
+        "empty-32-32-random-12.scen": {
+          "path": "data/training/scenarios/empty-32-32-random-12.scen",
+          "map": "empty-32-32.map"
+        },
+        "empty-32-32-random-13.scen": {
+          "path": "data/training/scenarios/empty-32-32-random-13.scen",
+          "map": "empty-32-32.map"
+        },
+        "empty-32-32-random-14.scen": {
+          "path": "data/training/scenarios/empty-32-32-random-14.scen",
+          "map": "empty-32-32.map"
+        },
+        "empty-32-32-random-15.scen": {
+          "path": "data/training/scenarios/empty-32-32-random-15.scen",
+          "map": "empty-32-32.map"
+        },
+        "empty-32-32-random-16.scen": {
+          "path": "data/training/scenarios/empty-32-32-random-16.scen",
+          "map": "empty-32-32.map"
+        },
+        "empty-32-32-random-17.scen": {
+          "path": "data/training/scenarios/empty-32-32-random-17.scen",
+          "map": "empty-32-32.map"
+        },
+        "empty-32-32-random-18.scen": {
+          "path": "data/training/scenarios/empty-32-32-random-18.scen",
+          "map": "empty-32-32.map"
+        },
+        "empty-32-32-random-19.scen": {
+          "path": "data/training/scenarios/empty-32-32-random-19.scen",
+          "map": "empty-32-32.map"
+        },
+        "empty-32-32-random-20.scen": {
+          "path": "data/training/scenarios/empty-32-32-random-20.scen",
+          "map": "empty-32-32.map"
+        },
+        "empty-32-32-random-21.scen": {
+          "path": "data/training/scenarios/empty-32-32-random-21.scen",
+          "map": "empty-32-32.map"
+        },
+        "empty-32-32-random-22.scen": {
+          "path": "data/training/scenarios/empty-32-32-random-22.scen",
+          "map": "empty-32-32.map"
+        },
+        "empty-32-32-random-23.scen": {
+          "path": "data/training/scenarios/empty-32-32-random-23.scen",
+          "map": "empty-32-32.map"
+        },
+        "empty-32-32-random-24.scen": {
+          "path": "data/training/scenarios/empty-32-32-random-24.scen",
+          "map": "empty-32-32.map"
+        },
+        "empty-32-32-random-25.scen": {
+          "path": "data/training/scenarios/empty-32-32-random-25.scen",
+          "map": "empty-32-32.map"
+        }
+      }
+    },
+    "validation": {
+      "maps": {
+        "warehouse-10-20-10-2-2.map": {
+          "path": "data/validation/maps/warehouse-10-20-10-2-2.map"
+        },
+        "random-64-64-10.map": {
+          "path": "data/validation/maps/random-64-64-10.map"
+        }
+      },
+      "scenarios": {
+        "warehouse-10-20-10-2-2-random-1.scen": {
+          "path": "data/validation/scenarios/warehouse-10-20-10-2-2-random-1.scen",
+          "map": "warehouse-10-20-10-2-2.map"
+        },
+        "warehouse-10-20-10-2-2-random-2.scen": {
+          "path": "data/validation/scenarios/warehouse-10-20-10-2-2-random-2.scen",
+          "map": "warehouse-10-20-10-2-2.map"
+        },
+        "warehouse-10-20-10-2-2-random-3.scen": {
+          "path": "data/validation/scenarios/warehouse-10-20-10-2-2-random-3.scen",
+          "map": "warehouse-10-20-10-2-2.map"
+        },
+        "warehouse-10-20-10-2-2-random-4.scen": {
+          "path": "data/validation/scenarios/warehouse-10-20-10-2-2-random-4.scen",
+          "map": "warehouse-10-20-10-2-2.map"
+        },
+        "warehouse-10-20-10-2-2-random-5.scen": {
+          "path": "data/validation/scenarios/warehouse-10-20-10-2-2-random-5.scen",
+          "map": "warehouse-10-20-10-2-2.map"
+        },
+        "warehouse-10-20-10-2-2-random-6.scen": {
+          "path": "data/validation/scenarios/warehouse-10-20-10-2-2-random-6.scen",
+          "map": "warehouse-10-20-10-2-2.map"
+        },
+        "warehouse-10-20-10-2-2-random-7.scen": {
+          "path": "data/validation/scenarios/warehouse-10-20-10-2-2-random-7.scen",
+          "map": "warehouse-10-20-10-2-2.map"
+        },
+        "warehouse-10-20-10-2-2-random-8.scen": {
+          "path": "data/validation/scenarios/warehouse-10-20-10-2-2-random-8.scen",
+          "map": "warehouse-10-20-10-2-2.map"
+        },
+        "warehouse-10-20-10-2-2-random-9.scen": {
+          "path": "data/validation/scenarios/warehouse-10-20-10-2-2-random-9.scen",
+          "map": "warehouse-10-20-10-2-2.map"
+        },
+        "warehouse-10-20-10-2-2-random-10.scen": {
+          "path": "data/validation/scenarios/warehouse-10-20-10-2-2-random-10.scen",
+          "map": "warehouse-10-20-10-2-2.map"
+        },
+        "warehouse-10-20-10-2-2-random-11.scen": {
+          "path": "data/validation/scenarios/warehouse-10-20-10-2-2-random-11.scen",
+          "map": "warehouse-10-20-10-2-2.map"
+        },
+        "warehouse-10-20-10-2-2-random-12.scen": {
+          "path": "data/validation/scenarios/warehouse-10-20-10-2-2-random-12.scen",
+          "map": "warehouse-10-20-10-2-2.map"
+        },
+        "warehouse-10-20-10-2-2-random-13.scen": {
+          "path": "data/validation/scenarios/warehouse-10-20-10-2-2-random-13.scen",
+          "map": "warehouse-10-20-10-2-2.map"
+        },
+        "warehouse-10-20-10-2-2-random-14.scen": {
+          "path": "data/validation/scenarios/warehouse-10-20-10-2-2-random-14.scen",
+          "map": "warehouse-10-20-10-2-2.map"
+        },
+        "warehouse-10-20-10-2-2-random-15.scen": {
+          "path": "data/validation/scenarios/warehouse-10-20-10-2-2-random-15.scen",
+          "map": "warehouse-10-20-10-2-2.map"
+        },
+        "warehouse-10-20-10-2-2-random-16.scen": {
+          "path": "data/validation/scenarios/warehouse-10-20-10-2-2-random-16.scen",
+          "map": "warehouse-10-20-10-2-2.map"
+        },
+        "warehouse-10-20-10-2-2-random-17.scen": {
+          "path": "data/validation/scenarios/warehouse-10-20-10-2-2-random-17.scen",
+          "map": "warehouse-10-20-10-2-2.map"
+        },
+        "warehouse-10-20-10-2-2-random-18.scen": {
+          "path": "data/validation/scenarios/warehouse-10-20-10-2-2-random-18.scen",
+          "map": "warehouse-10-20-10-2-2.map"
+        },
+        "warehouse-10-20-10-2-2-random-19.scen": {
+          "path": "data/validation/scenarios/warehouse-10-20-10-2-2-random-19.scen",
+          "map": "warehouse-10-20-10-2-2.map"
+        },
+        "warehouse-10-20-10-2-2-random-20.scen": {
+          "path": "data/validation/scenarios/warehouse-10-20-10-2-2-random-20.scen",
+          "map": "warehouse-10-20-10-2-2.map"
+        },
+        "warehouse-10-20-10-2-2-random-21.scen": {
+          "path": "data/validation/scenarios/warehouse-10-20-10-2-2-random-21.scen",
+          "map": "warehouse-10-20-10-2-2.map"
+        },
+        "warehouse-10-20-10-2-2-random-22.scen": {
+          "path": "data/validation/scenarios/warehouse-10-20-10-2-2-random-22.scen",
+          "map": "warehouse-10-20-10-2-2.map"
+        },
+        "warehouse-10-20-10-2-2-random-23.scen": {
+          "path": "data/validation/scenarios/warehouse-10-20-10-2-2-random-23.scen",
+          "map": "warehouse-10-20-10-2-2.map"
+        },
+        "warehouse-10-20-10-2-2-random-24.scen": {
+          "path": "data/validation/scenarios/warehouse-10-20-10-2-2-random-24.scen",
+          "map": "warehouse-10-20-10-2-2.map"
+        },
+        "warehouse-10-20-10-2-2-random-25.scen": {
+          "path": "data/validation/scenarios/warehouse-10-20-10-2-2-random-25.scen",
+          "map": "warehouse-10-20-10-2-2.map"
+        },
+        "random-64-64-10-random-1.scen": {
+          "path": "data/validation/scenarios/random-64-64-10-random-1.scen",
+          "map": "random-64-64-10.map"
+        },
+        "random-64-64-10-random-2.scen": {
+          "path": "data/validation/scenarios/random-64-64-10-random-2.scen",
+          "map": "random-64-64-10.map"
+        },
+        "random-64-64-10-random-3.scen": {
+          "path": "data/validation/scenarios/random-64-64-10-random-3.scen",
+          "map": "random-64-64-10.map"
+        },
+        "random-64-64-10-random-4.scen": {
+          "path": "data/validation/scenarios/random-64-64-10-random-4.scen",
+          "map": "random-64-64-10.map"
+        },
+        "random-64-64-10-random-5.scen": {
+          "path": "data/validation/scenarios/random-64-64-10-random-5.scen",
+          "map": "random-64-64-10.map"
+        },
+        "random-64-64-10-random-6.scen": {
+          "path": "data/validation/scenarios/random-64-64-10-random-6.scen",
+          "map": "random-64-64-10.map"
+        },
+        "random-64-64-10-random-7.scen": {
+          "path": "data/validation/scenarios/random-64-64-10-random-7.scen",
+          "map": "random-64-64-10.map"
+        },
+        "random-64-64-10-random-8.scen": {
+          "path": "data/validation/scenarios/random-64-64-10-random-8.scen",
+          "map": "random-64-64-10.map"
+        },
+        "random-64-64-10-random-9.scen": {
+          "path": "data/validation/scenarios/random-64-64-10-random-9.scen",
+          "map": "random-64-64-10.map"
+        },
+        "random-64-64-10-random-10.scen": {
+          "path": "data/validation/scenarios/random-64-64-10-random-10.scen",
+          "map": "random-64-64-10.map"
+        },
+        "random-64-64-10-random-11.scen": {
+          "path": "data/validation/scenarios/random-64-64-10-random-11.scen",
+          "map": "random-64-64-10.map"
+        },
+        "random-64-64-10-random-12.scen": {
+          "path": "data/validation/scenarios/random-64-64-10-random-12.scen",
+          "map": "random-64-64-10.map"
+        },
+        "random-64-64-10-random-13.scen": {
+          "path": "data/validation/scenarios/random-64-64-10-random-13.scen",
+          "map": "random-64-64-10.map"
+        },
+        "random-64-64-10-random-14.scen": {
+          "path": "data/validation/scenarios/random-64-64-10-random-14.scen",
+          "map": "random-64-64-10.map"
+        },
+        "random-64-64-10-random-15.scen": {
+          "path": "data/validation/scenarios/random-64-64-10-random-15.scen",
+          "map": "random-64-64-10.map"
+        },
+        "random-64-64-10-random-16.scen": {
+          "path": "data/validation/scenarios/random-64-64-10-random-16.scen",
+          "map": "random-64-64-10.map"
+        },
+        "random-64-64-10-random-17.scen": {
+          "path": "data/validation/scenarios/random-64-64-10-random-17.scen",
+          "map": "random-64-64-10.map"
+        },
+        "random-64-64-10-random-18.scen": {
+          "path": "data/validation/scenarios/random-64-64-10-random-18.scen",
+          "map": "random-64-64-10.map"
+        },
+        "random-64-64-10-random-19.scen": {
+          "path": "data/validation/scenarios/random-64-64-10-random-19.scen",
+          "map": "random-64-64-10.map"
+        },
+        "random-64-64-10-random-20.scen": {
+          "path": "data/validation/scenarios/random-64-64-10-random-20.scen",
+          "map": "random-64-64-10.map"
+        },
+        "random-64-64-10-random-21.scen": {
+          "path": "data/validation/scenarios/random-64-64-10-random-21.scen",
+          "map": "random-64-64-10.map"
+        },
+        "random-64-64-10-random-22.scen": {
+          "path": "data/validation/scenarios/random-64-64-10-random-22.scen",
+          "map": "random-64-64-10.map"
+        },
+        "random-64-64-10-random-23.scen": {
+          "path": "data/validation/scenarios/random-64-64-10-random-23.scen",
+          "map": "random-64-64-10.map"
+        },
+        "random-64-64-10-random-24.scen": {
+          "path": "data/validation/scenarios/random-64-64-10-random-24.scen",
+          "map": "random-64-64-10.map"
+        },
+        "random-64-64-10-random-25.scen": {
+          "path": "data/validation/scenarios/random-64-64-10-random-25.scen",
+          "map": "random-64-64-10.map"
+        }
+      }
+    },
+    "test": {
+      "maps": {
+        "warehouse-20-40-10-2-1.map": {
+          "path": "data/test/maps/warehouse-20-40-10-2-1.map"
+        },
+        "random-64-64-20.map": {
+          "path": "data/test/maps/random-64-64-20.map"
+        },
+        "room-64-64-8.map": {
+          "path": "data/test/maps/room-64-64-8.map"
+        },
+        "ost003d.map": {
+          "path": "data/test/maps/ost003d.map"
+        }
+      },
+      "scenarios": {
+        "warehouse-20-40-10-2-1-random-1.scen": {
+          "path": "data/test/scenarios/warehouse-20-40-10-2-1-random-1.scen",
+          "map": "warehouse-20-40-10-2-1.map"
+        },
+        "warehouse-20-40-10-2-1-random-2.scen": {
+          "path": "data/test/scenarios/warehouse-20-40-10-2-1-random-2.scen",
+          "map": "warehouse-20-40-10-2-1.map"
+        },
+        "warehouse-20-40-10-2-1-random-3.scen": {
+          "path": "data/test/scenarios/warehouse-20-40-10-2-1-random-3.scen",
+          "map": "warehouse-20-40-10-2-1.map"
+        },
+        "warehouse-20-40-10-2-1-random-4.scen": {
+          "path": "data/test/scenarios/warehouse-20-40-10-2-1-random-4.scen",
+          "map": "warehouse-20-40-10-2-1.map"
+        },
+        "warehouse-20-40-10-2-1-random-5.scen": {
+          "path": "data/test/scenarios/warehouse-20-40-10-2-1-random-5.scen",
+          "map": "warehouse-20-40-10-2-1.map"
+        },
+        "warehouse-20-40-10-2-1-random-6.scen": {
+          "path": "data/test/scenarios/warehouse-20-40-10-2-1-random-6.scen",
+          "map": "warehouse-20-40-10-2-1.map"
+        },
+        "warehouse-20-40-10-2-1-random-7.scen": {
+          "path": "data/test/scenarios/warehouse-20-40-10-2-1-random-7.scen",
+          "map": "warehouse-20-40-10-2-1.map"
+        },
+        "warehouse-20-40-10-2-1-random-8.scen": {
+          "path": "data/test/scenarios/warehouse-20-40-10-2-1-random-8.scen",
+          "map": "warehouse-20-40-10-2-1.map"
+        },
+        "warehouse-20-40-10-2-1-random-9.scen": {
+          "path": "data/test/scenarios/warehouse-20-40-10-2-1-random-9.scen",
+          "map": "warehouse-20-40-10-2-1.map"
+        },
+        "warehouse-20-40-10-2-1-random-10.scen": {
+          "path": "data/test/scenarios/warehouse-20-40-10-2-1-random-10.scen",
+          "map": "warehouse-20-40-10-2-1.map"
+        },
+        "warehouse-20-40-10-2-1-random-11.scen": {
+          "path": "data/test/scenarios/warehouse-20-40-10-2-1-random-11.scen",
+          "map": "warehouse-20-40-10-2-1.map"
+        },
+        "warehouse-20-40-10-2-1-random-12.scen": {
+          "path": "data/test/scenarios/warehouse-20-40-10-2-1-random-12.scen",
+          "map": "warehouse-20-40-10-2-1.map"
+        },
+        "warehouse-20-40-10-2-1-random-13.scen": {
+          "path": "data/test/scenarios/warehouse-20-40-10-2-1-random-13.scen",
+          "map": "warehouse-20-40-10-2-1.map"
+        },
+        "warehouse-20-40-10-2-1-random-14.scen": {
+          "path": "data/test/scenarios/warehouse-20-40-10-2-1-random-14.scen",
+          "map": "warehouse-20-40-10-2-1.map"
+        },
+        "warehouse-20-40-10-2-1-random-15.scen": {
+          "path": "data/test/scenarios/warehouse-20-40-10-2-1-random-15.scen",
+          "map": "warehouse-20-40-10-2-1.map"
+        },
+        "warehouse-20-40-10-2-1-random-16.scen": {
+          "path": "data/test/scenarios/warehouse-20-40-10-2-1-random-16.scen",
+          "map": "warehouse-20-40-10-2-1.map"
+        },
+        "warehouse-20-40-10-2-1-random-17.scen": {
+          "path": "data/test/scenarios/warehouse-20-40-10-2-1-random-17.scen",
+          "map": "warehouse-20-40-10-2-1.map"
+        },
+        "warehouse-20-40-10-2-1-random-18.scen": {
+          "path": "data/test/scenarios/warehouse-20-40-10-2-1-random-18.scen",
+          "map": "warehouse-20-40-10-2-1.map"
+        },
+        "warehouse-20-40-10-2-1-random-19.scen": {
+          "path": "data/test/scenarios/warehouse-20-40-10-2-1-random-19.scen",
+          "map": "warehouse-20-40-10-2-1.map"
+        },
+        "warehouse-20-40-10-2-1-random-20.scen": {
+          "path": "data/test/scenarios/warehouse-20-40-10-2-1-random-20.scen",
+          "map": "warehouse-20-40-10-2-1.map"
+        },
+        "warehouse-20-40-10-2-1-random-21.scen": {
+          "path": "data/test/scenarios/warehouse-20-40-10-2-1-random-21.scen",
+          "map": "warehouse-20-40-10-2-1.map"
+        },
+        "warehouse-20-40-10-2-1-random-22.scen": {
+          "path": "data/test/scenarios/warehouse-20-40-10-2-1-random-22.scen",
+          "map": "warehouse-20-40-10-2-1.map"
+        },
+        "warehouse-20-40-10-2-1-random-23.scen": {
+          "path": "data/test/scenarios/warehouse-20-40-10-2-1-random-23.scen",
+          "map": "warehouse-20-40-10-2-1.map"
+        },
+        "warehouse-20-40-10-2-1-random-24.scen": {
+          "path": "data/test/scenarios/warehouse-20-40-10-2-1-random-24.scen",
+          "map": "warehouse-20-40-10-2-1.map"
+        },
+        "warehouse-20-40-10-2-1-random-25.scen": {
+          "path": "data/test/scenarios/warehouse-20-40-10-2-1-random-25.scen",
+          "map": "warehouse-20-40-10-2-1.map"
+        },
+        "random-64-64-20-random-1.scen": {
+          "path": "data/test/scenarios/random-64-64-20-random-1.scen",
+          "map": "random-64-64-20.map"
+        },
+        "random-64-64-20-random-2.scen": {
+          "path": "data/test/scenarios/random-64-64-20-random-2.scen",
+          "map": "random-64-64-20.map"
+        },
+        "random-64-64-20-random-3.scen": {
+          "path": "data/test/scenarios/random-64-64-20-random-3.scen",
+          "map": "random-64-64-20.map"
+        },
+        "random-64-64-20-random-4.scen": {
+          "path": "data/test/scenarios/random-64-64-20-random-4.scen",
+          "map": "random-64-64-20.map"
+        },
+        "random-64-64-20-random-5.scen": {
+          "path": "data/test/scenarios/random-64-64-20-random-5.scen",
+          "map": "random-64-64-20.map"
+        },
+        "random-64-64-20-random-6.scen": {
+          "path": "data/test/scenarios/random-64-64-20-random-6.scen",
+          "map": "random-64-64-20.map"
+        },
+        "random-64-64-20-random-7.scen": {
+          "path": "data/test/scenarios/random-64-64-20-random-7.scen",
+          "map": "random-64-64-20.map"
+        },
+        "random-64-64-20-random-8.scen": {
+          "path": "data/test/scenarios/random-64-64-20-random-8.scen",
+          "map": "random-64-64-20.map"
+        },
+        "random-64-64-20-random-9.scen": {
+          "path": "data/test/scenarios/random-64-64-20-random-9.scen",
+          "map": "random-64-64-20.map"
+        },
+        "random-64-64-20-random-10.scen": {
+          "path": "data/test/scenarios/random-64-64-20-random-10.scen",
+          "map": "random-64-64-20.map"
+        },
+        "random-64-64-20-random-11.scen": {
+          "path": "data/test/scenarios/random-64-64-20-random-11.scen",
+          "map": "random-64-64-20.map"
+        },
+        "random-64-64-20-random-12.scen": {
+          "path": "data/test/scenarios/random-64-64-20-random-12.scen",
+          "map": "random-64-64-20.map"
+        },
+        "random-64-64-20-random-13.scen": {
+          "path": "data/test/scenarios/random-64-64-20-random-13.scen",
+          "map": "random-64-64-20.map"
+        },
+        "random-64-64-20-random-14.scen": {
+          "path": "data/test/scenarios/random-64-64-20-random-14.scen",
+          "map": "random-64-64-20.map"
+        },
+        "random-64-64-20-random-15.scen": {
+          "path": "data/test/scenarios/random-64-64-20-random-15.scen",
+          "map": "random-64-64-20.map"
+        },
+        "random-64-64-20-random-16.scen": {
+          "path": "data/test/scenarios/random-64-64-20-random-16.scen",
+          "map": "random-64-64-20.map"
+        },
+        "random-64-64-20-random-17.scen": {
+          "path": "data/test/scenarios/random-64-64-20-random-17.scen",
+          "map": "random-64-64-20.map"
+        },
+        "random-64-64-20-random-18.scen": {
+          "path": "data/test/scenarios/random-64-64-20-random-18.scen",
+          "map": "random-64-64-20.map"
+        },
+        "random-64-64-20-random-19.scen": {
+          "path": "data/test/scenarios/random-64-64-20-random-19.scen",
+          "map": "random-64-64-20.map"
+        },
+        "random-64-64-20-random-20.scen": {
+          "path": "data/test/scenarios/random-64-64-20-random-20.scen",
+          "map": "random-64-64-20.map"
+        },
+        "random-64-64-20-random-21.scen": {
+          "path": "data/test/scenarios/random-64-64-20-random-21.scen",
+          "map": "random-64-64-20.map"
+        },
+        "random-64-64-20-random-22.scen": {
+          "path": "data/test/scenarios/random-64-64-20-random-22.scen",
+          "map": "random-64-64-20.map"
+        },
+        "random-64-64-20-random-23.scen": {
+          "path": "data/test/scenarios/random-64-64-20-random-23.scen",
+          "map": "random-64-64-20.map"
+        },
+        "random-64-64-20-random-24.scen": {
+          "path": "data/test/scenarios/random-64-64-20-random-24.scen",
+          "map": "random-64-64-20.map"
+        },
+        "random-64-64-20-random-25.scen": {
+          "path": "data/test/scenarios/random-64-64-20-random-25.scen",
+          "map": "random-64-64-20.map"
+        },
+        "room-64-64-8-random-1.scen": {
+          "path": "data/test/scenarios/room-64-64-8-random-1.scen",
+          "map": "room-64-64-8.map"
+        },
+        "room-64-64-8-random-2.scen": {
+          "path": "data/test/scenarios/room-64-64-8-random-2.scen",
+          "map": "room-64-64-8.map"
+        },
+        "room-64-64-8-random-3.scen": {
+          "path": "data/test/scenarios/room-64-64-8-random-3.scen",
+          "map": "room-64-64-8.map"
+        },
+        "room-64-64-8-random-4.scen": {
+          "path": "data/test/scenarios/room-64-64-8-random-4.scen",
+          "map": "room-64-64-8.map"
+        },
+        "room-64-64-8-random-5.scen": {
+          "path": "data/test/scenarios/room-64-64-8-random-5.scen",
+          "map": "room-64-64-8.map"
+        },
+        "room-64-64-8-random-6.scen": {
+          "path": "data/test/scenarios/room-64-64-8-random-6.scen",
+          "map": "room-64-64-8.map"
+        },
+        "room-64-64-8-random-7.scen": {
+          "path": "data/test/scenarios/room-64-64-8-random-7.scen",
+          "map": "room-64-64-8.map"
+        },
+        "room-64-64-8-random-8.scen": {
+          "path": "data/test/scenarios/room-64-64-8-random-8.scen",
+          "map": "room-64-64-8.map"
+        },
+        "room-64-64-8-random-9.scen": {
+          "path": "data/test/scenarios/room-64-64-8-random-9.scen",
+          "map": "room-64-64-8.map"
+        },
+        "room-64-64-8-random-10.scen": {
+          "path": "data/test/scenarios/room-64-64-8-random-10.scen",
+          "map": "room-64-64-8.map"
+        },
+        "room-64-64-8-random-11.scen": {
+          "path": "data/test/scenarios/room-64-64-8-random-11.scen",
+          "map": "room-64-64-8.map"
+        },
+        "room-64-64-8-random-12.scen": {
+          "path": "data/test/scenarios/room-64-64-8-random-12.scen",
+          "map": "room-64-64-8.map"
+        },
+        "room-64-64-8-random-13.scen": {
+          "path": "data/test/scenarios/room-64-64-8-random-13.scen",
+          "map": "room-64-64-8.map"
+        },
+        "room-64-64-8-random-14.scen": {
+          "path": "data/test/scenarios/room-64-64-8-random-14.scen",
+          "map": "room-64-64-8.map"
+        },
+        "room-64-64-8-random-15.scen": {
+          "path": "data/test/scenarios/room-64-64-8-random-15.scen",
+          "map": "room-64-64-8.map"
+        },
+        "room-64-64-8-random-16.scen": {
+          "path": "data/test/scenarios/room-64-64-8-random-16.scen",
+          "map": "room-64-64-8.map"
+        },
+        "room-64-64-8-random-17.scen": {
+          "path": "data/test/scenarios/room-64-64-8-random-17.scen",
+          "map": "room-64-64-8.map"
+        },
+        "room-64-64-8-random-18.scen": {
+          "path": "data/test/scenarios/room-64-64-8-random-18.scen",
+          "map": "room-64-64-8.map"
+        },
+        "room-64-64-8-random-19.scen": {
+          "path": "data/test/scenarios/room-64-64-8-random-19.scen",
+          "map": "room-64-64-8.map"
+        },
+        "room-64-64-8-random-20.scen": {
+          "path": "data/test/scenarios/room-64-64-8-random-20.scen",
+          "map": "room-64-64-8.map"
+        },
+        "room-64-64-8-random-21.scen": {
+          "path": "data/test/scenarios/room-64-64-8-random-21.scen",
+          "map": "room-64-64-8.map"
+        },
+        "room-64-64-8-random-22.scen": {
+          "path": "data/test/scenarios/room-64-64-8-random-22.scen",
+          "map": "room-64-64-8.map"
+        },
+        "room-64-64-8-random-23.scen": {
+          "path": "data/test/scenarios/room-64-64-8-random-23.scen",
+          "map": "room-64-64-8.map"
+        },
+        "room-64-64-8-random-24.scen": {
+          "path": "data/test/scenarios/room-64-64-8-random-24.scen",
+          "map": "room-64-64-8.map"
+        },
+        "room-64-64-8-random-25.scen": {
+          "path": "data/test/scenarios/room-64-64-8-random-25.scen",
+          "map": "room-64-64-8.map"
+        },
+        "ost003d-random-1.scen": {
+          "path": "data/test/scenarios/ost003d-random-1.scen",
+          "map": "ost003d.map"
+        },
+        "ost003d-random-2.scen": {
+          "path": "data/test/scenarios/ost003d-random-2.scen",
+          "map": "ost003d.map"
+        },
+        "ost003d-random-3.scen": {
+          "path": "data/test/scenarios/ost003d-random-3.scen",
+          "map": "ost003d.map"
+        },
+        "ost003d-random-4.scen": {
+          "path": "data/test/scenarios/ost003d-random-4.scen",
+          "map": "ost003d.map"
+        },
+        "ost003d-random-5.scen": {
+          "path": "data/test/scenarios/ost003d-random-5.scen",
+          "map": "ost003d.map"
+        },
+        "ost003d-random-6.scen": {
+          "path": "data/test/scenarios/ost003d-random-6.scen",
+          "map": "ost003d.map"
+        },
+        "ost003d-random-7.scen": {
+          "path": "data/test/scenarios/ost003d-random-7.scen",
+          "map": "ost003d.map"
+        },
+        "ost003d-random-8.scen": {
+          "path": "data/test/scenarios/ost003d-random-8.scen",
+          "map": "ost003d.map"
+        },
+        "ost003d-random-9.scen": {
+          "path": "data/test/scenarios/ost003d-random-9.scen",
+          "map": "ost003d.map"
+        },
+        "ost003d-random-10.scen": {
+          "path": "data/test/scenarios/ost003d-random-10.scen",
+          "map": "ost003d.map"
+        },
+        "ost003d-random-11.scen": {
+          "path": "data/test/scenarios/ost003d-random-11.scen",
+          "map": "ost003d.map"
+        },
+        "ost003d-random-12.scen": {
+          "path": "data/test/scenarios/ost003d-random-12.scen",
+          "map": "ost003d.map"
+        },
+        "ost003d-random-13.scen": {
+          "path": "data/test/scenarios/ost003d-random-13.scen",
+          "map": "ost003d.map"
+        },
+        "ost003d-random-14.scen": {
+          "path": "data/test/scenarios/ost003d-random-14.scen",
+          "map": "ost003d.map"
+        },
+        "ost003d-random-15.scen": {
+          "path": "data/test/scenarios/ost003d-random-15.scen",
+          "map": "ost003d.map"
+        },
+        "ost003d-random-16.scen": {
+          "path": "data/test/scenarios/ost003d-random-16.scen",
+          "map": "ost003d.map"
+        },
+        "ost003d-random-17.scen": {
+          "path": "data/test/scenarios/ost003d-random-17.scen",
+          "map": "ost003d.map"
+        },
+        "ost003d-random-18.scen": {
+          "path": "data/test/scenarios/ost003d-random-18.scen",
+          "map": "ost003d.map"
+        },
+        "ost003d-random-19.scen": {
+          "path": "data/test/scenarios/ost003d-random-19.scen",
+          "map": "ost003d.map"
+        },
+        "ost003d-random-20.scen": {
+          "path": "data/test/scenarios/ost003d-random-20.scen",
+          "map": "ost003d.map"
+        },
+        "ost003d-random-21.scen": {
+          "path": "data/test/scenarios/ost003d-random-21.scen",
+          "map": "ost003d.map"
+        },
+        "ost003d-random-22.scen": {
+          "path": "data/test/scenarios/ost003d-random-22.scen",
+          "map": "ost003d.map"
+        },
+        "ost003d-random-23.scen": {
+          "path": "data/test/scenarios/ost003d-random-23.scen",
+          "map": "ost003d.map"
+        },
+        "ost003d-random-24.scen": {
+          "path": "data/test/scenarios/ost003d-random-24.scen",
+          "map": "ost003d.map"
+        },
+        "ost003d-random-25.scen": {
+          "path": "data/test/scenarios/ost003d-random-25.scen",
+          "map": "ost003d.map"
+        }
+      }
+    }
+  }
+}
