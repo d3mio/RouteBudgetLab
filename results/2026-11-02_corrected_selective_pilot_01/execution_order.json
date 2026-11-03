@@ -1,0 +1,578 @@
+[
+  {
+    "cell_index": 0,
+    "cell": {
+      "map": "data/validation/maps/random-64-64-10.map",
+      "scen": "data/validation/scenarios/random-64-64-10-random-1.scen",
+      "agents": 50,
+      "budget": 1.0,
+      "seed": 0
+    },
+    "policies": [
+      "RESUMPTION_NO_PA",
+      "PA_EVERY_INTERRUPTION_FILTERED",
+      "PA_EVICTION_ONLY",
+      "PA_TERMINAL_ONLY",
+      "PA_EVICTION_AND_TERMINAL",
+      "TERMINAL_RESERVE_CONTROL"
+    ]
+  },
+  {
+    "cell_index": 1,
+    "cell": {
+      "map": "data/validation/maps/random-64-64-10.map",
+      "scen": "data/validation/scenarios/random-64-64-10-random-1.scen",
+      "agents": 50,
+      "budget": 1.0,
+      "seed": 1
+    },
+    "policies": [
+      "PA_EVERY_INTERRUPTION_FILTERED",
+      "PA_EVICTION_ONLY",
+      "PA_TERMINAL_ONLY",
+      "PA_EVICTION_AND_TERMINAL",
+      "TERMINAL_RESERVE_CONTROL",
+      "RESUMPTION_NO_PA"
+    ]
+  },
+  {
+    "cell_index": 2,
+    "cell": {
+      "map": "data/validation/maps/random-64-64-10.map",
+      "scen": "data/validation/scenarios/random-64-64-10-random-1.scen",
+      "agents": 50,
+      "budget": 5.0,
+      "seed": 0
+    },
+    "policies": [
+      "PA_EVICTION_ONLY",
+      "PA_TERMINAL_ONLY",
+      "PA_EVICTION_AND_TERMINAL",
+      "TERMINAL_RESERVE_CONTROL",
+      "RESUMPTION_NO_PA",
+      "PA_EVERY_INTERRUPTION_FILTERED"
+    ]
+  },
+  {
+    "cell_index": 3,
+    "cell": {
+      "map": "data/validation/maps/random-64-64-10.map",
+      "scen": "data/validation/scenarios/random-64-64-10-random-1.scen",
+      "agents": 50,
+      "budget": 5.0,
+      "seed": 1
+    },
+    "policies": [
+      "PA_TERMINAL_ONLY",
+      "PA_EVICTION_AND_TERMINAL",
+      "TERMINAL_RESERVE_CONTROL",
+      "RESUMPTION_NO_PA",
+      "PA_EVERY_INTERRUPTION_FILTERED",
+      "PA_EVICTION_ONLY"
+    ]
+  },
+  {
+    "cell_index": 4,
+    "cell": {
+      "map": "data/validation/maps/random-64-64-10.map",
+      "scen": "data/validation/scenarios/random-64-64-10-random-1.scen",
+      "agents": 100,
+      "budget": 1.0,
+      "seed": 0
+    },
+    "policies": [
+      "PA_EVICTION_AND_TERMINAL",
+      "TERMINAL_RESERVE_CONTROL",
+      "RESUMPTION_NO_PA",
+      "PA_EVERY_INTERRUPTION_FILTERED",
+      "PA_EVICTION_ONLY",
+      "PA_TERMINAL_ONLY"
+    ]
+  },
+  {
+    "cell_index": 5,
+    "cell": {
+      "map": "data/validation/maps/random-64-64-10.map",
+      "scen": "data/validation/scenarios/random-64-64-10-random-1.scen",
+      "agents": 100,
+      "budget": 1.0,
+      "seed": 1
+    },
+    "policies": [
+      "TERMINAL_RESERVE_CONTROL",
+      "RESUMPTION_NO_PA",
+      "PA_EVERY_INTERRUPTION_FILTERED",
+      "PA_EVICTION_ONLY",
+      "PA_TERMINAL_ONLY",
+      "PA_EVICTION_AND_TERMINAL"
+    ]
+  },
+  {
+    "cell_index": 6,
+    "cell": {
+      "map": "data/validation/maps/random-64-64-10.map",
+      "scen": "data/validation/scenarios/random-64-64-10-random-1.scen",
+      "agents": 100,
+      "budget": 5.0,
+      "seed": 0
+    },
+    "policies": [
+      "RESUMPTION_NO_PA",
+      "PA_EVERY_INTERRUPTION_FILTERED",
+      "PA_EVICTION_ONLY",
+      "PA_TERMINAL_ONLY",
+      "PA_EVICTION_AND_TERMINAL",
+      "TERMINAL_RESERVE_CONTROL"
+    ]
+  },
+  {
+    "cell_index": 7,
+    "cell": {
+      "map": "data/validation/maps/random-64-64-10.map",
+      "scen": "data/validation/scenarios/random-64-64-10-random-1.scen",
+      "agents": 100,
+      "budget": 5.0,
+      "seed": 1
+    },
+    "policies": [
+      "PA_EVERY_INTERRUPTION_FILTERED",
+      "PA_EVICTION_ONLY",
+      "PA_TERMINAL_ONLY",
+      "PA_EVICTION_AND_TERMINAL",
+      "TERMINAL_RESERVE_CONTROL",
+      "RESUMPTION_NO_PA"
+    ]
+  },
+  {
+    "cell_index": 8,
+    "cell": {
+      "map": "data/validation/maps/random-64-64-10.map",
+      "scen": "data/validation/scenarios/random-64-64-10-random-2.scen",
+      "agents": 50,
+      "budget": 1.0,
+      "seed": 0
+    },
+    "policies": [
+      "PA_EVICTION_ONLY",
+      "PA_TERMINAL_ONLY",
+      "PA_EVICTION_AND_TERMINAL",
+      "TERMINAL_RESERVE_CONTROL",
+      "RESUMPTION_NO_PA",
+      "PA_EVERY_INTERRUPTION_FILTERED"
+    ]
+  },
+  {
+    "cell_index": 9,
+    "cell": {
+      "map": "data/validation/maps/random-64-64-10.map",
+      "scen": "data/validation/scenarios/random-64-64-10-random-2.scen",
+      "agents": 50,
+      "budget": 1.0,
+      "seed": 1
+    },
+    "policies": [
+      "PA_TERMINAL_ONLY",
+      "PA_EVICTION_AND_TERMINAL",
+      "TERMINAL_RESERVE_CONTROL",
+      "RESUMPTION_NO_PA",
+      "PA_EVERY_INTERRUPTION_FILTERED",
+      "PA_EVICTION_ONLY"
+    ]
+  },
+  {
+    "cell_index": 10,
+    "cell": {
+      "map": "data/validation/maps/random-64-64-10.map",
+      "scen": "data/validation/scenarios/random-64-64-10-random-2.scen",
+      "agents": 50,
+      "budget": 5.0,
+      "seed": 0
+    },
+    "policies": [
+      "PA_EVICTION_AND_TERMINAL",
+      "TERMINAL_RESERVE_CONTROL",
+      "RESUMPTION_NO_PA",
+      "PA_EVERY_INTERRUPTION_FILTERED",
+      "PA_EVICTION_ONLY",
+      "PA_TERMINAL_ONLY"
+    ]
+  },
+  {
+    "cell_index": 11,
+    "cell": {
+      "map": "data/validation/maps/random-64-64-10.map",
+      "scen": "data/validation/scenarios/random-64-64-10-random-2.scen",
+      "agents": 50,
+      "budget": 5.0,
+      "seed": 1
+    },
+    "policies": [
+      "TERMINAL_RESERVE_CONTROL",
+      "RESUMPTION_NO_PA",
+      "PA_EVERY_INTERRUPTION_FILTERED",
+      "PA_EVICTION_ONLY",
+      "PA_TERMINAL_ONLY",
+      "PA_EVICTION_AND_TERMINAL"
+    ]
+  },
+  {
+    "cell_index": 12,
+    "cell": {
+      "map": "data/validation/maps/random-64-64-10.map",
+      "scen": "data/validation/scenarios/random-64-64-10-random-2.scen",
+      "agents": 100,
+      "budget": 1.0,
+      "seed": 0
+    },
+    "policies": [
+      "RESUMPTION_NO_PA",
+      "PA_EVERY_INTERRUPTION_FILTERED",
+      "PA_EVICTION_ONLY",
+      "PA_TERMINAL_ONLY",
+      "PA_EVICTION_AND_TERMINAL",
+      "TERMINAL_RESERVE_CONTROL"
+    ]
+  },
+  {
+    "cell_index": 13,
+    "cell": {
+      "map": "data/validation/maps/random-64-64-10.map",
+      "scen": "data/validation/scenarios/random-64-64-10-random-2.scen",
+      "agents": 100,
+      "budget": 1.0,
+      "seed": 1
+    },
+    "policies": [
+      "PA_EVERY_INTERRUPTION_FILTERED",
+      "PA_EVICTION_ONLY",
+      "PA_TERMINAL_ONLY",
+      "PA_EVICTION_AND_TERMINAL",
+      "TERMINAL_RESERVE_CONTROL",
+      "RESUMPTION_NO_PA"
+    ]
+  },
+  {
+    "cell_index": 14,
+    "cell": {
+      "map": "data/validation/maps/random-64-64-10.map",
+      "scen": "data/validation/scenarios/random-64-64-10-random-2.scen",
+      "agents": 100,
+      "budget": 5.0,
+      "seed": 0
+    },
+    "policies": [
+      "PA_EVICTION_ONLY",
+      "PA_TERMINAL_ONLY",
+      "PA_EVICTION_AND_TERMINAL",
+      "TERMINAL_RESERVE_CONTROL",
+      "RESUMPTION_NO_PA",
+      "PA_EVERY_INTERRUPTION_FILTERED"
+    ]
+  },
+  {
+    "cell_index": 15,
+    "cell": {
+      "map": "data/validation/maps/random-64-64-10.map",
+      "scen": "data/validation/scenarios/random-64-64-10-random-2.scen",
+      "agents": 100,
+      "budget": 5.0,
+      "seed": 1
+    },
+    "policies": [
+      "PA_TERMINAL_ONLY",
+      "PA_EVICTION_AND_TERMINAL",
+      "TERMINAL_RESERVE_CONTROL",
+      "RESUMPTION_NO_PA",
+      "PA_EVERY_INTERRUPTION_FILTERED",
+      "PA_EVICTION_ONLY"
+    ]
+  },
+  {
+    "cell_index": 16,
+    "cell": {
+      "map": "data/validation/maps/warehouse-10-20-10-2-2.map",
+      "scen": "data/validation/scenarios/warehouse-10-20-10-2-2-random-1.scen",
+      "agents": 50,
+      "budget": 1.0,
+      "seed": 0
+    },
+    "policies": [
+      "PA_EVICTION_AND_TERMINAL",
+      "TERMINAL_RESERVE_CONTROL",
+      "RESUMPTION_NO_PA",
+      "PA_EVERY_INTERRUPTION_FILTERED",
+      "PA_EVICTION_ONLY",
+      "PA_TERMINAL_ONLY"
+    ]
+  },
+  {
+    "cell_index": 17,
+    "cell": {
+      "map": "data/validation/maps/warehouse-10-20-10-2-2.map",
+      "scen": "data/validation/scenarios/warehouse-10-20-10-2-2-random-1.scen",
+      "agents": 50,
+      "budget": 1.0,
+      "seed": 1
+    },
+    "policies": [
+      "TERMINAL_RESERVE_CONTROL",
+      "RESUMPTION_NO_PA",
+      "PA_EVERY_INTERRUPTION_FILTERED",
+      "PA_EVICTION_ONLY",
+      "PA_TERMINAL_ONLY",
+      "PA_EVICTION_AND_TERMINAL"
+    ]
+  },
+  {
+    "cell_index": 18,
+    "cell": {
+      "map": "data/validation/maps/warehouse-10-20-10-2-2.map",
+      "scen": "data/validation/scenarios/warehouse-10-20-10-2-2-random-1.scen",
+      "agents": 50,
+      "budget": 5.0,
+      "seed": 0
+    },
+    "policies": [
+      "RESUMPTION_NO_PA",
+      "PA_EVERY_INTERRUPTION_FILTERED",
+      "PA_EVICTION_ONLY",
+      "PA_TERMINAL_ONLY",
+      "PA_EVICTION_AND_TERMINAL",
+      "TERMINAL_RESERVE_CONTROL"
+    ]
+  },
+  {
+    "cell_index": 19,
+    "cell": {
+      "map": "data/validation/maps/warehouse-10-20-10-2-2.map",
+      "scen": "data/validation/scenarios/warehouse-10-20-10-2-2-random-1.scen",
+      "agents": 50,
+      "budget": 5.0,
+      "seed": 1
+    },
+    "policies": [
+      "PA_EVERY_INTERRUPTION_FILTERED",
+      "PA_EVICTION_ONLY",
+      "PA_TERMINAL_ONLY",
+      "PA_EVICTION_AND_TERMINAL",
+      "TERMINAL_RESERVE_CONTROL",
+      "RESUMPTION_NO_PA"
+    ]
+  },
+  {
+    "cell_index": 20,
+    "cell": {
+      "map": "data/validation/maps/warehouse-10-20-10-2-2.map",
+      "scen": "data/validation/scenarios/warehouse-10-20-10-2-2-random-1.scen",
+      "agents": 100,
+      "budget": 1.0,
+      "seed": 0
+    },
+    "policies": [
+      "PA_EVICTION_ONLY",
+      "PA_TERMINAL_ONLY",
+      "PA_EVICTION_AND_TERMINAL",
+      "TERMINAL_RESERVE_CONTROL",
+      "RESUMPTION_NO_PA",
+      "PA_EVERY_INTERRUPTION_FILTERED"
+    ]
+  },
+  {
+    "cell_index": 21,
+    "cell": {
+      "map": "data/validation/maps/warehouse-10-20-10-2-2.map",
+      "scen": "data/validation/scenarios/warehouse-10-20-10-2-2-random-1.scen",
+      "agents": 100,
+      "budget": 1.0,
+      "seed": 1
+    },
+    "policies": [
+      "PA_TERMINAL_ONLY",
+      "PA_EVICTION_AND_TERMINAL",
+      "TERMINAL_RESERVE_CONTROL",
+      "RESUMPTION_NO_PA",
+      "PA_EVERY_INTERRUPTION_FILTERED",
+      "PA_EVICTION_ONLY"
+    ]
+  },
+  {
+    "cell_index": 22,
+    "cell": {
+      "map": "data/validation/maps/warehouse-10-20-10-2-2.map",
+      "scen": "data/validation/scenarios/warehouse-10-20-10-2-2-random-1.scen",
+      "agents": 100,
+      "budget": 5.0,
+      "seed": 0
+    },
+    "policies": [
+      "PA_EVICTION_AND_TERMINAL",
+      "TERMINAL_RESERVE_CONTROL",
+      "RESUMPTION_NO_PA",
+      "PA_EVERY_INTERRUPTION_FILTERED",
+      "PA_EVICTION_ONLY",
+      "PA_TERMINAL_ONLY"
+    ]
+  },
+  {
+    "cell_index": 23,
+    "cell": {
+      "map": "data/validation/maps/warehouse-10-20-10-2-2.map",
+      "scen": "data/validation/scenarios/warehouse-10-20-10-2-2-random-1.scen",
+      "agents": 100,
+      "budget": 5.0,
+      "seed": 1
+    },
+    "policies": [
+      "TERMINAL_RESERVE_CONTROL",
+      "RESUMPTION_NO_PA",
+      "PA_EVERY_INTERRUPTION_FILTERED",
+      "PA_EVICTION_ONLY",
+      "PA_TERMINAL_ONLY",
+      "PA_EVICTION_AND_TERMINAL"
+    ]
+  },
+  {
+    "cell_index": 24,
+    "cell": {
+      "map": "data/validation/maps/warehouse-10-20-10-2-2.map",
+      "scen": "data/validation/scenarios/warehouse-10-20-10-2-2-random-2.scen",
+      "agents": 50,
+      "budget": 1.0,
+      "seed": 0
+    },
+    "policies": [
+      "RESUMPTION_NO_PA",
+      "PA_EVERY_INTERRUPTION_FILTERED",
+      "PA_EVICTION_ONLY",
+      "PA_TERMINAL_ONLY",
+      "PA_EVICTION_AND_TERMINAL",
+      "TERMINAL_RESERVE_CONTROL"
+    ]
+  },
+  {
+    "cell_index": 25,
+    "cell": {
+      "map": "data/validation/maps/warehouse-10-20-10-2-2.map",
+      "scen": "data/validation/scenarios/warehouse-10-20-10-2-2-random-2.scen",
+      "agents": 50,
+      "budget": 1.0,
+      "seed": 1
+    },
+    "policies": [
+      "PA_EVERY_INTERRUPTION_FILTERED",
+      "PA_EVICTION_ONLY",
+      "PA_TERMINAL_ONLY",
+      "PA_EVICTION_AND_TERMINAL",
+      "TERMINAL_RESERVE_CONTROL",
+      "RESUMPTION_NO_PA"
+    ]
+  },
+  {
+    "cell_index": 26,
+    "cell": {
+      "map": "data/validation/maps/warehouse-10-20-10-2-2.map",
+      "scen": "data/validation/scenarios/warehouse-10-20-10-2-2-random-2.scen",
+      "agents": 50,
+      "budget": 5.0,
+      "seed": 0
+    },
+    "policies": [
+      "PA_EVICTION_ONLY",
+      "PA_TERMINAL_ONLY",
+      "PA_EVICTION_AND_TERMINAL",
+      "TERMINAL_RESERVE_CONTROL",
+      "RESUMPTION_NO_PA",
+      "PA_EVERY_INTERRUPTION_FILTERED"
+    ]
+  },
+  {
+    "cell_index": 27,
+    "cell": {
+      "map": "data/validation/maps/warehouse-10-20-10-2-2.map",
+      "scen": "data/validation/scenarios/warehouse-10-20-10-2-2-random-2.scen",
+      "agents": 50,
+      "budget": 5.0,
+      "seed": 1
+    },
+    "policies": [
+      "PA_TERMINAL_ONLY",
+      "PA_EVICTION_AND_TERMINAL",
+      "TERMINAL_RESERVE_CONTROL",
+      "RESUMPTION_NO_PA",
+      "PA_EVERY_INTERRUPTION_FILTERED",
+      "PA_EVICTION_ONLY"
+    ]
+  },
+  {
+    "cell_index": 28,
+    "cell": {
+      "map": "data/validation/maps/warehouse-10-20-10-2-2.map",
+      "scen": "data/validation/scenarios/warehouse-10-20-10-2-2-random-2.scen",
+      "agents": 100,
+      "budget": 1.0,
+      "seed": 0
+    },
+    "policies": [
+      "PA_EVICTION_AND_TERMINAL",
+      "TERMINAL_RESERVE_CONTROL",
+      "RESUMPTION_NO_PA",
+      "PA_EVERY_INTERRUPTION_FILTERED",
+      "PA_EVICTION_ONLY",
+      "PA_TERMINAL_ONLY"
+    ]
+  },
+  {
+    "cell_index": 29,
+    "cell": {
+      "map": "data/validation/maps/warehouse-10-20-10-2-2.map",
+      "scen": "data/validation/scenarios/warehouse-10-20-10-2-2-random-2.scen",
+      "agents": 100,
+      "budget": 1.0,
+      "seed": 1
+    },
+    "policies": [
+      "TERMINAL_RESERVE_CONTROL",
+      "RESUMPTION_NO_PA",
+      "PA_EVERY_INTERRUPTION_FILTERED",
+      "PA_EVICTION_ONLY",
+      "PA_TERMINAL_ONLY",
+      "PA_EVICTION_AND_TERMINAL"
+    ]
+  },
+  {
+    "cell_index": 30,
+    "cell": {
+      "map": "data/validation/maps/warehouse-10-20-10-2-2.map",
+      "scen": "data/validation/scenarios/warehouse-10-20-10-2-2-random-2.scen",
+      "agents": 100,
+      "budget": 5.0,
+      "seed": 0
+    },
+    "policies": [
+      "RESUMPTION_NO_PA",
+      "PA_EVERY_INTERRUPTION_FILTERED",
+      "PA_EVICTION_ONLY",
+      "PA_TERMINAL_ONLY",
+      "PA_EVICTION_AND_TERMINAL",
+      "TERMINAL_RESERVE_CONTROL"
+    ]
+  },
+  {
+    "cell_index": 31,
+    "cell": {
+      "map": "data/validation/maps/warehouse-10-20-10-2-2.map",
+      "scen": "data/validation/scenarios/warehouse-10-20-10-2-2-random-2.scen",
+      "agents": 100,
+      "budget": 5.0,
+      "seed": 1
+    },
+    "policies": [
+      "PA_EVERY_INTERRUPTION_FILTERED",
+      "PA_EVICTION_ONLY",
+      "PA_TERMINAL_ONLY",
+      "PA_EVICTION_AND_TERMINAL",
+      "TERMINAL_RESERVE_CONTROL",
+      "RESUMPTION_NO_PA"
+    ]
+  }
+]
