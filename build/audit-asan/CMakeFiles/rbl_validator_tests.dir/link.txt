@@ -1,0 +1,1 @@
+/Library/Developer/CommandLineTools/usr/bin/clang++ -fsanitize=address,undefined -fno-omit-frame-pointer -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names -fsanitize=address,undefined CMakeFiles/rbl_validator_tests.dir/tests/validator_tests.cpp.o -o rbl_validator_tests
