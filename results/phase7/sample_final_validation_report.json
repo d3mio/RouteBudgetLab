@@ -1,0 +1,54 @@
+{
+  "all_valid": true,
+  "total_tested": 4,
+  "results": [
+    {
+      "map_name": "warehouse-20-40-10-2-1",
+      "scenario_name": "warehouse-20-40-10-2-1-random-1",
+      "agents": 50,
+      "budget_s": 1.0,
+      "reported_final_cost": 8246,
+      "independent_cost": 8246,
+      "is_valid": true,
+      "status": "VALID",
+      "exit_code": 0,
+      "error_detail": ""
+    },
+    {
+      "map_name": "random-64-64-20",
+      "scenario_name": "random-64-64-20-random-1",
+      "agents": 50,
+      "budget_s": 1.0,
+      "reported_final_cost": 2172,
+      "independent_cost": 2172,
+      "is_valid": true,
+      "status": "VALID",
+      "exit_code": 0,
+      "error_detail": ""
+    },
+    {
+      "map_name": "room-64-64-8",
+      "scenario_name": "room-64-64-8-random-1",
+      "agents": 50,
+      "budget_s": 1.0,
+      "reported_final_cost": 2829,
+      "independent_cost": 2829,
+      "is_valid": true,
+      "status": "VALID",
+      "exit_code": 0,
+      "error_detail": ""
+    },
+    {
+      "map_name": "ost003d",
+      "scenario_name": "ost003d-random-1",
+      "agents": 50,
+      "budget_s": 1.0,
+      "reported_final_cost": 9175,
+      "independent_cost": 9175,
+      "is_valid": true,
+      "status": "VALID",
+      "exit_code": 0,
+      "error_detail": ""
+    }
+  ]
+}
