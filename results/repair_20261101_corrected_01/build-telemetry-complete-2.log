@@ -1,0 +1,62 @@
+[  7%] Built target rbl_profile_checkpoint
+[  7%] Built target rbl_validator_tests
+[  7%] Built target rbl_validate
+[ 56%] Built target anytime_mapf_core
+[ 57%] Building CXX object CMakeFiles/rbl_engine.dir/src/engine/rbl_partial_acceptance.cpp.o
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_partial_acceptance.cpp:6:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_partial_acceptance.hpp:27:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/Instance.h:2:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:70:13: warning: initializer order does not match the declaration order [-Wreorder-ctor]
+   70 |             num_of_agents(num_of_agents), sum_of_costs(sum_of_costs), runtime(runtime),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~
+      |             sum_of_costs(sum_of_costs)    runtime(runtime)            num_of_agents(num_of_agents)
+   71 |             sum_of_costs_lowerbound(sum_of_costs_lowerbound), algorithm(algorithm),
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~~~~~
+      |             algorithm(algorithm)                              sum_of_costs_lowerbound(sum_of_costs_lowerbound)
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:70:13: note: field 'num_of_agents' will be initialized after field 'sum_of_costs'
+   70 |             num_of_agents(num_of_agents), sum_of_costs(sum_of_costs), runtime(runtime),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:71:13: note: field 'sum_of_costs_lowerbound' will be initialized after field 'algorithm'
+   71 |             sum_of_costs_lowerbound(sum_of_costs_lowerbound), algorithm(algorithm),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_partial_acceptance.cpp:179:26: warning: comparison of integers of different signs: 'size_t' (aka 'unsigned long') and 'int' [-Wsign-compare]
+  179 |     for (size_t t = 0; t < max_len; ++t) {
+      |                        ~ ^ ~~~~~~~
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_partial_acceptance.cpp:192:15: warning: comparison of integers of different signs: 'size_t' (aka 'unsigned long') and 'int' [-Wsign-compare]
+  192 |         if (t < max_len) {
+      |             ~ ^ ~~~~~~~
+3 warnings generated.
+[ 58%] Linking CXX static library librbl_engine.a
+[ 60%] Built target rbl_engine
+[ 62%] Linking CXX executable rbl_collect_traces
+[ 62%] Linking CXX executable rbl_gate2_audit
+[ 65%] Linking CXX executable rbl_profile_outcomes
+[ 65%] Linking CXX executable rbl_eval_runner
+[ 66%] Built target rbl_gate2_audit
+[ 67%] Built target rbl_eval_runner
+[ 68%] Built target rbl_collect_traces
+[ 70%] Built target rbl_profile_outcomes
+[ 71%] Linking CXX executable rbl_profile_partial_acceptance
+[ 72%] Linking CXX executable rbl_e4_tests
+[ 73%] Linking CXX executable rbl_profile_partial_recovery
+[ 75%] Linking CXX executable rbl_e1_tests
+[ 77%] Built target rbl_e4_tests
+[ 77%] Built target rbl_profile_partial_acceptance
+[ 78%] Built target rbl_e1_tests
+[ 80%] Built target rbl_profile_partial_recovery
+[ 81%] Linking CXX executable rbl_estimator_tests
+[ 82%] Linking CXX executable rbl_controller_tests
+[ 83%] Linking CXX executable rbl_partial_acceptance_tests
+[ 85%] Linking CXX executable rbl_partial_recovery_tests
+[ 86%] Built target rbl_estimator_tests
+[ 87%] Built target rbl_controller_tests
+[ 88%] Built target rbl_partial_recovery_tests
+[ 90%] Built target rbl_partial_acceptance_tests
+[ 91%] Linking CXX executable rbl_selective_recovery_tests
+[ 92%] Linking CXX executable rbl_cost_transaction_tests
+[ 93%] Linking CXX executable rbl_recovery_correctness_tests
+[ 95%] Linking CXX executable rbl_reserve_calibration
+[ 96%] Built target rbl_selective_recovery_tests
+[ 97%] Built target rbl_reserve_calibration
+[ 98%] Built target rbl_recovery_correctness_tests
+[100%] Built target rbl_cost_transaction_tests

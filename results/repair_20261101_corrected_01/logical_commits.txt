@@ -1,0 +1,6 @@
+ac01fb47445a1bc6e4522de549e11b48c26e83a5 Classify pruned resumed repairs as normal checkpoint consumption
+01c0bc14a035a27697f5f81f6a2d1dedd4a1106b Complete lifecycle and cancelled-stage telemetry before full matched repetition
+c85e1adcce441baf75192927d1273717f5747761 Freeze corrected development protocols and repair provenance and exact analysis
+3603f1075b811d50d7a9dd1b7dc9bc35bc69bff0 Add instrumented sanitizer builds and assertion-level correction regressions
+56e3bed81bb66875b0e63acaedf4ab30ff02ca5a Select feasible conflicting-route subsets and enforce staged deadline publication
+973c88292f72e20061de327b626e1ca5f3e44e3d Fix authoritative arrival costs and stage incumbent publication

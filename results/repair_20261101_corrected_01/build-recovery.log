@@ -1,0 +1,720 @@
+[  7%] Built target rbl_profile_checkpoint
+[  7%] Built target rbl_validate
+[  7%] Built target rbl_validator_tests
+[ 59%] Built target anytime_mapf_core
+[ 61%] Building CXX object CMakeFiles/rbl_engine.dir/src/engine/rbl_resumable_engine.cpp.o
+[ 61%] Building CXX object CMakeFiles/rbl_engine.dir/src/engine/rbl_partial_acceptance.cpp.o
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_resumable_engine.cpp:1:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_resumable_engine.hpp:21:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/Instance.h:2:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:70:13: warning: initializer order does not match the declaration order [-Wreorder-ctor]
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_partial_acceptance.cpp:6:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_partial_acceptance.hpp:27:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/Instance.h:2:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:70:13: warning: initializer order does not match the declaration order [-Wreorder-ctor]
+   70 |             num_of_agents(num_of_agents), sum_of_costs(sum_of_costs), runtime(runtime),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~
+      |             sum_of_costs(sum_of_costs)    runtime(runtime)            num_of_agents(num_of_agents)
+   70 |             num_of_agents(num_of_agents), sum_of_costs(sum_of_costs), runtime(runtime),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~
+      |             sum_of_costs(sum_of_costs)    runtime(runtime)            num_of_agents(num_of_agents)
+   71 |             sum_of_costs_lowerbound(sum_of_costs_lowerbound), algorithm(algorithm),
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~~~~~
+      |             algorithm(algorithm)                              sum_of_costs_lowerbound(sum_of_costs_lowerbound)
+   71 |             sum_of_costs_lowerbound(sum_of_costs_lowerbound), algorithm(algorithm),
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~~~~~
+      |             algorithm(algorithm)                              sum_of_costs_lowerbound(sum_of_costs_lowerbound)
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:70:13: note: field 'num_of_agents' will be initialized after field 'sum_of_costs'
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:70:13: note: field 'num_of_agents' will be initialized after field 'sum_of_costs'
+   70 |             num_of_agents(num_of_agents), sum_of_costs(sum_of_costs), runtime(runtime),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   70 |             num_of_agents(num_of_agents), sum_of_costs(sum_of_costs), runtime(runtime),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:71:13: note: field 'sum_of_costs_lowerbound' will be initialized after field 'algorithm'
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:71:13: note: field 'sum_of_costs_lowerbound' will be initialized after field 'algorithm'
+   71 |             sum_of_costs_lowerbound(sum_of_costs_lowerbound), algorithm(algorithm),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   71 |             sum_of_costs_lowerbound(sum_of_costs_lowerbound), algorithm(algorithm),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_resumable_engine.cpp:1:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_resumable_engine.hpp:23:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/ConstraintTable.h:3:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/CBSNode.h:3:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:73:68: warning: unused parameter 'Rs' [-Wunused-parameter]
+   73 |         bool rectangleConflict(int a1, int a2, const std::pair<int, int>& Rs, const std::pair<int, int>& Rg,
+      |                                                                           ^
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:73:99: warning: unused parameter 'Rg' [-Wunused-parameter]
+   73 |         bool rectangleConflict(int a1, int a2, const std::pair<int, int>& Rs, const std::pair<int, int>& Rg,
+      |                                                                                                          ^
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:74:31: warning: unused parameter 'Rg_t' [-Wunused-parameter]
+   74 |                                  int Rg_t, const list<Constraint>& constraint1, const list<Constraint>& constraint2) // For RM
+      |                                      ^
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_resumable_engine.cpp:1:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_resumable_engine.hpp:24:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/SingleAgentSolver.h:115:3: warning: field 'instance' will be initialized after field 'start_location' [-Wreorder-ctor]
+  115 |                 instance(instance), //agent(agent), 
+      |                 ^~~~~~~~~~~~~~~~~~
+      |                 start_location(instance.start_locations[agent])
+  116 |                 start_location(instance.start_locations[agent]),
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                 goal_location(instance.goal_locations[agent])
+  117 |                 goal_location(instance.goal_locations[agent])
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                 instance(instance)
+1 warning generated.
+5 warnings generated.
+[ 63%] Linking CXX static library librbl_engine.a
+[ 63%] Built target rbl_engine
+[ 64%] Building CXX object CMakeFiles/rbl_profile_outcomes.dir/src/profiler/profile_repair_outcomes.cpp.o
+[ 65%] Building CXX object CMakeFiles/rbl_collect_traces.dir/src/profiler/collect_progress_traces.cpp.o
+[ 67%] Building CXX object CMakeFiles/rbl_gate2_audit.dir/src/profiler/profile_gate2_controller.cpp.o
+[ 68%] Building CXX object CMakeFiles/rbl_eval_runner.dir/src/profiler/eval_runner.cpp.o
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/profiler/profile_gate2_controller.cpp:11:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/Instance.h:2:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:70:13: warning: initializer order does not match the declaration order [-Wreorder-ctor]
+   70 |             num_of_agents(num_of_agents), sum_of_costs(sum_of_costs), runtime(runtime),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~
+      |             sum_of_costs(sum_of_costs)    runtime(runtime)            num_of_agents(num_of_agents)
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/profiler/eval_runner.cpp:12:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/Instance.h:2:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:70:13: warning: initializer order does not match the declaration order [-Wreorder-ctor]
+   71   70 |             num_of_agents(num_of_agents), s |             sum_of_costs_lowerbound(sum_of_costs_lowerbound), algorithm(algorithm),
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~~~~~
+      |             algorithm(algorithm)                              sum_of_costs_lowerbound(sum_of_costs_lowerbound)
+um_of_costs(sum_of_costs), runtime(runtime),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~
+      |             sum_of_costs(sum_of_costs)    runtime(runtime)            num_of_agents(num_of_agents)
+   71 |             sum_of_costs_lowerbound(sum_of_costs_lowerbound), algorithm(algorithm),
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~~~~~
+      |             algorithm(algorithm)                              sum_of_costs_lowerbound(sum_of_costs_lowerbound)
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:70:13: note: field 'num_of_agents' will be initialized after field 'sum_of_costs'
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h   70 |          :70:   num_of_agents(nu13: note: field 'num_of_agents' will be initialized after field 'sum_of_costs'
+m_of_agents), sum_of_costsIn file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/profiler/collect_progress_traces.cpp:10:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/Instance.h:2:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:70:13: warning: initializer order does not match the declaration order [-Wreorder-ctor]
+(sum_of_costs), runtim   70e(r |             num_of_agents(num_of_agents), sum_of_costs   70 |             num_of_agents(num_of_agents), sum_of_costs(sum_of_costs), runtime(ru(sum_of_costs), runtimenut(ime),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~runtIn file included from ime),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~
+      | 
+            sum_of_costs(sum_of_costs)    runtime(runtime)            num_of_agents(num_of_agents)/Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/profiler/profile_repair_outcomes.cpp
+:10:
+In file included from ntim   71/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/Instance.h |             sume_of_/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:2:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.hco),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+sts_low:71:13: note: field 'sum_of_costs_lowerbound' will be initialized after field 'algorithm'
+erboun:70/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h::71:13:d(s13: warning: initializer order does not match the declaration order [-Wreorder-ctor]
+um_of_   costs_low er70b |          ounote: field 'sum_of_costs_lowerbound' will be initialized after field 'algorithm'
+nd), algorithm(algorithm),
+         71 | |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~~~~~
+71       |         |               algorithm(algorithm)                              sum_of_costs_lowerbound(sum_of_costs_lowerbound)
+      num_of_/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.hagents :70:13: note: field 'num_of_agents' will be initialized after field 'sum_of_costs'
+  (num_of_agents), s  sum_o    fu_costs     sm__loofwerbound(sum_oum_of_costs_lowerbound(sum_of_cf_   70_cocsots(s |  osums_of_costs)           ts_lowerbound)ts_lowerbound), runum_of_ag, algo,erntii nats(numle(rumth_of_gorithnammtgen(ai(algorithlgtosr), sum_ofi_comthm)mst),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+s(sum_of_costs),,
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+e),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~
+      |             sum_of_costs(sum_of_costs)    runtime(runtime)            num_of_agents(num_of_agents)
+    71 |             sum_of_costs_lowerbound(sum_of_costs_lowerrbound), algorithm(algorithm),
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~~~~~
+      |             algorithm(algorithm)                              sum_of_costs_lowerbound(sum_of_costs_lowerbound)
+u/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:70:13: note: field 'num_of_agents' will be initialized after field 'sum_of_costs'
+ntime(runtime),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   70 |             num_of_agents/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:71:13: note: field 'sum_of_costs_lowerbound' will be initialized after field 'algorithm'
+(num_of_agents), sum_of_costs(sum_of_costs), ru   71 |    ntime(runtime),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+         sum_of_costs_lowerbo/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:71:13: note: field 'sum_of_costs_lowerbound' will be initialized after field 'algorithm'
+   71 |             sumund(sum_of_costs_lowerbound), algorithm(a_of_costs_lowerbound(sulm_of_costs_lowerbound), algorithm(algorithm),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+gorithm),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/profiler/eval_runner.cpp:13:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_resumable_engine.hpp:23:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/ConstraintTable.h:3:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/CBSNode.h:3:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:73:68: warning: unused parameter 'Rs' [-Wunused-parameter]
+   73 |         bool rectangleConflict(int a1, int a2, const std::pair<int, int>& Rs, const std::pair<int, int>& Rg,
+      |                                                                           ^
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/profiler/profile_gate2_controller.cpp:12:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_resumable_engine.hpp:23:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/ConstraintTable.h:3:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/CBSNode.h:3:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:73:68: warning: unused parameter 'Rs' [-Wunused-parameter]
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:73:99: warning: unused parameter 'Rg' [-Wunused-parameter]
+   73 |         bool rectangleConflict(int a1, int a2, const std::pair<int, int>& RIn file included from s, const   In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/profiler/collect_progress_traces.cpp:11:
+73 |         /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/profiler/profile_repair_outcomes.cpp:11:
+In file included from In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_resumable_engine.hpp:23:
+In file included from  std::pab/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/ConstraintTable.h:3:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/CBSNode.hir<ooint:3:
+l/Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_resumable_engine.hpp rec/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:tan,:23:
+ gintIn file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/ConstraintTable.h:73:3:
+In file included from >leC/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/CBSNode.h:3:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:73:6868: warning: unused parameter 'Rs' [-Wunused-parameter]
+onflict(int a1, int a2, con: warning: unused parameter 'Rs' [-Wunused-parameter]
+st std::p& Rg,   73 |         bool    73r | e        bool r
+      | air<int, int>& Rs                                                                          ^cta
+engl/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:73:99ctaneConfl: warning: gleCict(i, constnt unused parameter 'Rg' [-Wunused-parameter]a1o, in ts a2, const std::pair<nflictd::pair<t(iint, int, nt>
+i&n Rg   ,
+      |                                                                                                          ^int>&73 |         btool rect Rs, const a1angleCon
+flict(int a1,, int  a2,/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:74:31: warning: unused parameter 'Rg_t' [-Wunused-parameter]
+  cstd::pair<int, int>onst s& Rig,
+td::pair<      int, int>& R|                                                                           ^
+nt a2   ,/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:73:99s, const std::: warning: unused parameter 'Rg' [-Wunused-parameter]
+ c   73 |         boopair<l 74 | o        n   int, inrect>& Rg,
+          |                                                                           ^
+st tang/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:73std:::l99: warning: eunused parameter 'Rg' [-Wunused-parameter]
+Con   f73 |         bool rectangleCopair<int, int>&  nflictRs, (colnst st  d:i:pair<int a1  , iint, ct             int Rg_int a2nt>& t, const list<ConstrainRg(,
+      |                                                                                                          ^
+t/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:74:31: warning: unused parameter 'Rg_t' [-Wunused-parameter]
+>& co   nstirnt a1, int aa2,, c74 |          in tconst std::pair<        1int, int>& Rs,, c  o const lonsnst std::pair<int, t ist<Consinstd::p        t>train& Rs, cons   air<it>& constrain   t tstd::pair2) // <inForint Rg_t, tcon st list<ContRMnstr
+      | ain, , intint>                                     ^
+& Rg,t>& >& constra
+      |                                                                                                          ^
+int1, const l/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:74:31: warning: unused parameter 'Rg_t' [-Wunused-parameter]
+Rg,
+      |                                                                                                          ^
+   74 |                         /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:74:31:          int Rg_t, const list<Consist<Constrainttraint>& constraintwarning: unused parameter 'Rg_t' [-Wunused-parameter]
+1, const list<Constraint>& constraint2) // For RM
+      |                                      ^
+   74 |                                  int Rg_t, const list<Constraint>& constraint1, const list<Constraint>& constraint2) // For RM
+      |                                      ^
+>& constraint2) // For RM
+      |                                      ^
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/profiler/collect_progress_traces.cpp:11:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_resumable_engine.hpp:24:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/SingleAgentSolver.h:115:3: warning: field 'instance' will be initialized after field 'start_location' [-Wreorder-ctor]
+  115 |                 instance(instance), //agent(agent), 
+      |                 ^~~~~~~~~~~~~~~~~~
+      |                 start_location(instance.start_locations[agent])
+  116 |                 start_location(instance.start_locations[agent]),
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                 goal_location(instance.goal_locations[agent])
+  117 |                 goal_location(instance.goal_locations[agent])
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                 instance(instance)
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/profiler/profile_repair_outcomes.cpp:11:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_resumable_engine.hpp:24:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/SingleAgentSolver.h:115:3: warning: field 'instance' will be initialized after field 'start_location' [-Wreorder-ctor]
+  115 |                 instance(instance), //agent(agent), 
+      |                 ^~~~~~~~~~~~~~~~~~
+      |                 start_location(instance.start_locations[agent])
+  116 |                 start_location(instance.start_locations[agent]),
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                 goal_location(instance.goal_locations[agent])
+  117 |                 goal_In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/profiler/eval_runner.cpp:13:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_resumable_engine.hpp:24:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/SingleAgentSolver.h:115:3: warning: field 'instance' will be initialized after field 'start_location' [-Wreorder-ctor]
+location(instance.goal_locations[ag  115 |                 instance(instance), //agent(agent), 
+      |                 ^~~~~~~~~~~~~~~~~~
+      |                 start_location(instance.start_locations[agent])
+ent])
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                 instance(instance)
+  116 |                 start_location(instance.start_locations[agent]),
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                 goal_location(instance.goal_locations[agent])
+  117 |                 goal_location(instance.goal_locations[agent])
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                 instance(instance)
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/profiler/profile_gate2_controller.cpp:12:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_resumable_engine.hpp:24:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/SingleAgentSolver.h:115:3: warning: field 'instance' will be initialized after field 'start_location' [-Wreorder-ctor]
+  115 |                 instance(instance), //agent(agent), 
+      |                 ^~~~~~~~~~~~~~~~~~
+      |                 start_location(instance.start_locations[agent])
+  116 |                 start_location(instance.start_locations[agent]),
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                 goal_location(instance.goal_locations[agent])
+  117 |                 goal_location(instance.goal_locations[agent])
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                 instance(instance)
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/profiler/eval_runner.cpp:15:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/LNS.h:6:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/PIBT/simplegrid.h:34:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/PIBT/grid.h:5:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/PIBT/graph.h:96:26: warning: unused parameter 'v1' [-Wunused-parameter]
+   96 |   virtual int dist(Node* v1, Node* v2) { return 0; }
+      |                          ^
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/PIBT/graph.h:96:36: warning: unused parameter 'v2' [-Wunused-parameter]
+   96 |   virtual int dist(Node* v1, Node* v2) { return 0; }
+      |                                    ^
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/PIBT/graph.h:97:31: warning: unused parameter 's' [-Wunused-parameter]
+   97 |   virtual Nodes getPath(Node* s, Node* g) { return {}; }
+      |                               ^
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/PIBT/graph.h:97:40: warning: unused parameter 'g' [-Wunused-parameter]
+   97 |   virtual Nodes getPath(Node* s, Node* g) { return {}; }
+      |                                        ^
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/profiler/eval_runner.cpp:15:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/LNS.h:8:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/PIBT/problem.h:43:40: warning: unused parameter 'flg' [-Wunused-parameter]
+   43 |   virtual void setAutoAssignement(bool flg) {}
+      |                                        ^
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/profiler/profile_repair_outcomes.cpp:142:17: warning: enumeration values 'DISCARDED_INCOMPATIBLE', 'REJECTED_INVALID', and 'REJECTED_LATE_COMMIT' not handled in switch [-Wswitch]
+  142 |         switch (outcome.type) {
+      |                 ^~~~~~~~~~~~
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/profiler/profile_repair_outcomes.cpp:142:17: note: add missing switch cases
+  142 |         switch (outcome.type) {
+      |                 ^
+5 warnings generated.
+[ 69%] Linking CXX executable rbl_collect_traces
+6 warnings generated.
+[ 71%] Linking CXX executable rbl_profile_outcomes
+[ 71%] Built target rbl_collect_traces
+[ 71%] Built target rbl_profile_outcomes
+[ 73%] Building CXX object CMakeFiles/rbl_profile_partial_recovery.dir/src/profiler/profile_partial_recovery.cpp.o
+[ 73%] Building CXX object CMakeFiles/rbl_profile_partial_acceptance.dir/src/profiler/profile_partial_acceptance.cpp.o
+5 warnings generated.
+[ 75%] Linking CXX executable rbl_gate2_audit
+[ 75%] Built target rbl_gate2_audit
+[ 76%] Building CXX object CMakeFiles/rbl_e1_tests.dir/tests/e1_resumption_tests.cpp.o
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/profiler/profile_partial_recovery.cpp:42:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/Instance.h:2:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:70:13: warning: initializer order does not match the declaration order [-Wreorder-ctor]
+   70 |             num_of_agents(num_of_agents), sum_of_costs(sum_of_costs), runtime(runtime),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~
+      |             sum_of_costs(sum_of_costs)    runtime(runtime)            num_of_agents(num_of_agents)
+   71 |             sum_of_costs_lowerbound(sum_of_costs_lowerbound), algorithm(algorithm),
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~~~~~
+      |             algorithm(algorithm)                              sum_of_costs_lowerbound(sum_of_costs_lowerbound)
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:70:13: note: field 'num_of_agents' will be initialized after field 'sum_of_costs'
+   70 |             num_of_agents(num_of_agents), sum_of_costs(sum_of_costs), runtime(runtime),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:71:13: note: field 'sum_of_costs_lowerbound' will be initialized after field 'algorithm'
+   71 |             sum_of_costs_lowerbound(sum_of_costs_lowerbound), algorithm(algorithm),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/profiler/profile_partial_recovery.cpp:43:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_resumable_engine.hpp:23:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/ConstraintTable.h:3:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/CBSNode.h:3:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:73:68: warning: unused parameter 'Rs' [-Wunused-parameter]
+   73 |         bool rectangleConflict(int a1, int a2, const std::pair<int, int>& Rs, const std::pair<int, int>& Rg,
+      |                                                                           ^
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:73:99: warning: unused parameter 'Rg' [-Wunused-parameter]
+   73 |         bool rectangleConflict(int a1, int a2, const std::pair<int, int>& Rs, const std::pair<int, int>& Rg,
+      |                                                                                                          ^
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:74:31: warning: unused parameter 'Rg_t' [-Wunused-parameter]
+   74 |                                  int Rg_t, const list<Constraint>& constraint1, const list<Constraint>& constraint2) // For RM
+      |                                      ^
+10 warnings generated.
+[ 77%] Linking CXX executable rbl_eval_runner
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/profiler/profile_partial_recovery.cpp:43:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_resumable_engine.hpp:24:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/SingleAgentSolver.h:115:3: warning: field 'instance' will be initialized after field 'start_location' [-Wreorder-ctor]
+  115 |                 instance(instance), //agent(agent), 
+      |                 ^~~~~~~~~~~~~~~~~~
+      |                 start_location(instance.start_locations[agent])
+  116 |                 start_location(instance.start_locations[agent]),
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                 goal_location(instance.goal_locations[agent])
+  117 |                 goal_location(instance.goal_locations[agent])
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                 instance(instance)
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/profiler/profile_partial_acceptance.cpp:21:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/Instance.h:2:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:70:13: warning: initializer order does not match the declaration order [-Wreorder-ctor]
+   70 |             num_of_agents(num_of_agents), sum_of_costs(sum_of_costs), runtime(runtime),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~
+      |             sum_of_costs(sum_of_costs)    runtime(runtime)            num_of_agents(num_of_agents)
+   71 |             sum_of_costs_lowerbound(sum_of_costs_lowerbound), algorithm(algorithm),
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~~~~~
+      |             algorithm(algorithm)                              sum_of_costs_lowerbound(sum_of_costs_lowerbound)
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:70:13: note: field 'num_of_agents' will be initialized after field 'sum_of_costs'
+   70 |             num_of_agents(num_of_agents), sum_of_costs(sum_of_costs), runtime(runtime),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:71:13: note: field 'sum_of_costs_lowerbound' will be initialized after field 'algorithm'
+   71 |             sum_of_costs_lowerbound(sum_of_costs_lowerbound), algorithm(algorithm),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/profiler/profile_partial_acceptance.cpp:22:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_resumable_engine.hpp:23:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/ConstraintTable.h:3:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/CBSNode.h:3:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:73:68: warning: unused parameter 'Rs' [-Wunused-parameter]
+   73 |         bool rectangleConflict(int a1, int a2, const std::pair<int, int>& Rs, const std::pair<int, int>& Rg,
+      |                                                                           ^
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:73:99: warning: unused parameter 'Rg' [-Wunused-parameter]
+   73 |         bool rectangleConflict(int a1, int a2, const std::pair<int, int>& Rs, const std::pair<int, int>& Rg,
+      |                                                                                                          ^
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:74:31: warning: unused parameter 'Rg_t' [-Wunused-parameter]
+   74 |                                  int Rg_t, const list<Constraint>& constraint1, const list<Constraint>& constraint2) // For RM
+      |                                      ^
+[ 77%] Built target rbl_eval_runner
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/profiler/profile_partial_acceptance.cpp:22:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_resumable_engine.hpp:24:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/SingleAgentSolver.h:115:3: warning: field 'instance' will be initialized after field 'start_location' [-Wreorder-ctor]
+  115 |                 instance(instance), //agent(agent), 
+      |                 ^~~~~~~~~~~~~~~~~~
+      |                 start_location(instance.start_locations[agent])
+  116 |                 start_location(instance.start_locations[agent]),
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                 goal_location(instance.goal_locations[agent])
+  117 |                 goal_location(instance.goal_locations[agent])
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                 instance(instance)
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/profiler/profile_partial_recovery.cpp:100:9: warning: unused variable 'max_time' [-Wunused-variable]
+  100 |     int max_time = target_t + 60;
+      |         ^~~~~~~~
+[ 78%] Building CXX object CMakeFiles/rbl_e4_tests.dir/tests/e4_compatibility_tests.cpp.o
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/tests/e1_resumption_tests.cpp:20:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/Instance.h:2:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:70:13: warning: initializer order does not match the declaration order [-Wreorder-ctor]
+   70 |             num_of_agents(num_of_agents), sum_of_costs(sum_of_costs), runtime(runtime),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~
+      |             sum_of_costs(sum_of_costs)    runtime(runtime)            num_of_agents(num_of_agents)
+   71 |             sum_of_costs_lowerbound(sum_of_costs_lowerbound), algorithm(algorithm),
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~~~~~
+      |             algorithm(algorithm)                              sum_of_costs_lowerbound(sum_of_costs_lowerbound)
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:70:13: note: field 'num_of_agents' will be initialized after field 'sum_of_costs'
+   70 |             num_of_agents(num_of_agents), sum_of_costs(sum_of_costs), runtime(runtime),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:71:13: note: field 'sum_of_costs_lowerbound' will be initialized after field 'algorithm'
+   71 |             sum_of_costs_lowerbound(sum_of_costs_lowerbound), algorithm(algorithm),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/tests/e1_resumption_tests.cpp:21:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_resumable_engine.hpp:23:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/ConstraintTable.h:3:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/CBSNode.h:3:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:73:68: warning: unused parameter 'Rs' [-Wunused-parameter]
+   73 |         bool rectangleConflict(int a1, int a2, const std::pair<int, int>& Rs, const std::pair<int, int>& Rg,
+      |                                                                           ^
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:73:99: warning: unused parameter 'Rg' [-Wunused-parameter]
+   73 |         bool rectangleConflict(int a1, int a2, const std::pair<int, int>& Rs, const std::pair<int, int>& Rg,
+      |                                                                                                          ^
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:74:31: warning: unused parameter 'Rg_t' [-Wunused-parameter]
+   74 |                                  int Rg_t, const list<Constraint>& constraint1, const list<Constraint>& constraint2) // For RM
+      |                                      ^
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/tests/e1_resumption_tests.cpp:21:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_resumable_engine.hpp:24:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/SingleAgentSolver.h:115:3: warning: field 'instance' will be initialized after field 'start_location' [-Wreorder-ctor]
+  115 |                 instance(instance), //agent(agent), 
+      |                 ^~~~~~~~~~~~~~~~~~
+      |                 start_location(instance.start_locations[agent])
+  116 |                 start_location(instance.start_locations[agent]),
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                 goal_location(instance.goal_locations[agent])
+  117 |                 goal_location(instance.goal_locations[agent])
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                 instance(instance)
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/tests/e4_compatibility_tests.cpp:24:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/Instance.h:2:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:70:13: warning: initializer order does not match the declaration order [-Wreorder-ctor]
+   70 |             num_of_agents(num_of_agents), sum_of_costs(sum_of_costs), runtime(runtime),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~
+      |             sum_of_costs(sum_of_costs)    runtime(runtime)            num_of_agents(num_of_agents)
+   71 |             sum_of_costs_lowerbound(sum_of_costs_lowerbound), algorithm(algorithm),
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~~~~~
+      |             algorithm(algorithm)                              sum_of_costs_lowerbound(sum_of_costs_lowerbound)
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:70:13: note: field 'num_of_agents' will be initialized after field 'sum_of_costs'
+   70 |             num_of_agents(num_of_agents), sum_of_costs(sum_of_costs), runtime(runtime),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:71:13: note: field 'sum_of_costs_lowerbound' will be initialized after field 'algorithm'
+   71 |             sum_of_costs_lowerbound(sum_of_costs_lowerbound), algorithm(algorithm),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/tests/e4_compatibility_tests.cpp:25:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_resumable_engine.hpp:23:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/ConstraintTable.h:3:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/CBSNode.h:3:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:73:68: warning: unused parameter 'Rs' [-Wunused-parameter]
+   73 |         bool rectangleConflict(int a1, int a2, const std::pair<int, int>& Rs, const std::pair<int, int>& Rg,
+      |                                                                           ^
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:73:99: warning: unused parameter 'Rg' [-Wunused-parameter]
+   73 |         bool rectangleConflict(int a1, int a2, const std::pair<int, int>& Rs, const std::pair<int, int>& Rg,
+      |                                                                                                          ^
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:74:31: warning: unused parameter 'Rg_t' [-Wunused-parameter]
+   74 |                                  int Rg_t, const list<Constraint>& constraint1, const list<Constraint>& constraint2) // For RM
+      |                                      ^
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/tests/e4_compatibility_tests.cpp:25:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_resumable_engine.hpp:24:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/SingleAgentSolver.h:115:3: warning: field 'instance' will be initialized after field 'start_location' [-Wreorder-ctor]
+  115 |                 instance(instance), //agent(agent), 
+      |                 ^~~~~~~~~~~~~~~~~~
+      |                 start_location(instance.start_locations[agent])
+  116 |                 start_location(instance.start_locations[agent]),
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                 goal_location(instance.goal_locations[agent])
+  117 |                 goal_location(instance.goal_locations[agent])
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                 instance(instance)
+6 warnings generated.
+[ 80%] Linking CXX executable rbl_profile_partial_recovery
+[ 80%] Built target rbl_profile_partial_recovery
+5 warnings generated.
+[ 81%] Building CXX object CMakeFiles/rbl_estimator_tests.dir/tests/estimator_tests.cpp.o
+5 warnings generated.
+[ 82%] Linking CXX executable rbl_e1_tests
+[ 84%] Linking CXX executable rbl_e4_tests
+[ 84%] Built target rbl_e1_tests
+[ 84%] Built target rbl_e4_tests
+5 warnings generated.
+[ 85%] Linking CXX executable rbl_profile_partial_acceptance
+[ 86%] Building CXX object CMakeFiles/rbl_partial_recovery_tests.dir/tests/partial_prefix_recovery_tests.cpp.o
+[ 88%] Building CXX object CMakeFiles/rbl_controller_tests.dir/tests/controller_tests.cpp.o
+[ 88%] Built target rbl_profile_partial_acceptance
+[ 89%] Building CXX object CMakeFiles/rbl_partial_acceptance_tests.dir/tests/partial_acceptance_tests.cpp.o
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/tests/estimator_tests.cpp:7:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_feature_extractor.hpp:9:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_resumable_engine.hpp:21:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/Instance.h:2:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:70:13: warning: initializer order does not match the declaration order [-Wreorder-ctor]
+   70 |             num_of_agents(num_of_agents), sum_of_costs(sum_of_costs), runtime(runtime),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~
+      |             sum_of_costs(sum_of_costs)    runtime(runtime)            num_of_agents(num_of_agents)
+   71 |             sum_of_costs_lowerbound(sum_of_costs_lowerbound), algorithm(algorithm),
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~~~~~
+      |             algorithm(algorithm)                              sum_of_costs_lowerbound(sum_of_costs_lowerbound)
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:70:13: note: field 'num_of_agents' will be initialized after field 'sum_of_costs'
+   70 |             num_of_agents(num_of_agents), sum_of_costs(sum_of_costs), runtime(runtime),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:71:13: note: field 'sum_of_costs_lowerbound' will be initialized after field 'algorithm'
+   71 |             sum_of_costs_lowerbound(sum_of_costs_lowerbound), algorithm(algorithm),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/tests/estimator_tests.cpp:7:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_feature_extractor.hpp:9:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_resumable_engine.hpp:23:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/ConstraintTable.h:3:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/CBSNode.h:3:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:73:68: warning: unused parameter 'Rs' [-Wunused-parameter]
+   73 |         bool rectangleConflict(int a1, int a2, const std::pair<int, int>& Rs, const std::pair<int, int>& Rg,
+      |                                                                           ^
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:73:99: warning: unused parameter 'Rg' [-Wunused-parameter]
+   73 |         bool rectangleConflict(int a1, int a2, const std::pair<int, int>& Rs, const std::pair<int, int>& Rg,
+      |                                                                                                          ^
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:74:31: warning: unused parameter 'Rg_t' [-Wunused-parameter]
+   74 |                                  int Rg_t, const list<Constraint>& constraint1, const list<Constraint>& constraint2) // For RM
+      |                                      ^
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/tests/estimator_tests.cpp:7:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_feature_extractor.hpp:9:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_resumable_engine.hpp:24:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/SingleAgentSolver.h:115:3: warning: field 'instance' will be initialized after field 'start_location' [-Wreorder-ctor]
+  115 |                 instance(instance), //agent(agent), 
+      |                 ^~~~~~~~~~~~~~~~~~
+      |                 start_location(instance.start_locations[agent])
+  116 |                 start_location(instance.start_locations[agent]),
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                 goal_location(instance.goal_locations[agent])
+  117 |                 goal_location(instance.goal_locations[agent])
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                 instance(instance)
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/tests/partial_prefix_recovery_tests.cpp:24:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/Instance.h:2:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:70:13: warning: initializer order does not match the declaration order [-Wreorder-ctor]
+   70 |             num_of_agents(num_of_agents), sum_of_costs(sum_of_costs), runtime(runtime),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~
+      |             sum_of_costs(sum_of_costs)    runtime(runtime)            num_of_agents(num_of_agents)
+   71 |             sum_of_costs_lowerbound(sum_of_costs_lowerbound), algorithm(algorithm),
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~~~~~
+      |             algorithm(algorithm)                              sum_of_costs_lowerbound(sum_of_costs_lowerbound)
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:70:13: note: field 'num_of_agents' will be initialized after field 'sum_of_costs'
+   70 |             num_of_agents(num_of_agents), sum_of_costs(sum_of_costs), runtime(runtime),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:71:13: note: field 'sum_of_costs_lowerbound' will be initialized after field 'algorithm'
+   71 |             sum_of_costs_lowerbound(sum_of_costs_lowerbound), algorithm(algorithm),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/tests/controller_tests.cpp:8:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/Instance.h:2:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:70:13: warning: initializer order does not match the declaration order [-Wreorder-ctor]
+   70 |             num_of_agents(num_of_agents), sum_of_costs(sum_of_costs), runtime(runtime),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~
+      |             sum_of_costs(sum_of_costs)    runtime(runtime)            num_of_agents(num_of_agents)
+   71 |             sum_of_costs_lowerbound(sum_of_costs_lowerbound), algorithm(algorithm),
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~~~~~
+      |             algorithm(algorithm)                              sum_of_costs_lowerbound(sum_of_costs_lowerbound)
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:70:13: note: field 'num_of_agents' will be initialized after field 'sum_of_costs'
+   70 |             num_of_agents(num_of_agents), sum_of_costs(sum_of_costs), runtime(runtime),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:71:13: note: field 'sum_of_costs_lowerbound' will be initialized after field 'algorithm'
+   71 |             sum_of_costs_lowerbound(sum_of_costs_lowerbound), algorithm(algorithm),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/tests/controller_tests.cpp:9:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_resumable_engine.hpp:23:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/ConstraintTable.h:3:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/CBSNode.h:3:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:73:68: warning: unused parameter 'Rs' [-Wunused-parameter]
+   73 |         bool rectangleConflict(int a1, int a2, const std::pair<int, int>& Rs, const std::pair<int, int>& Rg,
+      |                                                                           ^
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:73:99: warning: unused parameter 'Rg' [-Wunused-parameter]
+   73 |         bool rectangleConflict(int a1, int a2, const std::pair<int, int>& Rs, const std::pair<int, int>& Rg,
+      |                                                                                                          ^
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:74:31: warning: unused parameter 'Rg_t' [-Wunused-parameter]
+   74 |                                  int Rg_t, const list<Constraint>& constIn file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/tests/partial_prefix_recovery_tests.cpp:25:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_resumable_engine.hpp:23raint1, const list<Constraint>& constraint2) // For RM
+      |                                      ^
+:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/ConstraintTable.h:3:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/CBSNode.h:3:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:73:68: warning: unused parameter 'Rs' [-Wunused-parameter]
+   73 |         bool rectangleConflict(int a1, int a2, const std::pair<int, int>& Rs, const std::pair<int, int>& Rg,
+      |                                                                           ^
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:73:99: warning: unused parameter 'Rg' [-Wunused-parameter]
+   73 |         bool rectangleConflict(int a1, int a2, const std::pair<int, int>& Rs, const std::pair<int, int>& Rg,
+      |                                                                                                          ^
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:74:31: warning: unused parameter 'Rg_t' [-Wunused-parameter]
+   74 |                                  int Rg_t, const list<Constraint>& constraint1, const list<Constraint>& constraint2) // For RM
+      |                                      ^
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/tests/controller_tests.cpp:9:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_resumable_engine.hpp:24:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/SingleAgentSolver.h:115:3: warning: field 'instance' will be initialized after field 'start_location' [-Wreorder-ctor]
+  115 |                 instance(instance), //agent(agent), 
+      |                 ^~~~~~~~~~~~~~~~~~
+      |                 start_location(instance.start_locations[agent])
+  116 |                 start_location(instance.start_locations[agent]),
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                 goal_location(instance.goal_locations[agent])
+  117 |                 goal_location(instance.goal_locations[agent])
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                 instance(instance)
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/tests/partial_prefix_recovery_tests.cpp:25:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_resumable_engine.hpp:24:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/SingleAgentSolver.h:115:3: warning: field 'instance' will be initialized after field 'start_location' [-Wreorder-ctor]
+  115 |                 instance(instance), //agent(agent), 
+      |                 ^~~~~~~~~~~~~~~~~~
+      |                 start_location(instance.start_locations[agent])
+  116 |                 start_location(instance.start_locations[agent]),
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                 goal_location(instance.goal_locations[agent])
+  117 |                 goal_location(instance.goal_locations[agent])
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                 instance(instance)
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/tests/partial_acceptance_tests.cpp:34:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/Instance.h:2:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:70:13: warning: initializer order does not match the declaration order [-Wreorder-ctor]
+   70 |             num_of_agents(num_of_agents), sum_of_costs(sum_of_costs), runtime(runtime),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~
+      |             sum_of_costs(sum_of_costs)    runtime(runtime)            num_of_agents(num_of_agents)
+   71 |             sum_of_costs_lowerbound(sum_of_costs_lowerbound), algorithm(algorithm),
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~~~~~
+      |             algorithm(algorithm)                              sum_of_costs_lowerbound(sum_of_costs_lowerbound)
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:70:13: note: field 'num_of_agents' will be initialized after field 'sum_of_costs'
+   70 |             num_of_agents(num_of_agents), sum_of_costs(sum_of_costs), runtime(runtime),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:71:13: note: field 'sum_of_costs_lowerbound' will be initialized after field 'algorithm'
+   71 |             sum_of_costs_lowerbound(sum_of_costs_lowerbound), algorithm(algorithm),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/tests/partial_acceptance_tests.cpp:35:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_resumable_engine.hpp:23:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/ConstraintTable.h:3:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/CBSNode.h:3:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:73:68: warning: unused parameter 'Rs' [-Wunused-parameter]
+   73 |         bool rectangleConflict(int a1, int a2, const std::pair<int, int>& Rs, const std::pair<int, int>& Rg,
+      |                                                                           ^
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:73:99: warning: unused parameter 'Rg' [-Wunused-parameter]
+   73 |         bool rectangleConflict(int a1, int a2, const std::pair<int, int>& Rs, const std::pair<int, int>& Rg,
+      |                                                                                                          ^
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:74:31: warning: unused parameter 'Rg_t' [-Wunused-parameter]
+   74 |                                  int Rg_t, const list<Constraint>& constraint1, const list<Constraint>& constraint2) // For RM
+      |                                      ^
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/tests/partial_acceptance_tests.cpp:35:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_resumable_engine.hpp:24:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/SingleAgentSolver.h:115:3: warning: field 'instance' will be initialized after field 'start_location' [-Wreorder-ctor]
+  115 |                 instance(instance), //agent(agent), 
+      |                 ^~~~~~~~~~~~~~~~~~
+      |                 start_location(instance.start_locations[agent])
+  116 |                 start_location(instance.start_locations[agent]),
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                 goal_location(instance.goal_locations[agent])
+  117 |                 goal_location(instance.goal_locations[agent])
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                 instance(instance)
+5 warnings generated.
+[ 90%] Linking CXX executable rbl_estimator_tests
+[ 90%] Built target rbl_estimator_tests
+[ 92%] Building CXX object CMakeFiles/rbl_selective_recovery_tests.dir/tests/selective_recovery_tests.cpp.o
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/tests/selective_recovery_tests.cpp:28:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/Instance.h:2:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:70:13: warning: initializer order does not match the declaration order [-Wreorder-ctor]
+   70 |             num_of_agents(num_of_agents), sum_of_costs(sum_of_costs), runtime(runtime),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~
+      |             sum_of_costs(sum_of_costs)    runtime(runtime)            num_of_agents(num_of_agents)
+   71 |             sum_of_costs_lowerbound(sum_of_costs_lowerbound), algorithm(algorithm),
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~~~~~
+      |             algorithm(algorithm)                              sum_of_costs_lowerbound(sum_of_costs_lowerbound)
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:70:13: note: field 'num_of_agents' will be initialized after field 'sum_of_costs'
+   70 |             num_of_agents(num_of_agents), sum_of_costs(sum_of_costs), runtime(runtime),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:71:13: note: field 'sum_of_costs_lowerbound' will be initialized after field 'algorithm'
+   71 |             sum_of_costs_lowerbound(sum_of_costs_lowerbound), algorithm(algorithm),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+5 warnings generated.
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/tests/selective_recovery_tests.cpp:30:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_resumable_engine.hpp:23:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/ConstraintTable.h:3:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/CBSNode.h:3:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:73:68: warning: unused parameter 'Rs' [-Wunused-parameter]
+   73 |         bool rectangleConflict(int a1, int a2, const std::pair<int, int>& Rs, const std::pair<int, int>& Rg,
+      |                                                                           ^
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:73:99: warning: unused parameter 'Rg' [-Wunused-parameter]
+   73 |         bool rectangleConflict(int a1, int a2, const std::pair<int, int>& Rs, const std::pair<int, int>& Rg,
+      |                                                                                                          ^
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:74:31: warning: unused parameter 'Rg_t' [-Wunused-parameter]
+   74 |                                  int Rg_t, const list<Constraint>& constraint1, const list<Constraint>& constraint2) // For RM
+      |                                      ^
+[ 93%] Linking CXX executable rbl_controller_tests
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/tests/selective_recovery_tests.cpp:30:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_resumable_engine.hpp:24:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/SingleAgentSolver.h:115:3: warning: field 'instance' will be initialized after field 'start_location' [-Wreorder-ctor]
+  115 |                 instance(instance), //agent(agent), 
+      |                 ^~~~~~~~~~~~~~~~~~
+      |                 start_location(instance.start_locations[agent])
+  116 |                 start_location(instance.start_locations[agent]),
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                 goal_location(instance.goal_locations[agent])
+  117 |                 goal_location(instance.goal_locations[agent])
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                 instance(instance)
+[ 93%] Built target rbl_controller_tests
+[ 94%] Building CXX object CMakeFiles/rbl_cost_transaction_tests.dir/tests/cost_transaction_tests.cpp.o
+5 warnings generated.
+[ 96%] Linking CXX executable rbl_partial_recovery_tests
+[ 96%] Built target rbl_partial_recovery_tests
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/tests/cost_transaction_tests.cpp:3:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/tests/selective_recovery_tests.cpp:28:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/Instance.h:2:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:70:13: warning: initializer order does not match the declaration order [-Wreorder-ctor]
+   70 |             num_of_agents(num_of_agents), sum_of_costs(sum_of_costs), runtime(runtime),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~
+      |             sum_of_costs(sum_of_costs)    runtime(runtime)            num_of_agents(num_of_agents)
+   71 |             sum_of_costs_lowerbound(sum_of_costs_lowerbound), algorithm(algorithm),
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~~~~~
+      |             algorithm(algorithm)                              sum_of_costs_lowerbound(sum_of_costs_lowerbound)
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:70:13: note: field 'num_of_agents' will be initialized after field 'sum_of_costs'
+   70 |             num_of_agents(num_of_agents), sum_of_costs(sum_of_costs), runtime(runtime),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/common.h:71:13: note: field 'sum_of_costs_lowerbound' will be initialized after field 'algorithm'
+   71 |             sum_of_costs_lowerbound(sum_of_costs_lowerbound), algorithm(algorithm),
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/tests/cost_transaction_tests.cpp:3:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/tests/selective_recovery_tests.cpp:30:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_resumable_engine.hpp:23:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/ConstraintTable.h:3:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/CBSNode.h:3:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:73:68: warning: unused parameter 'Rs' [-Wunused-parameter]
+   73 |         bool rectangleConflict(int a1, int a2, const std::pair<int, int>& Rs, const std::pair<int, int>& Rg,
+      |                                                                           ^
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:73:99: warning: unused parameter 'Rg' [-Wunused-parameter]
+   73 |         bool rectangleConflict(int a1, int a2, const std::pair<int, int>& Rs, const std::pair<int, int>& Rg,
+      |                                                                                                          ^
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/CBS/Conflict.h:74:31: warning: unused parameter 'Rg_t' [-Wunused-parameter]
+   74 |                                  int Rg_t, const list<Constraint>& constraint1, const list<Constraint>& constraint2) // For RM
+      |                                      ^
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/tests/cost_transaction_tests.cpp:3:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/tests/selective_recovery_tests.cpp:30:
+In file included from /Users/disasgamage/Documents/GitHub/RouteBudgetLab/src/engine/rbl_resumable_engine.hpp:24:
+/Users/disasgamage/Documents/GitHub/RouteBudgetLab/third_party/anytime-mapf/inc/SingleAgentSolver.h:115:3: warning: field 'instance' will be initialized after field 'start_location' [-Wreorder-ctor]
+  115 |                 instance(instance), //agent(agent), 
+      |                 ^~~~~~~~~~~~~~~~~~
+      |                 start_location(instance.start_locations[agent])
+  116 |                 start_location(instance.start_locations[agent]),
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                 goal_location(instance.goal_locations[agent])
+  117 |                 goal_location(instance.goal_locations[agent])
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                 instance(instance)
+5 warnings generated.
+[ 97%] Linking CXX executable rbl_partial_acceptance_tests
+[ 97%] Built target rbl_partial_acceptance_tests
+5 warnings generated.
+[ 98%] Linking CXX executable rbl_selective_recovery_tests
+[ 98%] Built target rbl_selective_recovery_tests
+5 warnings generated.
+[100%] Linking CXX executable rbl_cost_transaction_tests
+[100%] Built target rbl_cost_transaction_tests

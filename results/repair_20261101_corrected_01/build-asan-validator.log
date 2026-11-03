@@ -1,0 +1,23 @@
+[  3%] Building CXX object CMakeFiles/rbl_validate.dir/src/validator/rbl_validate.cpp.o
+[  6%] Built target rbl_profile_checkpoint
+[  6%] Built target rbl_validator_tests
+[ 55%] Built target anytime_mapf_core
+[ 58%] Built target rbl_engine
+[ 61%] Built target rbl_collect_traces
+[ 63%] Built target rbl_profile_outcomes
+[ 66%] Built target rbl_gate2_audit
+[ 71%] Built target rbl_profile_partial_acceptance
+[ 71%] Built target rbl_profile_partial_recovery
+[ 73%] Built target rbl_eval_runner
+[ 76%] Built target rbl_e1_tests
+[ 78%] Built target rbl_estimator_tests
+[ 81%] Built target rbl_e4_tests
+[ 88%] Built target rbl_partial_recovery_tests
+[ 88%] Built target rbl_controller_tests
+[ 88%] Built target rbl_partial_acceptance_tests
+[ 91%] Built target rbl_recovery_correctness_tests
+[ 93%] Built target rbl_selective_recovery_tests
+[ 96%] Built target rbl_cost_transaction_tests
+[ 98%] Built target rbl_reserve_calibration
+[100%] Linking CXX executable rbl_validate
+[100%] Built target rbl_validate

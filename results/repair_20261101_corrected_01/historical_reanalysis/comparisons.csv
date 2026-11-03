@@ -1,0 +1,6 @@
+policy,n_pairs,wins,ties,losses,mean_delta_cost,mean_non_ties,sample_sd,standard_error,sign_two_sided,wilcoxon_two_sided_exact,sign_two_sided_holm,wilcoxon_two_sided_exact_holm
+PA_EVERY_INTERRUPTION_FILTERED,32,0,28,4,13.5625,108.5,52.975915099648454,9.364907201631059,0.125,0.125,0.625,0.625
+PA_EVICTION_ONLY,32,0,32,0,0,,0.0,0.0,1.0,1.0,1.0,1.0
+PA_TERMINAL_ONLY,32,0,32,0,0,,0.0,0.0,1.0,1.0,1.0,1.0
+PA_EVICTION_AND_TERMINAL,32,0,32,0,0,,0.0,0.0,1.0,1.0,1.0,1.0
+TERMINAL_RESERVE_CONTROL,32,0,32,0,0,,0.0,0.0,1.0,1.0,1.0,1.0

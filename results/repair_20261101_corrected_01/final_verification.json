@@ -1,0 +1,77 @@
+{
+  "historical_files_unchanged": 5354,
+  "manifests": {
+    "results/2026-11-02_corrected_selective_pilot_01": 1350,
+    "results/2026-11-02_corrected_primary_pilot_01": 454,
+    "results/2026-11-02_corrected_selective_pilot_02": 1542,
+    "results/2026-11-02_corrected_primary_pilot_02": 518,
+    "results/2026-11-02_corrected_selective_pilot_03": 1542,
+    "results/2026-11-02_corrected_primary_pilot_03": 518,
+    "results/repair_20261101_corrected_01/smoke_01": 48,
+    "results/repair_20261101_corrected_01/offline_replay_01": 11
+  },
+  "experiments": {
+    "results/2026-11-02_corrected_selective_pilot_01": {
+      "runs": 192,
+      "validated": 192,
+      "analysis_reproduces": true
+    },
+    "results/2026-11-02_corrected_primary_pilot_01": {
+      "runs": 64,
+      "validated": 64,
+      "analysis_reproduces": true
+    },
+    "results/2026-11-02_corrected_selective_pilot_02": {
+      "runs": 192,
+      "validated": 192,
+      "analysis_reproduces": true
+    },
+    "results/2026-11-02_corrected_primary_pilot_02": {
+      "runs": 64,
+      "validated": 64,
+      "analysis_reproduces": true
+    },
+    "results/2026-11-02_corrected_selective_pilot_03": {
+      "runs": 192,
+      "validated": 192,
+      "analysis_reproduces": true
+    },
+    "results/2026-11-02_corrected_primary_pilot_03": {
+      "runs": 64,
+      "validated": 64,
+      "analysis_reproduces": true
+    }
+  },
+  "offline_snapshot_summary": [
+    {
+      "map": "data/validation/maps/random-64-64-10.map",
+      "snapshots": 20,
+      "greedy_below_oracle": 0,
+      "positive_oracle": 0,
+      "positive_feasible_opportunities": 0,
+      "greedy_positive_opportunities": 0,
+      "exact_strictly_exceeds_greedy_count": 0,
+      "total_exact_gain": 0,
+      "total_greedy_gain": 0,
+      "exact_vs_oracle_mismatch_count": 0,
+      "nn_ref_vs_exact_mismatch_count": 0
+    },
+    {
+      "map": "data/validation/maps/warehouse-10-20-10-2-2.map",
+      "snapshots": 72,
+      "greedy_below_oracle": 0,
+      "positive_oracle": 1,
+      "positive_feasible_opportunities": 1,
+      "greedy_positive_opportunities": 1,
+      "exact_strictly_exceeds_greedy_count": 0,
+      "total_exact_gain": 2,
+      "total_greedy_gain": 2,
+      "exact_vs_oracle_mismatch_count": 0,
+      "nn_ref_vs_exact_mismatch_count": 0
+    }
+  ],
+  "instrumented_compile_units": 59,
+  "linked_asan_ubsan_symbols": true,
+  "document_tables_match": true,
+  "vendor_check": "third_party/anytime-mapf == upstream 47bb25e9 (no local modifications)"
+}

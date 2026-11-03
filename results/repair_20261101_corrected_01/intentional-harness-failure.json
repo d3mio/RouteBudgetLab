@@ -1,0 +1,9 @@
+{
+  "command": [
+    "build/corrected-release/rbl_cost_transaction_tests",
+    "--intentional-failure"
+  ],
+  "returncode": 17,
+  "stdout": "",
+  "stderr": "FAILED [/Users/disasgamage/Documents/GitHub/RouteBudgetLab/tests/cost_transaction_tests.cpp:79]: intentional harness check under NDEBUG (false is false)\n"
+}
