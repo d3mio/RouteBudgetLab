@@ -1,0 +1,33 @@
+{
+  "command": [
+    "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/build/corrected-release/rbl_profile_partial_acceptance",
+    "--mode",
+    "online",
+    "--map",
+    "data/validation/maps/random-64-64-10.map",
+    "--scen",
+    "data/validation/scenarios/random-64-64-10-random-2.scen",
+    "--agents",
+    "100",
+    "--seed",
+    "0",
+    "--budget",
+    "5.0",
+    "--slice",
+    "0.005",
+    "--neighborhood-size",
+    "8",
+    "--policy",
+    "PA_EVICTION_AND_TERMINAL",
+    "--terminal-reserve",
+    "0.013",
+    "--load-init-paths",
+    "results/partial_acceptance_pilot/init_paths/random-64-64-10__random-64-64-10-random-2__a100.paths",
+    "--dump-final-paths",
+    "results/2026-11-02_corrected_selective_pilot_03/paths/cell14_pos2_PA_EVICTION_AND_TERMINAL.paths",
+    "--output",
+    "results/2026-11-02_corrected_selective_pilot_03/raw/cell14_pos2_PA_EVICTION_AND_TERMINAL.json"
+  ],
+  "returncode": 0,
+  "process_elapsed_s": 5.030793457990512
+}
