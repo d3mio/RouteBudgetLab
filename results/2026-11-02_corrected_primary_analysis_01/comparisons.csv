@@ -1,0 +1,2 @@
+policy,n_pairs,wins,ties,losses,mean_delta_cost,mean_non_ties,sample_sd,standard_error,sign_two_sided,wilcoxon_two_sided_exact,sign_two_sided_holm,wilcoxon_two_sided_exact_holm
+RESUMPTION_NO_PA,32,22,9,1,-209.71875,-291.7826086956522,323.14315557030676,57.124179149445844,5.7220458984375e-06,4.76837158203125e-07,5.7220458984375e-06,4.76837158203125e-07
