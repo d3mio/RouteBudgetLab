@@ -1,0 +1,99 @@
+{
+  "experiment_name": "partial_acceptance_pilot",
+  "description": "Controlled 192-run engineering pilot evaluating maximum-gain partial acceptance on interrupted MAPF-LNS repairs under planning deadlines (Upgrade Guide Section 10.4).",
+  "version": "1.1.0",
+  "date": "2026-10-31",
+  "partition": "validation",
+  "prior_data_exposure": "Development/validation partition (random-64-64-10, warehouse-10-20-10-2-2) previously used for Phase 6-7 controller tuning and partial-prefix recovery diagnostic; untouched test partition (Paris_1_256, Berlin_1_256, warehouse-20-40-10-2-2, den520d, ost003d, brc202d) remains strictly unexposed.",
+  "base_repair_and_scheduling_policy": {
+    "initial_planner": "Prioritized Space-Time A* (shared fixture per map/scenario/agent_count, loaded outside refinement timer)",
+    "timing_protocol": "PROTOCOL_A_CONTROLLED_REFINEMENT",
+    "neighborhood_size": 8,
+    "neighborhood_selection": "Uniform random subset without replacement using seeded std::mt19937",
+    "slice_duration_seconds": 0.005,
+    "slice_expansion_cap_rule": "max(50, floor(slice_duration_seconds * 100000.0)) = 500 expansions",
+    "deadline_safety_reserve_seconds": 0.0005,
+    "checkpoint_capacity_when_resumption_enabled": 2,
+    "checkpoint_compatibility_policy": "WHOLE_CHECKPOINT_SELECTIVE",
+    "checkpoint_resumption_order": "FIFO (oldest compatible checkpoint_id)",
+    "stagnation_eviction_threshold": 2
+  },
+  "factors": {
+    "maps": [
+      {
+        "name": "random-64-64-10",
+        "path": "data/validation/maps/random-64-64-10.map",
+        "scenarios": [
+          "data/validation/scenarios/random-64-64-10-random-1.scen",
+          "data/validation/scenarios/random-64-64-10-random-2.scen",
+          "data/validation/scenarios/random-64-64-10-random-3.scen"
+        ]
+      },
+      {
+        "name": "warehouse-10-20-10-2-2",
+        "path": "data/validation/maps/warehouse-10-20-10-2-2.map",
+        "scenarios": [
+          "data/validation/scenarios/warehouse-10-20-10-2-2-random-1.scen",
+          "data/validation/scenarios/warehouse-10-20-10-2-2-random-2.scen",
+          "data/validation/scenarios/warehouse-10-20-10-2-2-random-3.scen"
+        ]
+      }
+    ],
+    "agent_counts": [50, 100],
+    "budgets_seconds": [1.0, 5.0],
+    "slice_durations_seconds": [0.005],
+    "seeds": [0, 1],
+    "policies": [
+      {
+        "name": "DISCARD_NO_PA",
+        "description": "Baseline discard-on-interrupt (K=0); partial acceptance disabled",
+        "resumption_enabled": false,
+        "partial_acceptance_enabled": false,
+        "partial_acceptance_policy": "OFF"
+      },
+      {
+        "name": "RESUMPTION_NO_PA",
+        "description": "Macro-prefix checkpoint resumption (K=2, FIFO selective); partial acceptance disabled",
+        "resumption_enabled": true,
+        "partial_acceptance_enabled": false,
+        "partial_acceptance_policy": "OFF"
+      },
+      {
+        "name": "GREEDY_PARTIAL_ACCEPTANCE",
+        "description": "Resumption enabled (K=2, FIFO selective) + transitive dependency-aware greedy partial acceptance",
+        "resumption_enabled": true,
+        "partial_acceptance_enabled": true,
+        "partial_acceptance_policy": "GREEDY_DEPENDENCY"
+      },
+      {
+        "name": "EXACT_PARTIAL_ACCEPTANCE",
+        "description": "Resumption enabled (K=2, FIFO selective) + exact min-cut maximum-weight closure partial acceptance",
+        "resumption_enabled": true,
+        "partial_acceptance_enabled": true,
+        "partial_acceptance_policy": "EXACT_CLOSURE"
+      }
+    ]
+  },
+  "metrics": [
+    "initial_cost",
+    "cost_at_deadline",
+    "final_cost",
+    "cost_reduction_at_deadline",
+    "cost_reduction",
+    "total_repair_attempts",
+    "total_interrupted_repairs",
+    "interruptions_with_complete_paths",
+    "pa_attempts",
+    "pa_positive_opportunities",
+    "pa_committed",
+    "pa_total_gain",
+    "pa_telemetry",
+    "total_solve_time_s",
+    "deadline_overshoot_s",
+    "deadline_exceeded_flag",
+    "plan_valid",
+    "anytime_cost_trajectory"
+  ],
+  "total_planned_runs": 192,
+  "accounting": "2 maps * 3 scenarios * 2 agent counts * 2 seeds * 2 budgets * 1 slice * 4 policies = 192 runs"
+}

@@ -1,0 +1,80 @@
+{
+  "experiment_name": "selective_recovery_pilot",
+  "description": "Controlled matched evaluation of selective recovery policies (Cheap Filter, Eviction-Only, Terminal-Only, and Combined) against Resumption Baseline and Terminal-Reserve Control.",
+  "version": "1.0.0",
+  "date": "2026-11-01",
+  "partition": "validation",
+  "prior_data_exposure": "Development/validation partition (random-64-64-10, warehouse-10-20-10-2-2). Untouched test partition remains strictly unexposed.",
+  "base_parameters": {
+    "neighborhood_size": 8,
+    "slice_duration_seconds": 0.005,
+    "slice_expansion_cap_rule": "max(50, floor(slice_duration_seconds * 100000.0)) = 500 expansions",
+    "terminal_reserve_seconds": 0.002,
+    "checkpoint_capacity": 2,
+    "checkpoint_compatibility_policy": "WHOLE_CHECKPOINT_SELECTIVE",
+    "checkpoint_resumption_order": "FIFO (oldest compatible checkpoint_id)",
+    "stagnation_eviction_threshold": 2
+  },
+  "grid": {
+    "maps": [
+      {
+        "name": "random-64-64-10",
+        "path": "data/validation/maps/random-64-64-10.map",
+        "scenarios": [
+          "data/validation/scenarios/random-64-64-10-random-1.scen",
+          "data/validation/scenarios/random-64-64-10-random-2.scen"
+        ]
+      },
+      {
+        "name": "warehouse-10-20-10-2-2",
+        "path": "data/validation/maps/warehouse-10-20-10-2-2.map",
+        "scenarios": [
+          "data/validation/scenarios/warehouse-10-20-10-2-2-random-1.scen",
+          "data/validation/scenarios/warehouse-10-20-10-2-2-random-2.scen"
+        ]
+      }
+    ],
+    "agent_counts": [50, 100],
+    "budgets_seconds": [1.0, 5.0],
+    "seeds": [0, 1]
+  },
+  "policies": [
+    {
+      "name": "RESUMPTION_NO_PA",
+      "description": "Normal checkpoint resumption baseline (K=2, FIFO selective); recovery disabled",
+      "policy_arg": "RESUMPTION_NO_PA",
+      "terminal_control": false
+    },
+    {
+      "name": "PA_EVERY_INTERRUPTION_FILTERED",
+      "description": "Cheap-filtered partial acceptance evaluated on every slice interruption",
+      "policy_arg": "PA_EVERY_INTERRUPTION_FILTERED",
+      "terminal_control": false
+    },
+    {
+      "name": "PA_EVICTION_ONLY",
+      "description": "Normal resumption; recovery attempted only upon natural checkpoint eviction",
+      "policy_arg": "PA_EVICTION_ONLY",
+      "terminal_control": false
+    },
+    {
+      "name": "PA_TERMINAL_ONLY",
+      "description": "Normal resumption; recovery attempted only during 2.0 ms terminal reserve before deadline",
+      "policy_arg": "PA_TERMINAL_ONLY",
+      "terminal_control": false
+    },
+    {
+      "name": "PA_EVICTION_AND_TERMINAL",
+      "description": "Normal resumption; recovery attempted on eviction and during terminal reserve",
+      "policy_arg": "PA_EVICTION_AND_TERMINAL",
+      "terminal_control": false
+    },
+    {
+      "name": "TERMINAL_RESERVE_CONTROL",
+      "description": "Control ablation: stops normal search early at 2.0 ms reserve without recovery",
+      "policy_arg": "RESUMPTION_NO_PA",
+      "terminal_control": true
+    }
+  ],
+  "accounting": "2 maps * 2 scenarios * 2 agent scales * 2 budgets * 2 seeds = 32 matched cells * 6 variants = 192 total runs"
+}

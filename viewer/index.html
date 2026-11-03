@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RouteBudget Lab — 2D MAPF Replay Viewer</title>
+  <link rel="stylesheet" href="viewer.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header Navigation & Run Selector -->
+    <header class="app-header">
+      <div class="header-brand">
+        <span class="brand-icon">⬡</span>
+        <div class="brand-text">
+          <h1>RouteBudget Lab</h1>
+          <span class="sub-brand">Phase 8 Replay Viewer — Offline MAPF Trajectory Inspector</span>
+        </div>
+      </div>
+
+      <div class="filter-toolbar">
+        <div class="filter-group">
+          <label for="mapSelect">Map</label>
+          <select id="mapSelect" title="Select Map Topology"></select>
+        </div>
+        <div class="filter-group">
+          <label for="scenSelect">Scenario</label>
+          <select id="scenSelect" title="Select Scenario ID"></select>
+        </div>
+        <div class="filter-group">
+          <label for="agentsSelect">Agents</label>
+          <select id="agentsSelect" title="Select Agent Scale"></select>
+        </div>
+        <div class="filter-group">
+          <label for="budgetSelect">Budget</label>
+          <select id="budgetSelect" title="Select Planning Budget"></select>
+        </div>
+        <div class="filter-group">
+          <label for="methodSelect">Method</label>
+          <select id="methodSelect" title="Select Algorithm / Policy"></select>
+        </div>
+        <div class="filter-group">
+          <label for="protoSelect">Protocol</label>
+          <select id="protoSelect" title="Select Timing Protocol"></select>
+        </div>
+        <button id="loadBtn" class="btn btn-primary" title="Load selected replay">Load Replay</button>
+      </div>
+
+      <div class="header-status">
+        <span id="validationBadge" class="badge badge-success">VALID</span>
+        <span id="modeBadge" class="badge badge-neutral">Offline Replay</span>
+      </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="main-workspace">
+      <!-- Canvas Viewport -->
+      <section class="canvas-panel" id="canvasPanel">
+        <div class="canvas-hud-top">
+          <div class="hud-item" id="hudMapDims">Map: —</div>
+          <div class="hud-item" id="hudHoverCoords">Coord: (—, —)</div>
+          <div class="hud-item" id="hudZoom">Zoom: 100%</div>
+          <button id="fitViewBtn" class="hud-btn" title="Fit map to viewport">Fit View</button>
+          <button id="resetViewBtn" class="hud-btn" title="Reset pan and zoom">Reset View</button>
+        </div>
+
+        <div class="canvas-container" id="canvasContainer">
+          <canvas id="mapCanvas"></canvas>
+        </div>
+
+        <div class="canvas-hud-bottom">
+          <div class="hud-time-badge">
+            <span class="hud-label">Movement Step:</span>
+            <span class="hud-value" id="hudStep">0</span>
+            <span class="hud-sep">/</span>
+            <span class="hud-value" id="hudMakespan">0</span>
+          </div>
+          <div class="hud-time-badge planning-badge">
+            <span class="hud-label">Planning Solve Time:</span>
+            <span class="hud-value" id="hudSolveTime">0.000s</span>
+            <span class="hud-sep">/</span>
+            <span class="hud-label">Budget:</span>
+            <span class="hud-value" id="hudBudget">0.0s</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sidebar Inspector -->
+      <aside class="sidebar-panel">
+        <div class="sidebar-tabs">
+          <button class="tab-btn active" data-tab="provenanceTab">Metrics & Provenance</button>
+          <button class="tab-btn" data-tab="agentsTab">Agent Inspector</button>
+          <button class="tab-btn" data-tab="displayTab">Display Settings</button>
+        </div>
+
+        <!-- Tab 1: Run Metrics & Provenance -->
+        <div class="tab-content active" id="provenanceTab">
+          <div class="section-card">
+            <h3>Run Identity</h3>
+            <div class="meta-row"><span class="meta-label">Run ID:</span><span class="meta-val code-text" id="metaRunId">—</span></div>
+            <div class="meta-row"><span class="meta-label">Method:</span><span class="meta-val highlight" id="metaMethod">—</span></div>
+            <div class="meta-row"><span class="meta-label">Protocol:</span><span class="meta-val" id="metaProtocol">—</span></div>
+            <div class="meta-row"><span class="meta-label">Seed:</span><span class="meta-val" id="metaSeed">—</span></div>
+            <div class="meta-row"><span class="meta-label">SHA-256:</span><span class="meta-val code-text" id="metaSha">—</span></div>
+          </div>
+
+          <div class="section-card">
+            <h3>Planning vs. Movement</h3>
+            <div class="metric-grid">
+              <div class="metric-box">
+                <span class="m-val" id="mFinalCost">—</span>
+                <span class="m-lbl">Final Cost (Sum of Costs)</span>
+              </div>
+              <div class="metric-box">
+                <span class="m-val" id="mMakespan">—</span>
+                <span class="m-lbl">Makespan (Max Arrival)</span>
+              </div>
+              <div class="metric-box">
+                <span class="m-val" id="mSolveTime">—</span>
+                <span class="m-lbl">Planning Solve Time</span>
+              </div>
+              <div class="metric-box">
+                <span class="m-val" id="mOvershoot">—</span>
+                <span class="m-lbl">Deadline Overshoot</span>
+              </div>
+            </div>
+            <div class="note-box">
+              <small><strong>Note:</strong> Planning time is wall-clock solve time in seconds. Movement steps are discrete simulation timesteps.</small>
+            </div>
+          </div>
+
+          <div class="section-card">
+            <h3>Simulation Dynamics</h3>
+            <div class="meta-row"><span class="meta-label">Total Agents:</span><span class="meta-val" id="mTotalAgents">—</span></div>
+            <div class="meta-row"><span class="meta-label">Active (Moving):</span><span class="meta-val" id="mActiveAgents">—</span></div>
+            <div class="meta-row"><span class="meta-label">Reached Goal:</span><span class="meta-val" id="mGoalAgents">—</span></div>
+            <div class="meta-row"><span class="meta-label">Coordinate Format:</span><span class="meta-val code-text" id="mCoordConvention">Normalized (x, y)</span></div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Agent Inspector -->
+        <div class="tab-content" id="agentsTab">
+          <div class="section-card">
+            <div class="agent-selector-row">
+              <label for="agentSelect">Inspect Agent:</label>
+              <select id="agentSelect" class="form-select"></select>
+            </div>
+            <div class="agent-detail-card" id="agentDetailCard">
+              <div class="agent-badge-row">
+                <span class="agent-color-dot" id="agentColorDot"></span>
+                <span class="agent-title" id="agentTitle">Agent #0</span>
+                <span class="badge" id="agentStatusBadge">Moving</span>
+              </div>
+              <div class="meta-row"><span class="meta-label">Start Location:</span><span class="meta-val" id="agentStart">(—, —)</span></div>
+              <div class="meta-row"><span class="meta-label">Goal Location:</span><span class="meta-val" id="agentGoal">(—, —)</span></div>
+              <div class="meta-row"><span class="meta-label">Current Position:</span><span class="meta-val highlight" id="agentCurrent">(—, —)</span></div>
+              <div class="meta-row"><span class="meta-label">Path Length:</span><span class="meta-val" id="agentLen">—</span></div>
+              <div class="meta-row"><span class="meta-label">Arrival Step:</span><span class="meta-val" id="agentArrival">—</span></div>
+            </div>
+          </div>
+
+          <div class="section-card agent-list-container">
+            <h3>All Agents Quick-Select</h3>
+            <div class="agent-chip-grid" id="agentChipGrid"></div>
+          </div>
+        </div>
+
+        <!-- Tab 3: Display Settings -->
+        <div class="tab-content" id="displayTab">
+          <div class="section-card">
+            <h3>Visualization Layers</h3>
+            <label class="toggle-control">
+              <input type="checkbox" id="toggleTrails" checked>
+              <span class="toggle-switch"></span>
+              <span class="toggle-label">Show Path Trails</span>
+            </label>
+            <label class="toggle-control">
+              <input type="checkbox" id="toggleLabels" checked>
+              <span class="toggle-switch"></span>
+              <span class="toggle-label">Show Agent Labels</span>
+            </label>
+            <label class="toggle-control">
+              <input type="checkbox" id="toggleMarkers" checked>
+              <span class="toggle-switch"></span>
+              <span class="toggle-label">Show Start / Goal Markers</span>
+            </label>
+            <label class="toggle-control">
+              <input type="checkbox" id="toggleGrid" checked>
+              <span class="toggle-switch"></span>
+              <span class="toggle-label">Show Grid Lines (at high zoom)</span>
+            </label>
+            <label class="toggle-control">
+              <input type="checkbox" id="toggleStayAtGoal" checked>
+              <span class="toggle-switch"></span>
+              <span class="toggle-label">Stay-at-Goal Simulation Mode</span>
+            </label>
+          </div>
+
+          <div class="section-card">
+            <h3>Visual Style</h3>
+            <div class="filter-group">
+              <label for="agentSizeSelect">Agent Marker Size</label>
+              <select id="agentSizeSelect">
+                <option value="auto" selected>Adaptive (Map scale)</option>
+                <option value="small">Small</option>
+                <option value="medium">Medium</option>
+                <option value="large">Large</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <!-- Bottom Playback Controls Bar -->
+    <footer class="playback-bar">
+      <div class="playback-timeline-container">
+        <span class="timeline-step-label" id="timelineStepLabel">Step 0</span>
+        <input type="range" id="timelineSlider" min="0" max="100" value="0" class="timeline-slider">
+        <span class="timeline-max-label" id="timelineMaxLabel">Step 0</span>
+      </div>
+
+      <div class="playback-controls">
+        <div class="btn-group">
+          <button id="resetBtn" class="btn btn-ctrl" title="Rewind to start (Home)">↺ Reset</button>
+          <button id="stepBackBtn" class="btn btn-ctrl" title="Step backward (Left Arrow)">⏮ Step</button>
+          <button id="playBtn" class="btn btn-play" title="Play / Pause (Spacebar)">▶ Play</button>
+          <button id="stepFwdBtn" class="btn btn-ctrl" title="Step forward (Right Arrow)">Step ⏭</button>
+        </div>
+
+        <div class="speed-control">
+          <span class="speed-label">Speed:</span>
+          <select id="speedSelect" class="form-select form-select-sm">
+            <option value="0.25">0.25×</option>
+            <option value="0.5">0.5×</option>
+            <option value="1.0" selected>1.0×</option>
+            <option value="2.0">2.0×</option>
+            <option value="5.0">5.0×</option>
+            <option value="10.0">10.0×</option>
+          </select>
+        </div>
+
+        <div class="playback-status">
+          <span id="playbackStatusText">Ready</span>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="viewer.js"></script>
+</body>
+</html>
