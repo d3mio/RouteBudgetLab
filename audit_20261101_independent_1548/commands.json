@@ -1,0 +1,109 @@
+[
+  {
+    "name": "provenance",
+    "args": [
+      "git",
+      "status",
+      "--porcelain=v1"
+    ],
+    "exit_code": 0
+  },
+  {
+    "name": "history",
+    "args": [
+      "git",
+      "log",
+      "-3",
+      "--format=fuller",
+      "--stat"
+    ],
+    "exit_code": 0
+  },
+  {
+    "name": "toolchain",
+    "args": [
+      "/Library/Developer/CommandLineTools/usr/bin/clang++",
+      "--version"
+    ],
+    "exit_code": 0
+  },
+  {
+    "name": "host",
+    "args": [
+      "uname",
+      "-a"
+    ],
+    "exit_code": 0
+  },
+  {
+    "name": "release-configure",
+    "args": [
+      "cmake",
+      "-S",
+      "/Users/disasgamage/Documents/GitHub/RouteBudgetLab",
+      "-B",
+      "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/audit_20261101_independent_1548/build-release",
+      "-DCMAKE_BUILD_TYPE=Release",
+      "-DCMAKE_CXX_COMPILER=/Library/Developer/CommandLineTools/usr/bin/clang++",
+      "-DCMAKE_OSX_SYSROOT=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk",
+      "-DBOOST_ROOT=/opt/homebrew/opt/boost"
+    ],
+    "exit_code": 0
+  },
+  {
+    "name": "release-build",
+    "args": [
+      "cmake",
+      "--build",
+      "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/audit_20261101_independent_1548/build-release",
+      "-j2"
+    ],
+    "exit_code": 0
+  },
+  {
+    "name": "release-ctest",
+    "args": [
+      "ctest",
+      "--test-dir",
+      "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/audit_20261101_independent_1548/build-release",
+      "--output-on-failure"
+    ],
+    "exit_code": 0
+  },
+  {
+    "name": "asan-configure",
+    "args": [
+      "cmake",
+      "-S",
+      "/Users/disasgamage/Documents/GitHub/RouteBudgetLab",
+      "-B",
+      "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/audit_20261101_independent_1548/build-asan",
+      "-DCMAKE_BUILD_TYPE=Debug",
+      "-DCMAKE_CXX_COMPILER=/Library/Developer/CommandLineTools/usr/bin/clang++",
+      "-DCMAKE_OSX_SYSROOT=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk",
+      "-DBOOST_ROOT=/opt/homebrew/opt/boost",
+      "-DCMAKE_CXX_FLAGS=-fsanitize=address,undefined -fno-omit-frame-pointer -g -O1"
+    ],
+    "exit_code": 0
+  },
+  {
+    "name": "asan-build",
+    "args": [
+      "cmake",
+      "--build",
+      "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/audit_20261101_independent_1548/build-asan",
+      "-j2"
+    ],
+    "exit_code": 0
+  },
+  {
+    "name": "asan-ctest",
+    "args": [
+      "ctest",
+      "--test-dir",
+      "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/audit_20261101_independent_1548/build-asan",
+      "--output-on-failure"
+    ],
+    "exit_code": 0
+  }
+]

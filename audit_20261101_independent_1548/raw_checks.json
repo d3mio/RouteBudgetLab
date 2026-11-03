@@ -1,0 +1,301 @@
+{
+  "runs": 192,
+  "cells": 32,
+  "duplicates": [],
+  "missing": [],
+  "policies": {
+    "RESUMPTION_NO_PA": {
+      "filter_evaluations": 0,
+      "filter_skips": 0,
+      "filter_total_time_us": 0.0,
+      "extraction_total_time_us": 0.0,
+      "pa_attempts": 0,
+      "pa_positive_opportunities": 0,
+      "pa_committed": 0,
+      "pa_total_gain": 0,
+      "pa_budget_skipped": 0,
+      "pa_total_time_us": 0.0,
+      "eviction_attempts": 0,
+      "eviction_committed": 0,
+      "terminal_recovery_calls": 0,
+      "terminal_checkpoints_examined": 0,
+      "terminal_filter_skips": 0,
+      "terminal_committed": 0,
+      "stagnant_checkpoints_evicted": 5061,
+      "total_iterations": 487740,
+      "total_expansions": 660563074,
+      "overruns": {
+        "1.0": {
+          "n": 16,
+          "count": 1,
+          "max_us": 2232.0
+        },
+        "5.0": {
+          "n": 16,
+          "count": 2,
+          "max_us": 2524.0
+        }
+      },
+      "deadline_final_differences": 0
+    },
+    "PA_EVERY_INTERRUPTION_FILTERED": {
+      "filter_evaluations": 162396,
+      "filter_skips": 160496,
+      "filter_total_time_us": 2324.228,
+      "extraction_total_time_us": 438352.989,
+      "pa_attempts": 162396,
+      "pa_positive_opportunities": 176,
+      "pa_committed": 176,
+      "pa_total_gain": 3254,
+      "pa_budget_skipped": 0,
+      "pa_total_time_us": 660373.409,
+      "eviction_attempts": 0,
+      "eviction_committed": 0,
+      "terminal_recovery_calls": 0,
+      "terminal_checkpoints_examined": 0,
+      "terminal_filter_skips": 0,
+      "terminal_committed": 0,
+      "stagnant_checkpoints_evicted": 4896,
+      "total_iterations": 485774,
+      "total_expansions": 660933515,
+      "overruns": {
+        "1.0": {
+          "n": 16,
+          "count": 0,
+          "max_us": 0.0
+        },
+        "5.0": {
+          "n": 16,
+          "count": 0,
+          "max_us": 0.0
+        }
+      },
+      "deadline_final_differences": 0
+    },
+    "PA_EVICTION_ONLY": {
+      "filter_evaluations": 0,
+      "filter_skips": 0,
+      "filter_total_time_us": 0.0,
+      "extraction_total_time_us": 0.0,
+      "pa_attempts": 0,
+      "pa_positive_opportunities": 0,
+      "pa_committed": 0,
+      "pa_total_gain": 0,
+      "pa_budget_skipped": 0,
+      "pa_total_time_us": 0.0,
+      "eviction_attempts": 0,
+      "eviction_committed": 0,
+      "terminal_recovery_calls": 0,
+      "terminal_checkpoints_examined": 0,
+      "terminal_filter_skips": 0,
+      "terminal_committed": 0,
+      "stagnant_checkpoints_evicted": 4905,
+      "total_iterations": 484825,
+      "total_expansions": 657391486,
+      "overruns": {
+        "1.0": {
+          "n": 16,
+          "count": 1,
+          "max_us": 1056.0
+        },
+        "5.0": {
+          "n": 16,
+          "count": 0,
+          "max_us": 0.0
+        }
+      },
+      "deadline_final_differences": 0
+    },
+    "PA_TERMINAL_ONLY": {
+      "filter_evaluations": 10,
+      "filter_skips": 10,
+      "filter_total_time_us": 0.664,
+      "extraction_total_time_us": 40.876999999999995,
+      "pa_attempts": 0,
+      "pa_positive_opportunities": 0,
+      "pa_committed": 0,
+      "pa_total_gain": 0,
+      "pa_budget_skipped": 0,
+      "pa_total_time_us": 0.0,
+      "eviction_attempts": 0,
+      "eviction_committed": 0,
+      "terminal_recovery_calls": 32,
+      "terminal_checkpoints_examined": 10,
+      "terminal_filter_skips": 10,
+      "terminal_committed": 0,
+      "stagnant_checkpoints_evicted": 4874,
+      "total_iterations": 484143,
+      "total_expansions": 657155007,
+      "overruns": {
+        "1.0": {
+          "n": 16,
+          "count": 0,
+          "max_us": 0.0
+        },
+        "5.0": {
+          "n": 16,
+          "count": 0,
+          "max_us": 0.0
+        }
+      },
+      "deadline_final_differences": 0
+    },
+    "PA_EVICTION_AND_TERMINAL": {
+      "filter_evaluations": 13,
+      "filter_skips": 12,
+      "filter_total_time_us": 0.375,
+      "extraction_total_time_us": 55.29,
+      "pa_attempts": 0,
+      "pa_positive_opportunities": 0,
+      "pa_committed": 0,
+      "pa_total_gain": 0,
+      "pa_budget_skipped": 0,
+      "pa_total_time_us": 0.0,
+      "eviction_attempts": 0,
+      "eviction_committed": 0,
+      "terminal_recovery_calls": 32,
+      "terminal_checkpoints_examined": 13,
+      "terminal_filter_skips": 12,
+      "terminal_committed": 0,
+      "stagnant_checkpoints_evicted": 4976,
+      "total_iterations": 480890,
+      "total_expansions": 652156099,
+      "overruns": {
+        "1.0": {
+          "n": 16,
+          "count": 0,
+          "max_us": 0.0
+        },
+        "5.0": {
+          "n": 16,
+          "count": 0,
+          "max_us": 0.0
+        }
+      },
+      "deadline_final_differences": 0
+    },
+    "TERMINAL_RESERVE_CONTROL": {
+      "filter_evaluations": 0,
+      "filter_skips": 0,
+      "filter_total_time_us": 0.0,
+      "extraction_total_time_us": 0.0,
+      "pa_attempts": 0,
+      "pa_positive_opportunities": 0,
+      "pa_committed": 0,
+      "pa_total_gain": 0,
+      "pa_budget_skipped": 0,
+      "pa_total_time_us": 0.0,
+      "eviction_attempts": 0,
+      "eviction_committed": 0,
+      "terminal_recovery_calls": 0,
+      "terminal_checkpoints_examined": 0,
+      "terminal_filter_skips": 0,
+      "terminal_committed": 0,
+      "stagnant_checkpoints_evicted": 4990,
+      "total_iterations": 487781,
+      "total_expansions": 660880136,
+      "overruns": {
+        "1.0": {
+          "n": 16,
+          "count": 0,
+          "max_us": 0.0
+        },
+        "5.0": {
+          "n": 16,
+          "count": 0,
+          "max_us": 0.0
+        }
+      },
+      "deadline_final_differences": 0
+    }
+  },
+  "aggregate_matches_raw": true,
+  "original_manifest": {
+    "raw": {
+      "total": 192,
+      "matched": 0
+    },
+    "paths": {
+      "total": 192,
+      "matched": 192
+    }
+  },
+  "initial_costs_match": true,
+  "configuration_values": {
+    "slice_budget_s": [
+      "0.005"
+    ],
+    "neighborhood_size": [
+      "8"
+    ],
+    "terminal_reserve_s": [
+      "0.002"
+    ],
+    "initial_plan_source": [
+      "LOADED_FROM_SHARED_FIXTURE"
+    ],
+    "partial_acceptance_policy": [
+      "GREEDY_DEPENDENCY",
+      "OFF"
+    ]
+  },
+  "rotation_order_matches": true,
+  "positions": {
+    "RESUMPTION_NO_PA": [
+      6,
+      5,
+      5,
+      5,
+      5,
+      6
+    ],
+    "PA_EVERY_INTERRUPTION_FILTERED": [
+      6,
+      6,
+      5,
+      5,
+      5,
+      5
+    ],
+    "PA_EVICTION_ONLY": [
+      5,
+      6,
+      6,
+      5,
+      5,
+      5
+    ],
+    "PA_TERMINAL_ONLY": [
+      5,
+      5,
+      6,
+      6,
+      5,
+      5
+    ],
+    "PA_EVICTION_AND_TERMINAL": [
+      5,
+      5,
+      5,
+      6,
+      6,
+      5
+    ],
+    "TERMINAL_RESERVE_CONTROL": [
+      5,
+      5,
+      5,
+      5,
+      6,
+      6
+    ]
+  },
+  "offline": {
+    "files": 24,
+    "snapshots": 43166,
+    "negative_candidates": 2756,
+    "any_negative_snapshots": 2673,
+    "selected_negative_snapshots": 8,
+    "selected_negative_net_gain": 86
+  }
+}

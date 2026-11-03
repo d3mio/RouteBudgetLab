@@ -1,0 +1,2593 @@
+commit b4d9f9ef198cb2af1a14f484b0dab1099f1f63aa
+Author: d3mio <d.sethnadagamage@gmail.com>
+Date:   Sun Nov 1 08:31:43 2026 +0530
+
+    checkpoint(audit): preserve audited partial-acceptance implementation, 43,166 offline snapshots, and 192-run pilot
+
+diff --git a/src/engine/rbl_partial_acceptance.cpp b/src/engine/rbl_partial_acceptance.cpp
+index 937e7e5..4327de6 100644
+--- a/src/engine/rbl_partial_acceptance.cpp
++++ b/src/engine/rbl_partial_acceptance.cpp
+@@ -1,6 +1,7 @@
+ // RouteBudget Lab - Maximum-Gain Partial Acceptance of Interrupted MAPF-LNS Repairs
+ // Implementation of dependency-based partial acceptance, exact min-cut reduction,
+-// greedy baseline, exhaustive reference oracle, and trajectory conflict checkers.
++// nonnegative backward-exclusion reference, greedy baseline, independent path-mixture
++// exhaustive oracle, and trajectory conflict checkers.
+ 
+ #include "rbl_partial_acceptance.hpp"
+ 
+@@ -67,7 +68,7 @@ bool PartialAcceptanceOptimizer::checkTrajectoryConflict(const Path& path_a, con
+         return path_b[std::min<size_t>((size_t)t, path_b.size() - 1)].location;
+     };
+ 
+-    // Check vertex conflicts for all timesteps through max_len
++    // Check vertex conflicts for all timesteps through max_len (includes persistent goal occupancy)
+     for (int t = 0; t <= max_len; ++t) {
+         int loc_a = pos_a(t);
+         int loc_b = pos_b(t);
+@@ -97,7 +98,12 @@ bool PartialAcceptanceOptimizer::checkTrajectoryConflict(const Path& path_a, con
+ }
+ 
+ bool PartialAcceptanceOptimizer::checkPairwiseCandidateCollisions(const std::vector<ReplacementCandidate>& candidates, std::string& err) {
++    std::unordered_set<int> seen_agents;
+     for (size_t i = 0; i < candidates.size(); ++i) {
++        if (!seen_agents.insert(candidates[i].agent_id).second) {
++            err = "Duplicate replacement candidate for agent " + std::to_string(candidates[i].agent_id);
++            return false;
++        }
+         for (size_t j = i + 1; j < candidates.size(); ++j) {
+             std::string reason;
+             if (checkTrajectoryConflict(candidates[i].replacement_path, candidates[j].replacement_path, &reason)) {
+@@ -110,6 +116,138 @@ bool PartialAcceptanceOptimizer::checkPairwiseCandidateCollisions(const std::vec
+     return true;
+ }
+ 
++bool PartialAcceptanceOptimizer::validateCompletePlanIndependently(const std::vector<Path>& plan,
++                                                                   const Instance& instance,
++                                                                   int64_t& out_soc,
++                                                                   std::string& out_err) {
++    int m = instance.getDefaultNumberOfAgents();
++    if ((int)plan.size() != m) {
++        out_err = "Plan agent count " + std::to_string(plan.size()) + " does not match instance agent count " + std::to_string(m);
++        return false;
++    }
++
++    const auto& starts = instance.getStarts();
++    const auto& goals = instance.getGoals();
++    int64_t total_soc = 0;
++    int max_len = 0;
++
++    for (int a = 0; a < m; ++a) {
++        std::string kin_err;
++        if (!checkPathKinematics(plan[a], starts[a], goals[a], instance, kin_err)) {
++            out_err = "Agent " + std::to_string(a) + " kinematic violation: " + kin_err;
++            return false;
++        }
++        int arr_cost = computeArrivalCost(plan[a], goals[a]);
++        if (!checkedAdd(total_soc, static_cast<int64_t>(arr_cost), total_soc)) {
++            out_err = "Sum of costs overflow";
++            return false;
++        }
++        max_len = std::max(max_len, (int)plan[a].size());
++    }
++
++    auto pos = [&](int a, int t) -> int {
++        const Path& p = plan[a];
++        return p[std::min<size_t>((size_t)t, p.size() - 1)].location;
++    };
++
++    // Independent whole-plan collision check across all timesteps through max_len (O(m * max_len))
++    std::vector<int> occ_curr(instance.map_size, -1);
++    for (int t = 0; t <= max_len; ++t) {
++        for (int a = 0; a < m; ++a) {
++            int loc = pos(a, t);
++            if (occ_curr[loc] != -1) {
++                int other = occ_curr[loc];
++                out_err = "Vertex collision at t=" + std::to_string(t) +
++                          " loc=" + std::to_string(loc) +
++                          " between agents " + std::to_string(other) + " and " + std::to_string(a);
++                return false;
++            }
++            occ_curr[loc] = a;
++        }
++        if (t < max_len) {
++            for (int a = 0; a < m; ++a) {
++                int u = pos(a, t);
++                int v = pos(a, t + 1);
++                if (u != v) {
++                    int other = occ_curr[v];
++                    if (other != -1 && other != a && pos(other, t + 1) == u) {
++                        out_err = "Edge swap collision at t=" + std::to_string(t) + "->" + std::to_string(t + 1) +
++                                  " between agents " + std::to_string(a) + " and " + std::to_string(other);
++                        return false;
++                    }
++                }
++            }
++        }
++        for (int a = 0; a < m; ++a) {
++            occ_curr[pos(a, t)] = -1;
++        }
++    }
++
++    out_soc = total_soc;
++    return true;
++}
++
++void PartialAcceptanceOptimizer::computeGraphTelemetry(DependencyGraph& graph) {
++    int r = graph.num_candidates;
++    graph.positive_weight_count = 0;
++    graph.zero_weight_count = 0;
++    graph.negative_weight_count = 0;
++    graph.forbidden_count = 0;
++    graph.dependency_arc_count = 0;
++    graph.transitively_excluded_count = 0;
++    graph.feasible_negative_weight_count = 0;
++    graph.transitively_excluded.assign(r, false);
++
++    if (r <= 0 || (int)graph.weights.size() != r || (int)graph.forbidden.size() != r || (int)graph.adj.size() != r) {
++        return;
++    }
++
++    std::vector<std::vector<int>> rev_adj(r);
++    std::queue<int> q;
++
++    for (int u = 0; u < r; ++u) {
++        int64_t w = graph.weights[u];
++        if (w > 0) graph.positive_weight_count++;
++        else if (w == 0) graph.zero_weight_count++;
++        else graph.negative_weight_count++;
++
++        if (graph.forbidden[u]) {
++            graph.forbidden_count++;
++            graph.transitively_excluded[u] = true;
++            q.push(u);
++        }
++
++        for (int v : graph.adj[u]) {
++            if (v >= 0 && v < r) {
++                graph.dependency_arc_count++;
++                rev_adj[v].push_back(u);
++            }
++        }
++    }
++
++    // Propagate exclusion backward along reverse dependency arcs:
++    // If u -> v and v is excluded, then u cannot be selected either.
++    while (!q.empty()) {
++        int v = q.front();
++        q.pop();
++        for (int u : rev_adj[v]) {
++            if (!graph.transitively_excluded[u]) {
++                graph.transitively_excluded[u] = true;
++                if (!graph.forbidden[u]) {
++                    graph.transitively_excluded_count++;
++                }
++                q.push(u);
++            }
++        }
++    }
++
++    for (int u = 0; u < r; ++u) {
++        if (!graph.transitively_excluded[u] && graph.weights[u] < 0) {
++            graph.feasible_negative_weight_count++;
++        }
++    }
++}
++
+ DependencyGraph PartialAcceptanceOptimizer::buildDependencyGraph(const std::vector<ReplacementCandidate>& candidates,
+                                                                  const std::vector<Path>& incumbent_paths,
+                                                                  const Instance& instance) {
+@@ -147,7 +285,6 @@ DependencyGraph PartialAcceptanceOptimizer::buildDependencyGraph(const std::vect
+                     int v = it->second;
+                     if (std::find(graph.adj[u].begin(), graph.adj[u].end(), v) == graph.adj[u].end()) {
+                         graph.adj[u].push_back(v);
+-                        graph.dependency_arc_count++;
+                         graph.conflict_reasons.push_back("Agent " + std::to_string(a_i) +
+                             " replacement conflicts with incumbent path of candidate agent " +
+                             std::to_string(j) + " -> dependency " + std::to_string(a_i) + " requires " + std::to_string(j));
+@@ -156,7 +293,6 @@ DependencyGraph PartialAcceptanceOptimizer::buildDependencyGraph(const std::vect
+                     // Conflicting agent j is NOT in candidate set R -> candidate u is forbidden
+                     if (!graph.forbidden[u]) {
+                         graph.forbidden[u] = true;
+-                        graph.forbidden_count++;
+                         graph.conflict_reasons.push_back("Agent " + std::to_string(a_i) +
+                             " replacement conflicts with incumbent path of non-candidate agent " +
+                             std::to_string(j) + " (" + reason + ") -> agent " + std::to_string(a_i) + " is FORBIDDEN");
+@@ -166,11 +302,12 @@ DependencyGraph PartialAcceptanceOptimizer::buildDependencyGraph(const std::vect
+         }
+     }
+ 
++    computeGraphTelemetry(graph);
+     return graph;
+ }
+ 
+ // -----------------------------------------------------------------------------
+-// Dinic's Algorithm for Maximum-Weight Closure / Minimum Cut
++// Dinic's Algorithm for Maximum-Weight Closure / Minimum Cut with Checked Math
+ // -----------------------------------------------------------------------------
+ namespace {
+ 
+@@ -187,28 +324,52 @@ public:
+     std::vector<std::vector<FlowEdge>> adj;
+     std::vector<int> level;
+     std::vector<int> ptr;
++    int64_t total_added_cap = 0;
+ 
+     explicit DinicMaxFlow(int num_nodes) : n(num_nodes), adj(num_nodes), level(num_nodes), ptr(num_nodes) {}
+ 
+-    void addEdge(int from, int to, int64_t cap) {
+-        assert(from >= 0 && from < n);
+-        assert(to >= 0 && to < n);
++    // Add directed edge (from -> to) with capacity cap.
++    // Accumulates duplicate forward edges between the same (from, to) pair using checked arithmetic.
++    bool addEdge(int from, int to, int64_t cap) {
++        if (from < 0 || from >= n || to < 0 || to >= n || cap < 0) return false;
++        if (!checkedAdd(total_added_cap, cap, total_added_cap)) {
++            return false;
++        }
++        // Check if a forward edge (from -> to) with non-zero initial capacity already exists
++        for (auto& edge : adj[from]) {
++            if (edge.to == to && edge.cap > 0) {
++                if (!checkedAdd(edge.cap, cap, edge.cap)) {
++                    return false;
++                }
++                return true;
++            }
++        }
+         FlowEdge a{to, (int)adj[to].size(), cap, 0};
+         FlowEdge b{from, (int)adj[from].size(), 0, 0};
+         adj[from].push_back(a);
+         adj[to].push_back(b);
++        return true;
+     }
+ 
+-    bool bfs(int s, int t) {
++    bool bfs(int s, int t, SearchBudget* budget, bool& aborted, bool& overflow_err) {
+         std::fill(level.begin(), level.end(), -1);
+         level[s] = 0;
+         std::queue<int> q;
+         q.push(s);
+         while (!q.empty()) {
++            if (budget && !budget->checkFlowStep()) {
++                aborted = true;
++                return false;
++            }
+             int v = q.front();
+             q.pop();
+             for (const auto& edge : adj[v]) {
+-                if (edge.cap - edge.flow > 0 && level[edge.to] == -1) {
++                int64_t rem = 0;
++                if (!checkedSub(edge.cap, edge.flow, rem)) {
++                    overflow_err = true;
++                    return false;
++                }
++                if (rem > 0 && level[edge.to] == -1) {
+                     level[edge.to] = level[v] + 1;
+                     q.push(edge.to);
+                 }
+@@ -217,34 +378,55 @@ public:
+         return level[t] != -1;
+     }
+ 
+-    int64_t dfs(int v, int t, int64_t pushed) {
++    int64_t dfs(int v, int t, int64_t pushed, SearchBudget* budget, bool& aborted, bool& overflow_err) {
+         if (pushed == 0) return 0;
+         if (v == t) return pushed;
++        if (budget && !budget->checkFlowStep()) {
++            aborted = true;
++            return 0;
++        }
+         for (int& cid = ptr[v]; cid < (int)adj[v].size(); ++cid) {
+             auto& edge = adj[v][cid];
+             int tr = edge.to;
+-            if (level[v] + 1 != level[tr] || edge.cap - edge.flow == 0) continue;
+-            int64_t tr_pushed = dfs(tr, t, std::min(pushed, edge.cap - edge.flow));
++            int64_t rem = 0;
++            if (!checkedSub(edge.cap, edge.flow, rem)) {
++                overflow_err = true;
++                return 0;
++            }
++            if (level[v] + 1 != level[tr] || rem <= 0) continue;
++            int64_t tr_pushed = dfs(tr, t, std::min(pushed, rem), budget, aborted, overflow_err);
++            if (aborted || overflow_err) return 0;
+             if (tr_pushed == 0) continue;
+-            edge.flow += tr_pushed;
+-            adj[tr][edge.rev].flow -= tr_pushed;
++            if (!checkedAdd(edge.flow, tr_pushed, edge.flow) ||
++                !checkedSub(adj[tr][edge.rev].flow, tr_pushed, adj[tr][edge.rev].flow)) {
++                overflow_err = true;
++                return 0;
++            }
+             return tr_pushed;
+         }
+         return 0;
+     }
+ 
+-    int64_t maxFlow(int s, int t) {
++    int64_t maxFlow(int s, int t, SearchBudget* budget, bool& aborted, bool& overflow_err) {
++        aborted = false;
++        overflow_err = false;
+         int64_t flow = 0;
+-        while (bfs(s, t)) {
++        while (bfs(s, t, budget, aborted, overflow_err)) {
++            if (aborted || overflow_err) return 0;
+             std::fill(ptr.begin(), ptr.end(), 0);
+-            while (int64_t pushed = dfs(s, t, std::numeric_limits<int64_t>::max())) {
+-                flow += pushed;
++            while (int64_t pushed = dfs(s, t, std::numeric_limits<int64_t>::max(), budget, aborted, overflow_err)) {
++                if (aborted || overflow_err) return 0;
++                if (!checkedAdd(flow, pushed, flow)) {
++                    overflow_err = true;
++                    return 0;
++                }
+             }
++            if (aborted || overflow_err) return 0;
+         }
+         return flow;
+     }
+ 
+-    std::vector<bool> getReachableFromSource(int s) {
++    std::vector<bool> getReachableFromSource(int s) const {
+         std::vector<bool> visited(n, false);
+         std::queue<int> q;
+         q.push(s);
+@@ -253,7 +435,8 @@ public:
+             int u = q.front();
+             q.pop();
+             for (const auto& edge : adj[u]) {
+-                if (edge.cap - edge.flow > 0 && !visited[edge.to]) {
++                int64_t rem = 0;
++                if (checkedSub(edge.cap, edge.flow, rem) && rem > 0 && !visited[edge.to]) {
+                     visited[edge.to] = true;
+                     q.push(edge.to);
+                 }
+@@ -263,9 +446,53 @@ public:
+     }
+ };
+ 
++bool validateGraphAndCandidates(const DependencyGraph& graph,
++                                const std::vector<ReplacementCandidate>& candidates,
++                                std::string& err) {
++    int r = graph.num_candidates;
++    if (r < 0 || r != (int)candidates.size() ||
++        (int)graph.candidate_agents.size() != r ||
++        (int)graph.weights.size() != r ||
++        (int)graph.adj.size() != r ||
++        (int)graph.forbidden.size() != r) {
++        err = "DependencyGraph dimensions do not match candidate count";
++        return false;
++    }
++    std::unordered_set<int> seen_agents;
++    for (int i = 0; i < r; ++i) {
++        int a_id = graph.candidate_agents[i];
++        if (a_id < 0 || a_id != candidates[i].agent_id) {
++            err = "Candidate agent ID mismatch at node " + std::to_string(i);
++            return false;
++        }
++        if (!seen_agents.insert(a_id).second) {
++            err = "Duplicate candidate agent ID " + std::to_string(a_id);
++            return false;
++        }
++        for (int v : graph.adj[i]) {
++            if (v < 0 || v >= r) {
++                err = "Dependency arc target out of range at node " + std::to_string(i);
++                return false;
++            }
++        }
++    }
++    return true;
++}
++
++void copyGraphTelemetryToResult(const DependencyGraph& g, PartialAcceptanceResult& res) {
++    res.candidate_count = g.num_candidates;
++    res.positive_weight_count = g.positive_weight_count;
++    res.zero_weight_count = g.zero_weight_count;
++    res.negative_weight_count = g.negative_weight_count;
++    res.forbidden_count = g.forbidden_count;
++    res.transitively_excluded_count = g.transitively_excluded_count;
++    res.feasible_negative_weight_count = g.feasible_negative_weight_count;
++    res.dependency_arc_count = g.dependency_arc_count;
++}
++
+ } // anonymous namespace
+ 
+-PartialAcceptanceResult PartialAcceptanceOptimizer::solveExactClosure(const DependencyGraph& graph,
++PartialAcceptanceResult PartialAcceptanceOptimizer::solveExactClosure(const DependencyGraph& input_graph,
+                                                                      const std::vector<ReplacementCandidate>& candidates,
+                                                                      uint64_t incumbent_version,
+                                                                      SearchBudget* budget) {
+@@ -273,61 +500,124 @@ PartialAcceptanceResult PartialAcceptanceOptimizer::solveExactClosure(const Depe
+     PartialAcceptanceResult res;
+     res.policy = PartialAcceptancePolicy::EXACT_CLOSURE;
+     res.source_incumbent_version = incumbent_version;
+-    res.candidate_count = graph.num_candidates;
+-    res.forbidden_count = graph.forbidden_count;
+-    res.dependency_arc_count = graph.dependency_arc_count;
+ 
+-    if (budget && (budget->deadline_exceeded || budget->isGlobalDeadlineExceeded() || budget->getElapsedSeconds() >= budget->max_time_seconds)) {
++    if (budget && budget->isGlobalBudgetExhausted(0.0)) {
+         res.status = PartialAcceptanceStatus::BUDGET_SKIPPED;
+         res.detail = "Global deadline exceeded prior to closure selection";
+         return res;
+     }
+ 
+-    int r = graph.num_candidates;
+-    if (r == 0) {
++    int r = input_graph.num_candidates;
++    if (r == 0 && candidates.empty()) {
+         res.status = PartialAcceptanceStatus::NO_CANDIDATES;
+         res.detail = "Candidate set R is empty";
+         return res;
+     }
+ 
+-    // Source s = r, Sink t = r + 1
+-    int s = r;
+-    int t = r + 1;
+-    DinicMaxFlow flow_network(r + 2);
++    std::string struct_err;
++    if (!validateGraphAndCandidates(input_graph, candidates, struct_err)) {
++        res.status = PartialAcceptanceStatus::INVALID_INPUT;
++        res.detail = struct_err;
++        return res;
++    }
+ 
++    DependencyGraph graph = input_graph;
++    computeGraphTelemetry(graph);
++    copyGraphTelemetryToResult(graph, res);
++    res.used_nonnegative_fast_path = (graph.feasible_negative_weight_count == 0);
++
++    // Checked arithmetic for total_pos_weight, sum_abs_weights, and M = 1 + sum(|w_i|)
+     int64_t total_pos_weight = 0;
+     int64_t sum_abs_weights = 0;
+ 
+     for (int i = 0; i < r; ++i) {
+         int64_t w = graph.weights[i];
+-        if (w > 0) total_pos_weight += w;
+-        sum_abs_weights += std::abs(w);
++        int64_t abs_w = 0;
++        if (!checkedAbs(w, abs_w)) {
++            res.status = PartialAcceptanceStatus::INVALID_INPUT;
++            res.detail = "Arithmetic overflow computing |w_i| at node " + std::to_string(i);
++            return res;
++        }
++        if (w > 0) {
++            if (!checkedAdd(total_pos_weight, w, total_pos_weight)) {
++                res.status = PartialAcceptanceStatus::INVALID_INPUT;
++                res.detail = "Arithmetic overflow accumulating positive weights";
++                return res;
++            }
++        }
++        if (!checkedAdd(sum_abs_weights, abs_w, sum_abs_weights)) {
++            res.status = PartialAcceptanceStatus::INVALID_INPUT;
++            res.detail = "Arithmetic overflow accumulating sum(|w_i|)";
++            return res;
++        }
+     }
+ 
+-    // Safe integer capacity M = 1 + sum(|w_i|)
+-    int64_t M = 1 + sum_abs_weights;
++    int64_t M = 0;
++    if (!checkedAdd(1, sum_abs_weights, M) || M <= total_pos_weight) {
++        res.status = PartialAcceptanceStatus::INVALID_INPUT;
++        res.detail = "Arithmetic overflow computing capacity M = 1 + sum(|w_i|)";
++        return res;
++    }
++
++    // Source s = r, Sink t = r + 1
++    int s = r;
++    int t = r + 1;
++    DinicMaxFlow flow_network(r + 2);
+ 
+-    // Build network:
++    // Build network with checked capacity accumulation:
+     for (int i = 0; i < r; ++i) {
+         int64_t w = graph.weights[i];
+         if (w > 0) {
+-            flow_network.addEdge(s, i, w);
++            if (!flow_network.addEdge(s, i, w)) {
++                res.status = PartialAcceptanceStatus::INVALID_INPUT;
++                res.detail = "Capacity overflow adding source edge";
++                return res;
++            }
+         } else if (w < 0) {
+-            flow_network.addEdge(i, t, -w);
++            int64_t neg_w = 0;
++            if (!checkedAbs(w, neg_w) || !flow_network.addEdge(i, t, neg_w)) {
++                res.status = PartialAcceptanceStatus::INVALID_INPUT;
++                res.detail = "Capacity overflow adding sink edge";
++                return res;
++            }
+         }
+ 
+         // Forbidden nodes must not be selected: add edge i -> t with capacity M
++        // (accumulates with -w_i if w_i < 0)
+         if (graph.forbidden[i]) {
+-            flow_network.addEdge(i, t, M);
++            if (!flow_network.addEdge(i, t, M)) {
++                res.status = PartialAcceptanceStatus::INVALID_INPUT;
++                res.detail = "Capacity overflow adding forbidden sink edge";
++                return res;
++            }
+         }
+ 
+         // Dependency constraints: if i is selected, j must be selected -> edge i -> j with capacity M
+         for (int j : graph.adj[i]) {
+-            flow_network.addEdge(i, j, M);
++            if (j == i) continue;
++            if (!flow_network.addEdge(i, j, M)) {
++                res.status = PartialAcceptanceStatus::INVALID_INPUT;
++                res.detail = "Capacity overflow adding dependency edge";
++                return res;
++            }
+         }
+     }
+ 
+-    int64_t flow = flow_network.maxFlow(s, t);
++    bool aborted = false;
++    bool overflow_err = false;
++    int64_t flow = flow_network.maxFlow(s, t, budget, aborted, overflow_err);
++
++    if (overflow_err) {
++        res.status = PartialAcceptanceStatus::INVALID_INPUT;
++        res.detail = "Arithmetic overflow during max-flow residual updates";
++        return res;
++    }
++    if (aborted) {
++        res.status = PartialAcceptanceStatus::BUDGET_SKIPPED;
++        res.detail = "Flow computation interrupted by budget/deadline expiry; incumbent preserved";
++        return res;
++    }
++
+     std::vector<bool> reachable = flow_network.getReachableFromSource(s);
+ 
+     // Nodes in candidate set reachable from s in residual graph
+@@ -336,14 +626,21 @@ PartialAcceptanceResult PartialAcceptanceOptimizer::solveExactClosure(const Depe
+     for (int i = 0; i < r; ++i) {
+         if (reachable[i]) {
+             selected_nodes.push_back(i);
+-            selected_gain += graph.weights[i];
++            if (!checkedAdd(selected_gain, graph.weights[i], selected_gain)) {
++                res.status = PartialAcceptanceStatus::INVALID_INPUT;
++                res.detail = "Arithmetic overflow summing selected closure gain";
++                return res;
++            }
++            if (graph.weights[i] > 0) res.selected_positive_weight_count++;
++            else if (graph.weights[i] == 0) res.selected_zero_weight_count++;
++            else res.selected_negative_weight_count++;
+         }
+     }
+ 
+     // Verify mathematical invariants:
+-    // 1. No forbidden node is selected
++    // 1. No forbidden or transitively excluded node is selected
+     for (int u : selected_nodes) {
+-        if (graph.forbidden[u]) {
++        if (graph.forbidden[u] || graph.transitively_excluded[u]) {
+             res.status = PartialAcceptanceStatus::INVALID_INPUT;
+             res.detail = "Invariant violation: forbidden candidate was selected by max-flow cut";
+             return res;
+@@ -362,7 +659,8 @@ PartialAcceptanceResult PartialAcceptanceOptimizer::solveExactClosure(const Depe
+     }
+ 
+     // 3. Min-cut capacity equals total_pos_weight - selected_gain
+-    if (total_pos_weight - flow != selected_gain) {
++    int64_t expected_gain = 0;
++    if (!checkedSub(total_pos_weight, flow, expected_gain) || expected_gain != selected_gain) {
+         res.status = PartialAcceptanceStatus::INVALID_INPUT;
+         res.detail = "Invariant violation: min-cut capacity does not match selected closure weight";
+         return res;
+@@ -376,6 +674,9 @@ PartialAcceptanceResult PartialAcceptanceOptimizer::solveExactClosure(const Depe
+         res.status = PartialAcceptanceStatus::NO_GAIN;
+         res.predicted_gain = 0;
+         res.verified_gain = 0;
++        res.selected_positive_weight_count = 0;
++        res.selected_zero_weight_count = 0;
++        res.selected_negative_weight_count = 0;
+         res.detail = "No positive feasible closure exists; keeping incumbent";
+         return res;
+     }
+@@ -395,10 +696,98 @@ PartialAcceptanceResult PartialAcceptanceOptimizer::solveExactClosure(const Depe
+     return res;
+ }
+ 
++// -----------------------------------------------------------------------------
++// Simple Nonnegative-Case Reference (Backward Exclusion Propagation, Task 7)
++// -----------------------------------------------------------------------------
++PartialAcceptanceResult PartialAcceptanceOptimizer::solveNonnegativeClosureReference(
++    const DependencyGraph& input_graph,
++    const std::vector<ReplacementCandidate>& candidates,
++    uint64_t incumbent_version,
++    SearchBudget* budget) {
++
++    auto t_start = std::chrono::steady_clock::now();
++    PartialAcceptanceResult res;
++    res.policy = PartialAcceptancePolicy::EXACT_CLOSURE;
++    res.source_incumbent_version = incumbent_version;
++
++    if (budget && budget->isGlobalBudgetExhausted(0.0)) {
++        res.status = PartialAcceptanceStatus::BUDGET_SKIPPED;
++        res.detail = "Global deadline exceeded prior to nonnegative reference selection";
++        return res;
++    }
++
++    int r = input_graph.num_candidates;
++    if (r == 0 && candidates.empty()) {
++        res.status = PartialAcceptanceStatus::NO_CANDIDATES;
++        res.detail = "Candidate set R is empty";
++        return res;
++    }
++
++    std::string struct_err;
++    if (!validateGraphAndCandidates(input_graph, candidates, struct_err)) {
++        res.status = PartialAcceptanceStatus::INVALID_INPUT;
++        res.detail = struct_err;
++        return res;
++    }
++
++    DependencyGraph graph = input_graph;
++    computeGraphTelemetry(graph);
++    copyGraphTelemetryToResult(graph, res);
++
++    // Precondition: all remaining selectable (non-excluded) weights must be >= 0
++    if (graph.feasible_negative_weight_count > 0) {
++        res.status = PartialAcceptanceStatus::INVALID_INPUT;
++        res.detail = "Nonnegative reference precondition violated: selectable negative-weight candidate exists";
++        return res;
++    }
++
++    res.used_nonnegative_fast_path = true;
++
++    std::vector<int> selected_nodes;
++    int64_t total_gain = 0;
++    for (int u = 0; u < r; ++u) {
++        if (!graph.transitively_excluded[u]) {
++            selected_nodes.push_back(u);
++            if (!checkedAdd(total_gain, graph.weights[u], total_gain)) {
++                res.status = PartialAcceptanceStatus::INVALID_INPUT;
++                res.detail = "Arithmetic overflow in nonnegative closure sum";
++                return res;
++            }
++            if (graph.weights[u] > 0) res.selected_positive_weight_count++;
++            else if (graph.weights[u] == 0) res.selected_zero_weight_count++;
++        }
++    }
++
++    auto t_end = std::chrono::steady_clock::now();
++    res.selection_time_us = std::chrono::duration<double, std::micro>(t_end - t_start).count();
++    res.total_time_us = res.selection_time_us;
++
++    if (total_gain <= 0 || selected_nodes.empty()) {
++        res.status = PartialAcceptanceStatus::NO_GAIN;
++        res.predicted_gain = 0;
++        res.verified_gain = 0;
++        res.selected_positive_weight_count = 0;
++        res.selected_zero_weight_count = 0;
++        res.detail = "Nonnegative closure reference: no positive feasible gain";
++        return res;
++    }
++
++    res.status = PartialAcceptanceStatus::OPTIMAL_SELECTION;
++    res.predicted_gain = total_gain;
++    res.verified_gain = total_gain;
++    for (int u : selected_nodes) {
++        res.selected_agent_ids.push_back(graph.candidate_agents[u]);
++        res.selected_paths.push_back(candidates[u].replacement_path);
++    }
++    res.detail = "Nonnegative backward-exclusion selected " + std::to_string(selected_nodes.size()) +
++                 "/" + std::to_string(r) + " candidates with gain +" + std::to_string(total_gain);
++    return res;
++}
++
+ // -----------------------------------------------------------------------------
+ // Transitive Dependency-Aware Greedy Baseline
+ // -----------------------------------------------------------------------------
+-PartialAcceptanceResult PartialAcceptanceOptimizer::solveGreedyDependencyAware(const DependencyGraph& graph,
++PartialAcceptanceResult PartialAcceptanceOptimizer::solveGreedyDependencyAware(const DependencyGraph& input_graph,
+                                                                                const std::vector<ReplacementCandidate>& candidates,
+                                                                                uint64_t incumbent_version,
+                                                                                SearchBudget* budget) {
+@@ -406,23 +795,31 @@ PartialAcceptanceResult PartialAcceptanceOptimizer::solveGreedyDependencyAware(c
+     PartialAcceptanceResult res;
+     res.policy = PartialAcceptancePolicy::GREEDY_DEPENDENCY;
+     res.source_incumbent_version = incumbent_version;
+-    res.candidate_count = graph.num_candidates;
+-    res.forbidden_count = graph.forbidden_count;
+-    res.dependency_arc_count = graph.dependency_arc_count;
+ 
+-    if (budget && (budget->deadline_exceeded || budget->isGlobalDeadlineExceeded() || budget->getElapsedSeconds() >= budget->max_time_seconds)) {
++    if (budget && budget->isGlobalBudgetExhausted(0.0)) {
+         res.status = PartialAcceptanceStatus::BUDGET_SKIPPED;
+         res.detail = "Global deadline exceeded prior to greedy selection";
+         return res;
+     }
+ 
+-    int r = graph.num_candidates;
+-    if (r == 0) {
++    int r = input_graph.num_candidates;
++    if (r == 0 && candidates.empty()) {
+         res.status = PartialAcceptanceStatus::NO_CANDIDATES;
+         res.detail = "Candidate set R is empty";
+         return res;
+     }
+ 
++    std::string struct_err;
++    if (!validateGraphAndCandidates(input_graph, candidates, struct_err)) {
++        res.status = PartialAcceptanceStatus::INVALID_INPUT;
++        res.detail = struct_err;
++        return res;
++    }
++
++    DependencyGraph graph = input_graph;
++    computeGraphTelemetry(graph);
++    copyGraphTelemetryToResult(graph, res);
++
+     // Compute transitive closure of dependencies for each candidate
+     auto getTransitiveClosure = [&](int start_node) -> std::pair<std::vector<int>, bool> {
+         std::vector<bool> vis(r, false);
+@@ -459,7 +856,8 @@ PartialAcceptanceResult PartialAcceptanceOptimizer::solveGreedyDependencyAware(c
+         }
+     }
+     std::sort(pos_candidates.begin(), pos_candidates.end(), [&](int a, int b) {
+-        return graph.weights[a] > graph.weights[b];
++        if (graph.weights[a] != graph.weights[b]) return graph.weights[a] > graph.weights[b];
++        return a < b;
+     });
+ 
+     std::vector<bool> in_selected(r, false);
+@@ -467,6 +865,11 @@ PartialAcceptanceResult PartialAcceptanceOptimizer::solveGreedyDependencyAware(c
+     int64_t current_gain = 0;
+ 
+     for (int candidate : pos_candidates) {
++        if (budget && !budget->checkFlowStep()) {
++            res.status = PartialAcceptanceStatus::BUDGET_SKIPPED;
++            res.detail = "Greedy selection interrupted by budget/deadline expiry";
++            return res;
++        }
+         if (in_selected[candidate]) continue;
+ 
+         auto [closure, has_forbidden] = getTransitiveClosure(candidate);
+@@ -478,16 +881,27 @@ PartialAcceptanceResult PartialAcceptanceOptimizer::solveGreedyDependencyAware(c
+         for (int node : closure) {
+             if (!in_selected[node]) {
+                 unselected_members.push_back(node);
+-                marginal_gain += graph.weights[node];
++                if (!checkedAdd(marginal_gain, graph.weights[node], marginal_gain)) {
++                    res.status = PartialAcceptanceStatus::INVALID_INPUT;
++                    res.detail = "Arithmetic overflow in greedy marginal gain";
++                    return res;
++                }
+             }
+         }
+ 
+         if (marginal_gain > 0) {
++            if (!checkedAdd(current_gain, marginal_gain, current_gain)) {
++                res.status = PartialAcceptanceStatus::INVALID_INPUT;
++                res.detail = "Arithmetic overflow in greedy total gain";
++                return res;
++            }
+             for (int node : unselected_members) {
+                 in_selected[node] = true;
+                 selected_nodes.push_back(node);
++                if (graph.weights[node] > 0) res.selected_positive_weight_count++;
++                else if (graph.weights[node] == 0) res.selected_zero_weight_count++;
++                else res.selected_negative_weight_count++;
+             }
+-            current_gain += marginal_gain;
+         }
+     }
+ 
+@@ -499,6 +913,9 @@ PartialAcceptanceResult PartialAcceptanceOptimizer::solveGreedyDependencyAware(c
+         res.status = PartialAcceptanceStatus::NO_GAIN;
+         res.predicted_gain = 0;
+         res.verified_gain = 0;
++        res.selected_positive_weight_count = 0;
++        res.selected_zero_weight_count = 0;
++        res.selected_negative_weight_count = 0;
+         res.detail = "Greedy baseline found no positive feasible group";
+         return res;
+     }
+@@ -519,34 +936,157 @@ PartialAcceptanceResult PartialAcceptanceOptimizer::solveGreedyDependencyAware(c
+ }
+ 
+ // -----------------------------------------------------------------------------
+-// Exhaustive 2^r Oracle for Correctness Testing
++// Independent Exhaustive 2^r Path-Mixture Oracle (Task 2)
+ // -----------------------------------------------------------------------------
+-PartialAcceptanceResult PartialAcceptanceOptimizer::solveExhaustiveOracle(const DependencyGraph& graph,
+-                                                                         const std::vector<ReplacementCandidate>& candidates,
+-                                                                         uint64_t incumbent_version) {
++PartialAcceptanceResult PartialAcceptanceOptimizer::solveExhaustiveOracle(
++    const std::vector<ReplacementCandidate>& candidates,
++    const std::vector<Path>& incumbent_paths,
++    const Instance& instance,
++    uint64_t incumbent_version) {
++
++    auto t_start = std::chrono::steady_clock::now();
+     PartialAcceptanceResult res;
+     res.policy = PartialAcceptancePolicy::EXACT_CLOSURE;
+     res.source_incumbent_version = incumbent_version;
+-    res.candidate_count = graph.num_candidates;
+-    res.forbidden_count = graph.forbidden_count;
+-    res.dependency_arc_count = graph.dependency_arc_count;
++    res.candidate_count = (int)candidates.size();
+ 
+-    int r = graph.num_candidates;
++    int r = (int)candidates.size();
+     if (r == 0) {
+         res.status = PartialAcceptanceStatus::NO_CANDIDATES;
++        res.detail = "Candidate set R is empty";
++        return res;
++    }
++    if (r > 20) {
++        res.status = PartialAcceptanceStatus::INVALID_INPUT;
++        res.detail = "Exhaustive oracle requires r <= 20";
+         return res;
+     }
+-    assert(r <= 20); // Exhaustive oracle only feasible for small r
+ 
+-    int64_t best_gain = 0;
++    // 1. Independently validate the incumbent solution and compute its authoritative SoC
++    int64_t incumbent_soc = 0;
++    std::string inc_err;
++    if (!validateCompletePlanIndependently(incumbent_paths, instance, incumbent_soc, inc_err)) {
++        res.status = PartialAcceptanceStatus::INVALID_INPUT;
++        res.detail = "Incumbent plan is invalid: " + inc_err;
++        return res;
++    }
++
++    // 2. Validate candidate assumptions (unique agent IDs, valid kinematics, pairwise collision-free)
++    const auto& starts = instance.getStarts();
++    const auto& goals = instance.getGoals();
++    int m = instance.getDefaultNumberOfAgents();
++    for (int i = 0; i < r; ++i) {
++        int a = candidates[i].agent_id;
++        if (a < 0 || a >= m) {
++            res.status = PartialAcceptanceStatus::INVALID_INPUT;
++            res.detail = "Candidate agent ID out of range: " + std::to_string(a);
++            return res;
++        }
++        std::string kin_err;
++        if (!checkPathKinematics(candidates[i].replacement_path, starts[a], goals[a], instance, kin_err)) {
++            res.status = PartialAcceptanceStatus::INVALID_INPUT;
++            res.detail = "Candidate replacement kinematic error for agent " + std::to_string(a) + ": " + kin_err;
++            return res;
++        }
++    }
++    std::string pair_err;
++    if (!checkPairwiseCandidateCollisions(candidates, pair_err)) {
++        res.status = PartialAcceptanceStatus::INVALID_INPUT;
++        res.detail = pair_err;
++        return res;
++    }
++
++    // 3. Enumerate all 2^r subsets, construct the complete path mixture, and validate independently
++    int64_t best_gain = 0; // mask = 0 (empty subset) is always valid with gain = 0
+     int best_mask = 0;
++    int total_masks = 1 << r;
++
++    for (int mask = 0; mask < total_masks; ++mask) {
++        std::vector<Path> mixed_paths = incumbent_paths;
++        for (int i = 0; i < r; ++i) {
++            if (mask & (1 << i)) {
++                mixed_paths[candidates[i].agent_id] = candidates[i].replacement_path;
++            }
++        }
++
++        int64_t mixed_soc = 0;
++        std::string mix_err;
++        if (!validateCompletePlanIndependently(mixed_paths, instance, mixed_soc, mix_err)) {
++            continue; // Invalid mixture (vertex conflict, edge swap, or goal occupancy conflict)
++        }
+ 
++        int64_t gain = 0;
++        if (!checkedSub(incumbent_soc, mixed_soc, gain)) {
++            res.status = PartialAcceptanceStatus::INVALID_INPUT;
++            res.detail = "Arithmetic overflow computing mixture gain";
++            return res;
++        }
++
++        if (gain > best_gain) {
++            best_gain = gain;
++            best_mask = mask;
++        }
++    }
++
++    auto t_end = std::chrono::steady_clock::now();
++    res.selection_time_us = std::chrono::duration<double, std::micro>(t_end - t_start).count();
++    res.total_time_us = res.selection_time_us;
++
++    if (best_gain <= 0 || best_mask == 0) {
++        res.status = PartialAcceptanceStatus::NO_GAIN;
++        res.predicted_gain = 0;
++        res.verified_gain = 0;
++        res.detail = "Independent exhaustive oracle: no positive feasible path mixture exists";
++        return res;
++    }
++
++    res.status = PartialAcceptanceStatus::OPTIMAL_SELECTION;
++    res.predicted_gain = best_gain;
++    res.verified_gain = best_gain;
++
++    for (int i = 0; i < r; ++i) {
++        if (best_mask & (1 << i)) {
++            res.selected_agent_ids.push_back(candidates[i].agent_id);
++            res.selected_paths.push_back(candidates[i].replacement_path);
++        }
++    }
++    res.detail = "Independent exhaustive oracle selected " + std::to_string(res.selected_agent_ids.size()) +
++                 "/" + std::to_string(r) + " candidates with gain +" + std::to_string(best_gain);
++    return res;
++}
++
++// -----------------------------------------------------------------------------
++// Abstract Graph-Level 2^r Closure Enumerator
++// -----------------------------------------------------------------------------
++PartialAcceptanceResult PartialAcceptanceOptimizer::solveExhaustiveGraphClosureOracle(
++    const DependencyGraph& graph,
++    const std::vector<ReplacementCandidate>& candidates,
++    uint64_t incumbent_version) {
++
++    PartialAcceptanceResult res;
++    res.policy = PartialAcceptancePolicy::EXACT_CLOSURE;
++    res.source_incumbent_version = incumbent_version;
++
++    int r = graph.num_candidates;
++    if (r == 0 && candidates.empty()) {
++        res.status = PartialAcceptanceStatus::NO_CANDIDATES;
++        return res;
++    }
++    std::string struct_err;
++    if (r > 20 || !validateGraphAndCandidates(graph, candidates, struct_err)) {
++        res.status = PartialAcceptanceStatus::INVALID_INPUT;
++        res.detail = struct_err;
++        return res;
++    }
++
++    int64_t best_gain = 0;
++    int best_mask = 0;
+     int total_masks = 1 << r;
++
+     for (int mask = 0; mask < total_masks; ++mask) {
+         bool valid = true;
+         int64_t gain = 0;
+ 
+-        // Check forbidden exclusion
+         for (int i = 0; i < r; ++i) {
+             if ((mask & (1 << i)) && graph.forbidden[i]) {
+                 valid = false;
+@@ -555,10 +1095,13 @@ PartialAcceptanceResult PartialAcceptanceOptimizer::solveExhaustiveOracle(const
+         }
+         if (!valid) continue;
+ 
+-        // Check dependency closure
+         for (int i = 0; i < r; ++i) {
+             if (mask & (1 << i)) {
+-                gain += graph.weights[i];
++                if (!checkedAdd(gain, graph.weights[i], gain)) {
++                    res.status = PartialAcceptanceStatus::INVALID_INPUT;
++                    res.detail = "Arithmetic overflow in exhaustive graph oracle";
++                    return res;
++                }
+                 for (int j : graph.adj[i]) {
+                     if (!(mask & (1 << j))) {
+                         valid = false;
+@@ -580,7 +1123,7 @@ PartialAcceptanceResult PartialAcceptanceOptimizer::solveExhaustiveOracle(const
+         res.status = PartialAcceptanceStatus::NO_GAIN;
+         res.predicted_gain = 0;
+         res.verified_gain = 0;
+-        res.detail = "Exhaustive oracle: no positive feasible closure exists";
++        res.detail = "Exhaustive graph oracle: no positive feasible closure exists";
+         return res;
+     }
+ 
+diff --git a/src/engine/rbl_partial_acceptance.hpp b/src/engine/rbl_partial_acceptance.hpp
+index 791cce4..fa084d2 100644
+--- a/src/engine/rbl_partial_acceptance.hpp
++++ b/src/engine/rbl_partial_acceptance.hpp
+@@ -7,7 +7,9 @@
+ // - Solves the exact closure problem via a Minimum (s,t)-Cut reduction using
+ //   Dinic's maximum flow algorithm on a constructed dependency network with
+ //   capacity M = 1 + sum(|w_i|) using checked 64-bit integer arithmetic.
+-// - Supports transitive dependency-aware greedy baseline and exhaustive 2^r oracle.
++// - Provides a simpler exact nonnegative-case reference (backward exclusion propagation
++//   from forbidden nodes), a transitive dependency-aware greedy baseline, and an
++//   independent path-mixture 2^r exhaustive oracle.
+ // - Enforces safe lifecycle: validation against all incumbent agents, independent
+ //   whole-plan collision verification, version consistency, and atomic commitment.
+ 
+@@ -27,17 +29,44 @@
+ 
+ namespace rbl {
+ 
++// Checked 64-bit integer arithmetic helpers (preventing signed integer UB)
++inline bool checkedAdd(int64_t a, int64_t b, int64_t& out) {
++    if ((b > 0 && a > std::numeric_limits<int64_t>::max() - b) ||
++        (b < 0 && a < std::numeric_limits<int64_t>::min() - b)) {
++        return false;
++    }
++    out = a + b;
++    return true;
++}
++
++inline bool checkedSub(int64_t a, int64_t b, int64_t& out) {
++    if ((b < 0 && a > std::numeric_limits<int64_t>::max() + b) ||
++        (b > 0 && a < std::numeric_limits<int64_t>::min() + b)) {
++        return false;
++    }
++    out = a - b;
++    return true;
++}
++
++inline bool checkedAbs(int64_t a, int64_t& out) {
++    if (a == std::numeric_limits<int64_t>::min()) {
++        return false;
++    }
++    out = (a < 0) ? -a : a;
++    return true;
++}
++
+ // Status of partial acceptance evaluation or commit
+ enum class PartialAcceptanceStatus {
+     DISABLED,             // Feature flag disabled; no action taken
+-    INVALID_INPUT,        // Precondition violation (conflicts among replacements, invalid moves, wrong start/goal)
++    INVALID_INPUT,        // Precondition or capacity/overflow violation
+     NO_CANDIDATES,        // No completed replacement paths available (R is empty)
+     NO_GAIN,              // Maximum feasible gain <= 0; incumbent retained
+-    BUDGET_SKIPPED,       // Insufficient budget remaining to compute or commit before deadline
++    BUDGET_SKIPPED,       // Insufficient budget remaining or flow interrupted by deadline
+     VERSION_CHANGED,      // Incumbent version changed during or before commit; transaction aborted
+-    OPTIMAL_SELECTION,    // Optimal feasible subset found with strictly positive gain (ready to commit)
++    OPTIMAL_SELECTION,    // Feasible subset found with strictly positive gain (ready to commit)
+     COMMITTED,            // Transaction successfully validated and applied to incumbent
+-    VALIDATION_FAILED     // Candidate full plan failed independent collision check
++    VALIDATION_FAILED     // Candidate full plan failed independent collision or kinematic check
+ };
+ 
+ inline const char* toString(PartialAcceptanceStatus s) {
+@@ -97,9 +126,15 @@ struct DependencyGraph {
+     std::vector<int64_t> weights;                    // w_k
+     std::vector<std::vector<int>> adj;               // adj[u] contains v where u -> v (x_u <= x_v)
+     std::vector<bool> forbidden;                     // forbidden[u] is true if x_u must be 0
++    std::vector<bool> transitively_excluded;         // true if u is forbidden or transitively depends on forbidden
+     std::vector<std::string> conflict_reasons;       // human-readable reasons for diagnostics
+     int dependency_arc_count = 0;
+     int forbidden_count = 0;
++    int transitively_excluded_count = 0;             // nodes not directly forbidden that depend on forbidden nodes
++    int positive_weight_count = 0;
++    int zero_weight_count = 0;
++    int negative_weight_count = 0;
++    int feasible_negative_weight_count = 0;          // non-excluded nodes with w_k < 0
+ };
+ 
+ // Result contract for partial acceptance evaluation and commitment
+@@ -112,10 +147,20 @@ struct PartialAcceptanceResult {
+     int64_t predicted_gain = 0;
+     int64_t verified_gain = 0;
+     int candidate_count = 0;
++    int positive_weight_count = 0;
++    int zero_weight_count = 0;
++    int negative_weight_count = 0;
+     int forbidden_count = 0;
++    int transitively_excluded_count = 0;
++    int feasible_negative_weight_count = 0;
++    int selected_positive_weight_count = 0;
++    int selected_zero_weight_count = 0;
++    int selected_negative_weight_count = 0;
+     int dependency_arc_count = 0;
++    bool used_nonnegative_fast_path = false;
+ 
+     // High-resolution timing breakdown in microseconds
++    double prep_time_us = 0.0;
+     double graph_build_time_us = 0.0;
+     double selection_time_us = 0.0;
+     double validation_time_us = 0.0;
+@@ -141,6 +186,16 @@ public:
+     // Check if path A conflicts with path B (vertex collision, edge swap, or persistent goal occupancy).
+     static bool checkTrajectoryConflict(const Path& path_a, const Path& path_b, std::string* reason = nullptr);
+ 
++    // Independently validate a complete mixed plan (all agents) without using DependencyGraph,
++    // and compute its authoritative arrival-cost Sum of Costs.
++    static bool validateCompletePlanIndependently(const std::vector<Path>& plan,
++                                                  const Instance& instance,
++                                                  int64_t& out_soc,
++                                                  std::string& out_err);
++
++    // Populate backward exclusion and weight-sign telemetry on a DependencyGraph.
++    static void computeGraphTelemetry(DependencyGraph& graph);
++
+     // Build the dependency graph over candidate replacements against all incumbent paths.
+     // Compares each Q_i (i in R) against each P_j (j in A, j != i):
+     // - If conflict and j in R: dependency arc i -> j (x_i <= x_j)
+@@ -149,22 +204,39 @@ public:
+                                                 const std::vector<Path>& incumbent_paths,
+                                                 const Instance& instance);
+ 
+-    // Solve exact maximum-weight closure using Dinic's min-cut reduction.
++    // Solve exact maximum-weight closure using Dinic's min-cut reduction with checked arithmetic.
+     static PartialAcceptanceResult solveExactClosure(const DependencyGraph& graph,
+                                                      const std::vector<ReplacementCandidate>& candidates,
+                                                      uint64_t incumbent_version,
+                                                      SearchBudget* budget = nullptr);
+ 
++    // Simple exact reference for the nonnegative selectable-weight case:
++    // Marks forbidden nodes, propagates exclusion backward to every node depending on an excluded node,
++    // and selects all remaining selectable nodes when all remaining selectable weights are >= 0.
++    static PartialAcceptanceResult solveNonnegativeClosureReference(const DependencyGraph& graph,
++                                                                    const std::vector<ReplacementCandidate>& candidates,
++                                                                    uint64_t incumbent_version,
++                                                                    SearchBudget* budget = nullptr);
++
+     // Solve using transitive dependency-aware greedy baseline.
+     static PartialAcceptanceResult solveGreedyDependencyAware(const DependencyGraph& graph,
+                                                              const std::vector<ReplacementCandidate>& candidates,
+                                                              uint64_t incumbent_version,
+                                                              SearchBudget* budget = nullptr);
+ 
+-    // Exhaustive 2^r oracle for correctness verification on small instances (r <= 12).
+-    static PartialAcceptanceResult solveExhaustiveOracle(const DependencyGraph& graph,
+-                                                        const std::vector<ReplacementCandidate>& candidates,
++    // Independent Exhaustive 2^r Oracle (Task 2):
++    // Enumerates all 2^r subsets, constructs the complete path mixture of old and replacement paths,
++    // validates movement validity, starts/goals, vertex collisions, edge swaps, and permanent goal occupancy
++    // independently of DependencyGraph, and recomputes Sum of Costs using computeArrivalCost.
++    static PartialAcceptanceResult solveExhaustiveOracle(const std::vector<ReplacementCandidate>& candidates,
++                                                        const std::vector<Path>& incumbent_paths,
++                                                        const Instance& instance,
+                                                         uint64_t incumbent_version);
++
++    // Graph-level 2^r closure enumerator (for synthetic abstract graph tests where path fixtures are not used).
++    static PartialAcceptanceResult solveExhaustiveGraphClosureOracle(const DependencyGraph& graph,
++                                                                     const std::vector<ReplacementCandidate>& candidates,
++                                                                     uint64_t incumbent_version);
+ };
+ 
+ } // namespace rbl
+diff --git a/src/engine/rbl_resumable_engine.cpp b/src/engine/rbl_resumable_engine.cpp
+index 3e16604..40a965e 100644
+--- a/src/engine/rbl_resumable_engine.cpp
++++ b/src/engine/rbl_resumable_engine.cpp
+@@ -67,8 +67,14 @@ void ResumableRepairEngine::setInitialSolution(const std::vector<Path>& initial_
+         incumbent_sum_of_costs += (int)incumbent_paths[i].size() - 1;
+     }
+     incumbent_version = 1;
++    last_validated_incumbent_version = 0;
+     agent_trajectory_versions.assign(num_agents, 1);
+     checkpoint_store.clear();
++    std::string init_err;
++    int64_t init_soc = 0;
++    if (PartialAcceptanceOptimizer::validateCompletePlanIndependently(incumbent_paths, instance, init_soc, init_err)) {
++        last_validated_incumbent_version = incumbent_version;
++    }
+ }
+ 
+ int ResumableRepairEngine::computeCost(const std::vector<Path>& paths) {
+@@ -84,36 +90,14 @@ bool ResumableRepairEngine::validateIncumbent(std::string& error_msg) const {
+         error_msg = "Incumbent path count does not match agent count";
+         return false;
+     }
+-    int max_t = 0;
+-    for (const auto& p : incumbent_paths) {
+-        if (p.empty()) {
+-            error_msg = "Incumbent contains empty path";
+-            return false;
+-        }
+-        max_t = std::max(max_t, (int)p.size());
++    if (incumbent_version > 0 && last_validated_incumbent_version == incumbent_version) {
++        return true;
+     }
+-
+-    // Check vertex & edge collisions at each timestep
+-    for (int t = 0; t < max_t; ++t) {
+-        for (int i = 0; i < num_agents; ++i) {
+-            int loc_i = (t < (int)incumbent_paths[i].size()) ? incumbent_paths[i][t].location : incumbent_paths[i].back().location;
+-            int next_i = (t + 1 < (int)incumbent_paths[i].size()) ? incumbent_paths[i][t + 1].location : incumbent_paths[i].back().location;
+-
+-            for (int j = i + 1; j < num_agents; ++j) {
+-                int loc_j = (t < (int)incumbent_paths[j].size()) ? incumbent_paths[j][t].location : incumbent_paths[j].back().location;
+-                int next_j = (t + 1 < (int)incumbent_paths[j].size()) ? incumbent_paths[j][t + 1].location : incumbent_paths[j].back().location;
+-
+-                if (loc_i == loc_j) {
+-                    error_msg = "Vertex collision at t=" + std::to_string(t) + " between agent " + std::to_string(i) + " and " + std::to_string(j);
+-                    return false;
+-                }
+-                if (loc_i == next_j && next_i == loc_j && loc_i != next_i) {
+-                    error_msg = "Edge collision at t=" + std::to_string(t) + "->" + std::to_string(t+1) + " between agent " + std::to_string(i) + " and " + std::to_string(j);
+-                    return false;
+-                }
+-            }
+-        }
++    int64_t dummy_soc = 0;
++    if (!PartialAcceptanceOptimizer::validateCompletePlanIndependently(incumbent_paths, instance, dummy_soc, error_msg)) {
++        return false;
+     }
++    last_validated_incumbent_version = incumbent_version;
+     return true;
+ }
+ 
+@@ -125,9 +109,17 @@ void ResumableRepairEngine::resetStats() {
+     total_expansions = 0;
+     total_repeated_expansions = 0;
+     total_partial_acceptance_attempts = 0;
++    total_partial_acceptance_positive_opps = 0;
+     total_partial_acceptance_committed = 0;
++    total_partial_acceptance_budget_skipped = 0;
+     total_partial_acceptance_gain = 0;
++    total_partial_acceptance_time_us = 0.0;
+     last_partial_acceptance_result = PartialAcceptanceResult();
++    partial_acceptance_history.clear();
++    captured_snapshots.clear();
++    total_interruptions_observed = 0;
++    total_interruptions_with_completed_prefix = 0;
++    total_repair_attempts_counter = 0;
+ }
+ 
+ // Low-level Space-Time A* search with cooperative budget checking and deterministic tie-breaking
+@@ -299,6 +291,7 @@ RepairOutcome ResumableRepairEngine::attemptFreshRepair(const std::vector<int>&
+                                                         unsigned int rng_seed) {
+     RepairOutcome outcome;
+     outcome.neighborhood_size = (int)neighborhood.size();
++    int cur_attempt_id = ++total_repair_attempts_counter;
+ 
+     // Check global deadline before starting
+     if (budget.deadline_exceeded || budget.isGlobalDeadlineExceeded() || budget.getElapsedSeconds() >= budget.max_time_seconds) {
+@@ -431,10 +424,33 @@ RepairOutcome ResumableRepairEngine::attemptFreshRepair(const std::vector<int>&
+             return outcome;
+         }
+ 
++        total_interruptions_observed++;
++        if (r_done > 0) {
++            total_interruptions_with_completed_prefix++;
++            if (enable_snapshot_capture) {
++                InterruptedRepairSnapshot snap;
++                snap.snapshot_id = static_cast<int>(captured_snapshots.size());
++                snap.attempt_id = cur_attempt_id;
++                snap.is_resumed = false;
++                snap.incumbent_version = incumbent_version;
++                snap.incumbent_cost = incumbent_sum_of_costs;
++                snap.incumbent_paths = incumbent_paths;
++                snap.priority_order = priority_order;
++                snap.candidate_agents.assign(priority_order.begin(), priority_order.begin() + r_done);
++                snap.candidate_paths = prefix_paths;
++                snap.slice_duration_s = budget.max_time_seconds;
++                snap.remaining_budget_s = budget.getRemainingGlobalSeconds();
++                snap.slice_expansions = budget.current_expansions;
++                captured_snapshots.push_back(std::move(snap));
++            }
++        }
++
+         // Check if partial acceptance is enabled and has completed candidates
+         if (enable_partial_acceptance && partial_acceptance_policy != PartialAcceptancePolicy::OFF && r_done > 0) {
+             std::vector<int> candidate_agents(priority_order.begin(), priority_order.begin() + r_done);
+-            if (processInterruptedPartialAcceptance(candidate_agents, prefix_paths, budget, outcome)) {
++            bool pa_committed = processInterruptedPartialAcceptance(candidate_agents, prefix_paths, budget, outcome);
++            outcome.duration_s = std::chrono::duration<double>(std::chrono::steady_clock::now() - t_start).count();
++            if (pa_committed || outcome.type == RepairOutcomeType::STOPPED_DEADLINE) {
+                 return outcome;
+             }
+         }
+@@ -474,6 +490,7 @@ RepairOutcome ResumableRepairEngine::attemptFreshRepair(const std::vector<int>&
+         }
+         incumbent_sum_of_costs += outcome.cost_delta;
+         incumbent_version++;
++        last_validated_incumbent_version = incumbent_version;
+         outcome.type = RepairOutcomeType::COMPLETED_ACCEPTED;
+         total_accepted_repairs++;
+     } else {
+@@ -550,6 +567,7 @@ bool ResumableRepairEngine::commitExternalTrajectory(int agent_id, const Path& n
+     incumbent_paths[agent_id] = new_path;
+     agent_trajectory_versions[agent_id]++;
+     incumbent_version++;
++    last_validated_incumbent_version = incumbent_version;
+     return true;
+ }
+ 
+@@ -563,6 +581,7 @@ void ResumableRepairEngine::setIncumbentPathForTest(int agent_id, const Path& ne
+     incumbent_paths[agent_id] = new_path;
+     agent_trajectory_versions[agent_id]++;
+     incumbent_version++;
++    last_validated_incumbent_version = 0;
+ }
+ 
+ CompatibilityReport ResumableRepairEngine::validateCheckpoint(int slot_idx, RetentionPolicy policy) const {
+@@ -586,6 +605,7 @@ RepairOutcome ResumableRepairEngine::resumeCheckpoint(int slot_idx, SearchBudget
+ 
+ RepairOutcome ResumableRepairEngine::resumeCheckpoint(int slot_idx, SearchBudget& budget, RetentionPolicy policy) {
+     RepairOutcome outcome;
++    int cur_attempt_id = ++total_repair_attempts_counter;
+ 
+     // Check global deadline before resuming
+     if (budget.deadline_exceeded || budget.isGlobalDeadlineExceeded() || budget.getElapsedSeconds() >= budget.max_time_seconds) {
+@@ -745,13 +765,40 @@ RepairOutcome ResumableRepairEngine::resumeCheckpoint(int slot_idx, SearchBudget
+             return outcome;
+         }
+ 
++        total_interruptions_observed++;
++        if (r_done > 0) {
++            total_interruptions_with_completed_prefix++;
++            if (enable_snapshot_capture) {
++                InterruptedRepairSnapshot snap;
++                snap.snapshot_id = static_cast<int>(captured_snapshots.size());
++                snap.attempt_id = cur_attempt_id;
++                snap.is_resumed = true;
++                snap.incumbent_version = incumbent_version;
++                snap.incumbent_cost = incumbent_sum_of_costs;
++                snap.incumbent_paths = incumbent_paths;
++                snap.priority_order = priority_order;
++                snap.candidate_agents.assign(priority_order.begin(), priority_order.begin() + r_done);
++                snap.candidate_paths = prefix_paths;
++                snap.slice_duration_s = budget.max_time_seconds;
++                snap.remaining_budget_s = budget.getRemainingGlobalSeconds();
++                snap.slice_expansions = budget.current_expansions;
++                captured_snapshots.push_back(std::move(snap));
++            }
++        }
++
+         // Check if partial acceptance is enabled and has completed candidates
+         if (enable_partial_acceptance && partial_acceptance_policy != PartialAcceptancePolicy::OFF && r_done > 0) {
+             std::vector<int> candidate_agents(priority_order.begin(), priority_order.begin() + r_done);
+-            if (processInterruptedPartialAcceptance(candidate_agents, prefix_paths, budget, outcome)) {
++            bool pa_committed = processInterruptedPartialAcceptance(candidate_agents, prefix_paths, budget, outcome);
++            outcome.duration_s = std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count();
++            if (pa_committed) {
+                 checkpoint_store.markDiscarded(slot_idx);
+                 return outcome;
+             }
++            if (outcome.type == RepairOutcomeType::STOPPED_DEADLINE) {
++                checkpoint_store.markExpired(slot_idx);
++                return outcome;
++            }
+         }
+ 
+         total_interrupted_slices++;
+@@ -770,23 +817,7 @@ RepairOutcome ResumableRepairEngine::resumeCheckpoint(int slot_idx, SearchBudget
+             candidate_paths[priority_order[i]] = prefix_paths[i];
+         }
+ 
+-        bool valid = true;
+-        int max_len = 0;
+-        for (const auto& p : candidate_paths) max_len = std::max(max_len, (int)p.size());
+-        for (int t = 0; t < max_len && valid; ++t) {
+-            for (int a1 = 0; a1 < num_agents && valid; ++a1) {
+-                int loc1 = (t < (int)candidate_paths[a1].size()) ? candidate_paths[a1][t].location : candidate_paths[a1].back().location;
+-                for (int a2 = a1 + 1; a2 < num_agents; ++a2) {
+-                    int loc2 = (t < (int)candidate_paths[a2].size()) ? candidate_paths[a2][t].location : candidate_paths[a2].back().location;
+-                    if (loc1 == loc2) { valid = false; break; }
+-                    if (t + 1 < max_len) {
+-                        int next1 = (t + 1 < (int)candidate_paths[a1].size()) ? candidate_paths[a1][t + 1].location : candidate_paths[a1].back().location;
+-                        int next2 = (t + 1 < (int)candidate_paths[a2].size()) ? candidate_paths[a2][t + 1].location : candidate_paths[a2].back().location;
+-                        if (loc1 == next2 && next1 == loc2 && loc1 != next1) { valid = false; break; }
+-                    }
+-                }
+-            }
+-        }
++        bool valid = planIsCollisionFree(candidate_paths);
+ 
+         if (valid) {
+             if (budget.isGlobalDeadlineExceeded()) {
+@@ -801,6 +832,7 @@ RepairOutcome ResumableRepairEngine::resumeCheckpoint(int slot_idx, SearchBudget
+             }
+             incumbent_sum_of_costs += outcome.cost_delta;
+             incumbent_version++;
++            last_validated_incumbent_version = incumbent_version;
+             checkpoint_store.markCommitted(slot_idx);
+             outcome.type = RepairOutcomeType::COMPLETED_ACCEPTED;
+             total_accepted_repairs++;
+@@ -826,18 +858,42 @@ bool ResumableRepairEngine::processInterruptedPartialAcceptance(
+     SearchBudget& budget,
+     RepairOutcome& outcome) {
+ 
++    auto t_pa_start = std::chrono::steady_clock::now();
+     total_partial_acceptance_attempts++;
+     PartialAcceptanceResult res = evaluatePartialAcceptance(candidate_agents, candidate_paths, &budget);
+-    last_partial_acceptance_result = res;
++
++    if (res.status == PartialAcceptanceStatus::BUDGET_SKIPPED) {
++        total_partial_acceptance_budget_skipped++;
++        if (budget.isGlobalBudgetExhausted(0.0)) {
++            outcome.type = RepairOutcomeType::STOPPED_DEADLINE;
++        }
++        res.total_time_us = std::chrono::duration<double, std::micro>(std::chrono::steady_clock::now() - t_pa_start).count();
++        total_partial_acceptance_time_us += res.total_time_us;
++        last_partial_acceptance_result = res;
++        partial_acceptance_history.push_back(res);
++        return false;
++    }
+ 
+     if (res.status == PartialAcceptanceStatus::OPTIMAL_SELECTION && res.predicted_gain > 0) {
+-        if (budget.isGlobalDeadlineExceeded()) {
++        total_partial_acceptance_positive_opps++;
++
++        if (budget.isGlobalBudgetExhausted(0.0)) {
++            res.status = PartialAcceptanceStatus::BUDGET_SKIPPED;
++            res.detail = "Global deadline reached prior to commit";
++            total_partial_acceptance_budget_skipped++;
+             outcome.type = RepairOutcomeType::STOPPED_DEADLINE;
++            res.total_time_us = std::chrono::duration<double, std::micro>(std::chrono::steady_clock::now() - t_pa_start).count();
++            total_partial_acceptance_time_us += res.total_time_us;
++            last_partial_acceptance_result = res;
++            partial_acceptance_history.push_back(res);
+             return false;
+         }
+ 
+-        bool committed = commitPartialAcceptance(res.selected_agent_ids, res.selected_paths, incumbent_version, res);
++        bool committed = commitPartialAcceptance(res.selected_agent_ids, res.selected_paths, incumbent_version, res, &budget);
++        res.total_time_us = std::chrono::duration<double, std::micro>(std::chrono::steady_clock::now() - t_pa_start).count();
++        total_partial_acceptance_time_us += res.total_time_us;
+         last_partial_acceptance_result = res;
++        partial_acceptance_history.push_back(res);
+ 
+         if (committed) {
+             total_partial_acceptance_committed++;
+@@ -848,7 +904,20 @@ bool ResumableRepairEngine::processInterruptedPartialAcceptance(
+             total_accepted_repairs++;
+             return true;
+         }
++
++        if (res.status == PartialAcceptanceStatus::BUDGET_SKIPPED) {
++            total_partial_acceptance_budget_skipped++;
++            if (budget.isGlobalBudgetExhausted(0.0)) {
++                outcome.type = RepairOutcomeType::STOPPED_DEADLINE;
++            }
++        }
++        return false;
+     }
++
++    res.total_time_us = std::chrono::duration<double, std::micro>(std::chrono::steady_clock::now() - t_pa_start).count();
++    total_partial_acceptance_time_us += res.total_time_us;
++    last_partial_acceptance_result = res;
++    partial_acceptance_history.push_back(res);
+     return false;
+ }
+ 
+@@ -874,15 +943,24 @@ PartialAcceptanceResult ResumableRepairEngine::evaluatePartialAcceptance(
+         return res;
+     }
+ 
+-    if (budget && (budget->deadline_exceeded || budget->isGlobalDeadlineExceeded() || budget->getElapsedSeconds() >= budget->max_time_seconds)) {
++    if (budget && budget->isGlobalBudgetExhausted(budget->partial_acceptance_reserve_s)) {
+         res.status = PartialAcceptanceStatus::BUDGET_SKIPPED;
+-        res.detail = "Global deadline exceeded prior to partial acceptance";
++        res.detail = "Global deadline or safety reserve exceeded prior to partial acceptance";
+         return res;
+     }
+ 
+-    // 1. Assemble replacement candidates and validate kinematics
++    // 1. Validate incumbent solution validity (Assumption 1)
++    std::string inc_err;
++    if (!validateIncumbent(inc_err)) {
++        res.status = PartialAcceptanceStatus::INVALID_INPUT;
++        res.detail = "Incumbent solution is invalid: " + inc_err;
++        return res;
++    }
++
++    // 2. Assemble replacement candidates, verify uniqueness (Assumption 4) and kinematics (Assumption 2)
+     std::vector<ReplacementCandidate> candidates;
+     candidates.reserve(candidate_agents.size());
++    std::unordered_set<int> seen_agents;
+     for (size_t i = 0; i < candidate_agents.size(); ++i) {
+         int a = candidate_agents[i];
+         if (a < 0 || a >= num_agents) {
+@@ -890,6 +968,11 @@ PartialAcceptanceResult ResumableRepairEngine::evaluatePartialAcceptance(
+             res.detail = "Candidate agent ID out of range: " + std::to_string(a);
+             return res;
+         }
++        if (!seen_agents.insert(a).second) {
++            res.status = PartialAcceptanceStatus::INVALID_INPUT;
++            res.detail = "Duplicate candidate replacement for agent " + std::to_string(a);
++            return res;
++        }
+ 
+         std::string kin_err;
+         if (!PartialAcceptanceOptimizer::checkPathKinematics(candidate_replacements[i],
+@@ -908,11 +991,15 @@ PartialAcceptanceResult ResumableRepairEngine::evaluatePartialAcceptance(
+         c.old_path = incumbent_paths[a];
+         c.cost_old = PartialAcceptanceOptimizer::computeArrivalCost(c.old_path, instance.getGoals()[a]);
+         c.cost_new = PartialAcceptanceOptimizer::computeArrivalCost(c.replacement_path, instance.getGoals()[a]);
+-        c.weight = static_cast<int64_t>(c.cost_old) - static_cast<int64_t>(c.cost_new);
++        if (!checkedSub(static_cast<int64_t>(c.cost_old), static_cast<int64_t>(c.cost_new), c.weight)) {
++            res.status = PartialAcceptanceStatus::INVALID_INPUT;
++            res.detail = "Arithmetic overflow computing weight for agent " + std::to_string(a);
++            return res;
++        }
+         candidates.push_back(c);
+     }
+ 
+-    // 2. Validate pairwise collision freedom of candidates (Assumption 3)
++    // 3. Validate pairwise collision freedom of candidates (Assumption 3)
+     std::string pair_err;
+     if (!PartialAcceptanceOptimizer::checkPairwiseCandidateCollisions(candidates, pair_err)) {
+         res.status = PartialAcceptanceStatus::INVALID_INPUT;
+@@ -920,13 +1007,33 @@ PartialAcceptanceResult ResumableRepairEngine::evaluatePartialAcceptance(
+         return res;
+     }
+ 
+-    // 3. Build dependency graph
++    auto t_prep_end = std::chrono::steady_clock::now();
++    double prep_us = std::chrono::duration<double, std::micro>(t_prep_end - t_start).count();
++
++    if (budget && budget->isGlobalBudgetExhausted(0.0)) {
++        res.status = PartialAcceptanceStatus::BUDGET_SKIPPED;
++        res.prep_time_us = prep_us;
++        res.total_time_us = prep_us;
++        res.detail = "Global deadline exceeded after input preparation";
++        return res;
++    }
++
++    // 4. Build dependency graph against all incumbent agents (Assumption 6)
+     auto t_graph_start = std::chrono::steady_clock::now();
+     DependencyGraph graph = PartialAcceptanceOptimizer::buildDependencyGraph(candidates, incumbent_paths, instance);
+     auto t_graph_end = std::chrono::steady_clock::now();
+     double graph_us = std::chrono::duration<double, std::micro>(t_graph_end - t_graph_start).count();
+ 
+-    // 4. Solve according to policy
++    if (budget && budget->isGlobalBudgetExhausted(0.0)) {
++        res.status = PartialAcceptanceStatus::BUDGET_SKIPPED;
++        res.prep_time_us = prep_us;
++        res.graph_build_time_us = graph_us;
++        res.total_time_us = prep_us + graph_us;
++        res.detail = "Global deadline exceeded after dependency graph construction";
++        return res;
++    }
++
++    // 5. Solve according to policy
+     if (partial_acceptance_policy == PartialAcceptancePolicy::EXACT_CLOSURE) {
+         res = PartialAcceptanceOptimizer::solveExactClosure(graph, candidates, incumbent_version, budget);
+     } else if (partial_acceptance_policy == PartialAcceptancePolicy::GREEDY_DEPENDENCY) {
+@@ -936,6 +1043,7 @@ PartialAcceptanceResult ResumableRepairEngine::evaluatePartialAcceptance(
+         return res;
+     }
+ 
++    res.prep_time_us = prep_us;
+     res.graph_build_time_us = graph_us;
+     res.total_time_us = std::chrono::duration<double, std::micro>(std::chrono::steady_clock::now() - t_start).count();
+     return res;
+@@ -944,7 +1052,8 @@ PartialAcceptanceResult ResumableRepairEngine::evaluatePartialAcceptance(
+ bool ResumableRepairEngine::commitPartialAcceptance(const std::vector<int>& selected_agents,
+                                                     const std::vector<Path>& replacement_paths,
+                                                     uint64_t expected_incumbent_version,
+-                                                    PartialAcceptanceResult& out_result) {
++                                                    PartialAcceptanceResult& out_result,
++                                                    SearchBudget* budget) {
+     auto t0 = std::chrono::steady_clock::now();
+     if (incumbent_version != expected_incumbent_version) {
+         out_result.status = PartialAcceptanceStatus::VERSION_CHANGED;
+@@ -952,14 +1061,22 @@ bool ResumableRepairEngine::commitPartialAcceptance(const std::vector<int>& sele
+                             " but current is " + std::to_string(incumbent_version);
+         return false;
+     }
++    if (budget && budget->isGlobalBudgetExhausted(0.0)) {
++        out_result.status = PartialAcceptanceStatus::BUDGET_SKIPPED;
++        out_result.detail = "Global deadline exceeded prior to commit validation";
++        return false;
++    }
+     if (selected_agents.empty() || selected_agents.size() != replacement_paths.size()) {
+         out_result.status = PartialAcceptanceStatus::INVALID_INPUT;
+         out_result.detail = "Selected agent count does not match replacement path count";
+         return false;
+     }
+ 
+-    // Construct candidate complete plan
++    // Construct candidate complete plan and validate kinematics + uniqueness
+     std::vector<Path> candidate_paths = incumbent_paths;
++    std::unordered_set<int> seen_agents;
++    const auto& starts = instance.getStarts();
++    const auto& goals = instance.getGoals();
+     for (size_t i = 0; i < selected_agents.size(); ++i) {
+         int a = selected_agents[i];
+         if (a < 0 || a >= num_agents) {
+@@ -967,30 +1084,62 @@ bool ResumableRepairEngine::commitPartialAcceptance(const std::vector<int>& sele
+             out_result.detail = "Agent ID out of range: " + std::to_string(a);
+             return false;
+         }
++        if (!seen_agents.insert(a).second) {
++            out_result.status = PartialAcceptanceStatus::INVALID_INPUT;
++            out_result.detail = "Duplicate agent ID in commit batch: " + std::to_string(a);
++            return false;
++        }
++        std::string kin_err;
++        if (!PartialAcceptanceOptimizer::checkPathKinematics(replacement_paths[i], starts[a], goals[a], instance, kin_err)) {
++            out_result.status = PartialAcceptanceStatus::VALIDATION_FAILED;
++            out_result.detail = "Replacement path failed kinematic check for agent " + std::to_string(a) + ": " + kin_err;
++            return false;
++        }
+         candidate_paths[a] = replacement_paths[i];
+     }
+ 
+-    // Validate independent-of-search collision freedom
++    // Validate independent-of-search collision freedom across whole plan
+     auto t_val_start = std::chrono::steady_clock::now();
+-    if (!planIsCollisionFree(candidate_paths)) {
++    int64_t candidate_soc = 0;
++    std::string val_err;
++    if (!PartialAcceptanceOptimizer::validateCompletePlanIndependently(candidate_paths, instance, candidate_soc, val_err)) {
+         out_result.status = PartialAcceptanceStatus::VALIDATION_FAILED;
+-        out_result.detail = "Candidate plan failed whole-plan collision check";
++        out_result.detail = "Candidate plan failed whole-plan validation: " + val_err;
+         return false;
+     }
+     auto t_val_end = std::chrono::steady_clock::now();
+     out_result.validation_time_us = std::chrono::duration<double, std::micro>(t_val_end - t_val_start).count();
+ 
+-    // Compute arrival cost delta
+-    int candidate_cost = 0;
++    // Independently compute authoritative arrival-cost Sum of Costs for current incumbent
++    int64_t old_arrival_soc = 0;
+     for (int a = 0; a < num_agents; ++a) {
+-        candidate_cost += PartialAcceptanceOptimizer::computeArrivalCost(candidate_paths[a], instance.getGoals()[a]);
++        int arr = PartialAcceptanceOptimizer::computeArrivalCost(incumbent_paths[a], goals[a]);
++        if (!checkedAdd(old_arrival_soc, static_cast<int64_t>(arr), old_arrival_soc)) {
++            out_result.status = PartialAcceptanceStatus::INVALID_INPUT;
++            out_result.detail = "Overflow computing incumbent arrival cost";
++            return false;
++        }
+     }
+-    int64_t gain = static_cast<int64_t>(incumbent_sum_of_costs) - static_cast<int64_t>(candidate_cost);
+-    if (gain <= 0) {
++
++    int64_t gain = 0;
++    if (!checkedSub(old_arrival_soc, candidate_soc, gain) || gain <= 0) {
+         out_result.status = PartialAcceptanceStatus::NO_GAIN;
+         out_result.detail = "Verified gain is non-positive: " + std::to_string(gain);
+         return false;
+     }
++
++    // Final pre-commit rechecks: version, positive gain, and remaining global budget
++    if (incumbent_version != expected_incumbent_version) {
++        out_result.status = PartialAcceptanceStatus::VERSION_CHANGED;
++        out_result.detail = "Incumbent version changed before atomic commit";
++        return false;
++    }
++    if (budget && budget->isGlobalBudgetExhausted(0.0)) {
++        out_result.status = PartialAcceptanceStatus::BUDGET_SKIPPED;
++        out_result.detail = "Global deadline exceeded after validation; late commit rejected";
++        return false;
++    }
++
+     out_result.verified_gain = gain;
+ 
+     // Atomic transactional application:
+@@ -1004,8 +1153,9 @@ bool ResumableRepairEngine::commitPartialAcceptance(const std::vector<int>& sele
+         agent_trajectory_versions[a]++;
+     }
+ 
+-    incumbent_sum_of_costs = candidate_cost;
++    incumbent_sum_of_costs -= static_cast<int>(gain);
+     incumbent_version++;
++    last_validated_incumbent_version = incumbent_version;
+ 
+     auto t_commit_end = std::chrono::steady_clock::now();
+     out_result.commit_time_us = std::chrono::duration<double, std::micro>(t_commit_end - t_val_end).count();
+diff --git a/src/engine/rbl_resumable_engine.hpp b/src/engine/rbl_resumable_engine.hpp
+index eb0bd1a..6190c55 100644
+--- a/src/engine/rbl_resumable_engine.hpp
++++ b/src/engine/rbl_resumable_engine.hpp
+@@ -32,6 +32,22 @@
+ 
+ namespace rbl {
+ 
++// Snapshot of a naturally interrupted repair for offline opportunity replay (Task 8)
++struct InterruptedRepairSnapshot {
++    int snapshot_id = 0;
++    int attempt_id = 0;
++    bool is_resumed = false;
++    uint64_t incumbent_version = 0;
++    int incumbent_cost = 0;
++    std::vector<Path> incumbent_paths;
++    std::vector<int> priority_order;
++    std::vector<int> candidate_agents;
++    std::vector<Path> candidate_paths;
++    double slice_duration_s = 0.0;
++    double remaining_budget_s = 0.0;
++    uint64_t slice_expansions = 0;
++};
++
+ class ResumableRepairEngine {
+ public:
+     ResumableRepairEngine(const Instance& instance, bool use_sipp = false, int checkpoint_capacity = 2);
+@@ -106,12 +122,15 @@ public:
+     int getFailedRepairs() const { return total_failed_repairs; }
+     int getInterruptedSlices() const { return total_interrupted_slices; }
+     uint64_t getTotalExpansions() const { return total_expansions; }
++    uint64_t getRepeatedExpansions() const { return total_repeated_expansions; }
++
+     // Partial Acceptance Feature Controls & Policy
+     void setPartialAcceptanceEnabled(bool enable) { enable_partial_acceptance = enable; }
+     bool isPartialAcceptanceEnabled() const { return enable_partial_acceptance; }
+     void setPartialAcceptancePolicy(PartialAcceptancePolicy policy) { partial_acceptance_policy = policy; }
+     PartialAcceptancePolicy getPartialAcceptancePolicy() const { return partial_acceptance_policy; }
+     const PartialAcceptanceResult& getLastPartialAcceptanceResult() const { return last_partial_acceptance_result; }
++    const std::vector<PartialAcceptanceResult>& getPartialAcceptanceHistory() const { return partial_acceptance_history; }
+ 
+     // Atomic Batch Commit for Partial Acceptance:
+     // Safely validates candidate full plan, verifies strict cost improvement,
+@@ -119,7 +138,8 @@ public:
+     bool commitPartialAcceptance(const std::vector<int>& selected_agents,
+                                  const std::vector<Path>& replacement_paths,
+                                  uint64_t expected_incumbent_version,
+-                                 PartialAcceptanceResult& out_result);
++                                 PartialAcceptanceResult& out_result,
++                                 SearchBudget* budget = nullptr);
+ 
+     // Evaluate partial acceptance over candidate replacements without modifying incumbent
+     PartialAcceptanceResult evaluatePartialAcceptance(
+@@ -129,8 +149,18 @@ public:
+ 
+     // Partial acceptance cumulative statistics
+     int getPartialAcceptanceAttempts() const { return total_partial_acceptance_attempts; }
++    int getPartialAcceptancePositiveOpportunities() const { return total_partial_acceptance_positive_opps; }
+     int getPartialAcceptanceCommitted() const { return total_partial_acceptance_committed; }
++    int getPartialAcceptanceBudgetSkipped() const { return total_partial_acceptance_budget_skipped; }
+     int64_t getPartialAcceptanceTotalGain() const { return total_partial_acceptance_gain; }
++    double getPartialAcceptanceTotalTimeUs() const { return total_partial_acceptance_time_us; }
++
++    // Offline snapshot capture controls (Task 8)
++    void setSnapshotCaptureEnabled(bool enable) { enable_snapshot_capture = enable; }
++    bool isSnapshotCaptureEnabled() const { return enable_snapshot_capture; }
++    const std::vector<InterruptedRepairSnapshot>& getCapturedSnapshots() const { return captured_snapshots; }
++    int getTotalInterruptionsObserved() const { return total_interruptions_observed; }
++    int getInterruptionsWithCompletedPrefix() const { return total_interruptions_with_completed_prefix; }
+ 
+     bool isUsingSipp() const { return use_sipp; }
+ 
+@@ -143,6 +173,7 @@ private:
+     std::vector<Path> incumbent_paths;
+     int incumbent_sum_of_costs = 0;
+     uint64_t incumbent_version = 1;
++    mutable uint64_t last_validated_incumbent_version = 0;
+     std::vector<uint64_t> agent_trajectory_versions;
+ 
+     // Global collision and path table for incumbent
+@@ -184,9 +215,20 @@ private:
+     bool enable_partial_acceptance = false;
+     PartialAcceptancePolicy partial_acceptance_policy = PartialAcceptancePolicy::OFF;
+     PartialAcceptanceResult last_partial_acceptance_result;
++    std::vector<PartialAcceptanceResult> partial_acceptance_history;
+     int total_partial_acceptance_attempts = 0;
++    int total_partial_acceptance_positive_opps = 0;
+     int total_partial_acceptance_committed = 0;
++    int total_partial_acceptance_budget_skipped = 0;
+     int64_t total_partial_acceptance_gain = 0;
++    double total_partial_acceptance_time_us = 0.0;
++
++    // Offline snapshot capture state
++    bool enable_snapshot_capture = false;
++    std::vector<InterruptedRepairSnapshot> captured_snapshots;
++    int total_interruptions_observed = 0;
++    int total_interruptions_with_completed_prefix = 0;
++    int total_repair_attempts_counter = 0;
+ 
+     // Helper: process interrupted partial acceptance transaction
+     bool processInterruptedPartialAcceptance(const std::vector<int>& candidate_agents,
+diff --git a/src/engine/rbl_search_budget.hpp b/src/engine/rbl_search_budget.hpp
+index 8a9aa1a..ad2e0a3 100644
+--- a/src/engine/rbl_search_budget.hpp
++++ b/src/engine/rbl_search_budget.hpp
+@@ -83,6 +83,9 @@ public:
+     bool has_global_deadline = false;
+     bool interrupted = false;
+     bool deadline_exceeded = false;
++    double partial_acceptance_reserve_s = 0.0002; // 200 us reserve before starting online partial acceptance
++    int64_t max_flow_steps = -1;                  // -1 means no step limit on flow solver
++    int64_t current_flow_steps = 0;
+ 
+     SearchBudget() {
+         start_time = std::chrono::steady_clock::now();
+@@ -102,15 +105,65 @@ public:
+         max_agents = m;
+     }
+ 
++    void setMaxFlowSteps(int64_t steps) {
++        max_flow_steps = steps;
++        current_flow_steps = 0;
++    }
++
+     inline bool isGlobalDeadlineExceeded() const {
++        if (deadline_exceeded) return true;
+         if (!has_global_deadline) return false;
+         return std::chrono::steady_clock::now() >= global_deadline_time;
+     }
+ 
++    inline double getRemainingGlobalSeconds() const {
++        if (deadline_exceeded) return 0.0;
++        if (has_global_deadline) {
++            auto now = std::chrono::steady_clock::now();
++            return std::chrono::duration<double>(global_deadline_time - now).count();
++        }
++        if (max_time_seconds < 1e8) {
++            return max_time_seconds - getElapsedSeconds();
++        }
++        return 1e9;
++    }
++
++    // Checks whether global deadline (plus optional safety reserve) is exhausted.
++    // Note: When has_global_deadline is true, slice expiration (max_time_seconds) does NOT
++    // mean the global deadline is exhausted; only global_deadline_time governs the global budget.
++    inline bool isGlobalBudgetExhausted(double reserve_s = 0.0) const {
++        if (deadline_exceeded) return true;
++        if (has_global_deadline) {
++            return getRemainingGlobalSeconds() <= reserve_s;
++        }
++        if (max_time_seconds < 1e8) {
++            return (getElapsedSeconds() + reserve_s) >= max_time_seconds;
++        }
++        return false;
++    }
++
++    // Cooperative check inside flow/selection loops
++    inline bool checkFlowStep() {
++        current_flow_steps++;
++        if (max_flow_steps >= 0 && current_flow_steps > max_flow_steps) {
++            interrupted = true;
++            deadline_exceeded = true;
++            return false;
++        }
++        if (isGlobalBudgetExhausted(0.0)) {
++            interrupted = true;
++            deadline_exceeded = true;
++            return false;
++        }
++        return true;
++    }
++
+     void reset(uint64_t max_exp, double max_time_s) {
+         max_expansions = max_exp;
+         max_time_seconds = max_time_s;
+         max_agents = -1;
++        max_flow_steps = -1;
++        current_flow_steps = 0;
+         current_expansions = 0;
+         interrupted = false;
+         deadline_exceeded = false;
+diff --git a/src/profiler/profile_partial_acceptance.cpp b/src/profiler/profile_partial_acceptance.cpp
+index fa99547..c575546 100644
+--- a/src/profiler/profile_partial_acceptance.cpp
++++ b/src/profiler/profile_partial_acceptance.cpp
+@@ -1,11 +1,7 @@
+-// RouteBudget Lab - Partial Acceptance Profiler & Opportunity Analyzer
+-// Implementation of experimental runner for the 192-run pilot and offline snapshot analysis.
+-//
+-// Evaluates:
+-// 1. DISCARD_NO_PA (Baseline discard on interruption)
+-// 2. RESUMPTION_NO_PA (Checkpoint resumption, no partial acceptance)
+-// 3. GREEDY_PARTIAL_ACCEPTANCE (Transitive dependency-aware greedy partial acceptance)
+-// 4. EXACT_PARTIAL_ACCEPTANCE (Exact min-cut maximum-weight closure partial acceptance)
++// RouteBudget Lab - Partial Acceptance Profiler & Offline Opportunity Analyzer
++// Implementation of experimental runner for:
++// - Task 8: Offline Opportunity Analysis (natural interrupted repair snapshot capture & multi-selector replay)
++// - Task 9: Controlled 192-Run Matched Live Pilot (DISCARD_NO_PA, RESUMPTION_NO_PA, GREEDY_PARTIAL_ACCEPTANCE, EXACT_PARTIAL_ACCEPTANCE)
+ 
+ #include <iostream>
+ #include <iomanip>
+@@ -17,6 +13,8 @@
+ #include <cassert>
+ #include <algorithm>
+ #include <random>
++#include <map>
++#include <cmath>
+ 
+ #include <boost/program_options.hpp>
+ 
+@@ -28,26 +26,195 @@
+ namespace po = boost::program_options;
+ using namespace rbl;
+ 
+-std::vector<::Path> computeInitialSolution(const Instance& instance, int num_agents) {
++namespace {
++
++std::vector<::Path> computeInitialSolution(const Instance& instance, int num_agents, double& out_time_s) {
++    auto t0 = std::chrono::steady_clock::now();
+     std::vector<::Path> paths(num_agents);
+     ConstraintTable ct(instance.num_of_cols, instance.map_size);
+     for (int i = 0; i < num_agents; ++i) {
+         SpaceTimeAStar solver(instance, i);
+         paths[i] = solver.findPath(ct);
+-        assert(!paths[i].empty());
++        if (paths[i].empty()) {
++            std::cerr << "FATAL: Failed to compute initial path for agent " << i << std::endl;
++            std::exit(1);
++        }
+         ct.insert2CT(paths[i]);
+     }
++    auto t1 = std::chrono::steady_clock::now();
++    out_time_s = std::chrono::duration<double>(t1 - t0).count();
+     return paths;
+ }
+ 
++bool saveInitPathsToFile(const std::string& path, const std::vector<::Path>& paths) {
++    std::ofstream ofs(path);
++    if (!ofs.is_open()) return false;
++    for (size_t i = 0; i < paths.size(); ++i) {
++        ofs << i << ":";
++        for (const auto& step : paths[i]) {
++            ofs << "(" << step.location << ")->";
++        }
++        ofs << "\n";
++    }
++    return true;
++}
++
++bool loadInitPathsFromFile(const std::string& path, int num_agents, std::vector<::Path>& out_paths) {
++    std::ifstream ifs(path);
++    if (!ifs.is_open()) return false;
++    out_paths.clear();
++    out_paths.resize(num_agents);
++    std::string line;
++    while (std::getline(ifs, line)) {
++        if (line.empty()) continue;
++        auto colon = line.find(':');
++        if (colon == std::string::npos) continue;
++        int a = std::stoi(line.substr(0, colon));
++        if (a < 0 || a >= num_agents) continue;
++        std::string rest = line.substr(colon + 1);
++        ::Path p;
++        size_t pos = 0;
++        while ((pos = rest.find('(')) != std::string::npos) {
++            size_t close = rest.find(')', pos);
++            if (close == std::string::npos) break;
++            int loc = std::stoi(rest.substr(pos + 1, close - pos - 1));
++            p.push_back(PathEntry(loc));
++            rest = rest.substr(close + 1);
++        }
++        out_paths[a] = p;
++    }
++    for (int i = 0; i < num_agents; ++i) {
++        if (out_paths[i].empty()) return false;
++    }
++    return true;
++}
++
++bool saveMovingAIPathsToFile(const std::string& path, const Instance& instance, const std::vector<::Path>& paths) {
++    std::ofstream ofs(path);
++    if (!ofs.is_open()) return false;
++    for (size_t i = 0; i < paths.size(); ++i) {
++        ofs << "Agent " << i << ":";
++        for (size_t j = 0; j < paths[i].size(); ++j) {
++            const auto& step = paths[i][j];
++            ofs << "(" << instance.getRowCoordinate(step.location) << ","
++                << instance.getColCoordinate(step.location) << ")";
++            if (j + 1 < paths[i].size()) {
++                ofs << "->";
++            }
++        }
++        ofs << "\n";
++    }
++    return true;
++}
++
++bool verifyWithIndependentValidator(const Instance& instance,
++                                    const std::vector<::Path>& plan,
++                                    long long& out_soc,
++                                    std::string& out_err) {
++    rbl::Grid g;
++    g.width = instance.num_of_cols;
++    g.height = instance.num_of_rows;
++    g.passable.assign((size_t)g.width * g.height, 0);
++    for (int loc = 0; loc < instance.map_size; ++loc) {
++        g.passable[loc] = instance.isObstacle(loc) ? 0 : 1;
++    }
++
++    int m = (int)plan.size();
++    std::vector<rbl::AgentSpec> specs(m);
++    const auto& starts = instance.getStarts();
++    const auto& goals = instance.getGoals();
++    for (int i = 0; i < m; ++i) {
++        specs[i].start = {instance.getColCoordinate(starts[i]), instance.getRowCoordinate(starts[i])};
++        specs[i].goal = {instance.getColCoordinate(goals[i]), instance.getRowCoordinate(goals[i])};
++    }
++
++    std::vector<rbl::Path> vpaths(m);
++    for (int i = 0; i < m; ++i) {
++        vpaths[i].reserve(plan[i].size());
++        for (const auto& e : plan[i]) {
++            vpaths[i].push_back({instance.getColCoordinate(e.location), instance.getRowCoordinate(e.location)});
++        }
++    }
++
++    rbl::Report rep;
++    rbl::checkPlan(g, specs, vpaths, rep);
++    out_soc = rep.sumOfCosts;
++    if (rep.status != rbl::Status::VALID) {
++        out_err = rep.issues.empty() ? statusName(rep.status) : (rep.issues[0].code + ": " + rep.issues[0].detail);
++    }
++    return rep.status == rbl::Status::VALID;
++}
++
++struct LatencyStats {
++    double median = 0.0;
++    double p95 = 0.0;
++    double max = 0.0;
++    double total = 0.0;
++};
++
++LatencyStats computeLatencyStats(std::vector<double> vals) {
++    LatencyStats s;
++    if (vals.empty()) return s;
++    for (double v : vals) s.total += v;
++    std::sort(vals.begin(), vals.end());
++    s.median = vals[vals.size() / 2];
++    size_t p95_idx = std::min<size_t>(vals.size() - 1, static_cast<size_t>(vals.size() * 0.95));
++    s.p95 = vals[p95_idx];
++    s.max = vals.back();
++    return s;
++}
++
++// Find oldest compatible suspended checkpoint slot using FIFO order + stagnation eviction
++int selectCompatibleResumeSlot(ResumableRepairEngine& engine,
++                               bool resumption_enabled,
++                               int max_stagnant_attempts,
++                               int& stagnant_evictions,
++                               int& incompatible_evictions) {
++    if (!resumption_enabled) return -1;
++    int cap = engine.getCheckpointStore().getCapacity();
++    int best_slot = -1;
++    uint64_t oldest_id = std::numeric_limits<uint64_t>::max();
++
++    for (int s = 0; s < cap; ++s) {
++        const auto* cp = engine.getCheckpointStore().getCheckpoint(s);
++        if (!cp) continue;
++
++        if (cp->consecutive_stagnant_attempts >= max_stagnant_attempts) {
++            engine.getCheckpointStore().markDiscarded(s);
++            stagnant_evictions++;
++            continue;
++        }
++
++        CompatibilityReport rep = engine.validateCheckpoint(s, RetentionPolicy::WHOLE_CHECKPOINT_SELECTIVE);
++        if (!rep.isCompatible()) {
++            engine.getCheckpointStore().markDiscarded(s);
++            incompatible_evictions++;
++            continue;
++        }
++
++        if (cp->checkpoint_id < oldest_id) {
++            oldest_id = cp->checkpoint_id;
++            best_slot = s;
++        }
++    }
++    return best_slot;
++}
++
++} // anonymous namespace
++
+ int main(int argc, char* argv[]) {
+     std::string map_file;
+     std::string scen_file;
+     std::string output_file;
+     std::string policy_str = "EXACT_PARTIAL_ACCEPTANCE";
++    std::string mode_str = "online";
++    std::string load_init_path;
++    std::string dump_init_path;
++    std::string dump_final_path;
+     int num_agents = 50;
+     double time_budget_s = 5.0;
+-    double slice_budget_s = 0.05;
++    double slice_budget_s = 0.005;
++    int neighborhood_size = 8;
+     int rng_seed = 0;
+ 
+     po::options_description desc("RouteBudget Lab - Partial Acceptance Profiler");
+@@ -57,10 +224,16 @@ int main(int argc, char* argv[]) {
+         ("scen,s", po::value<std::string>(&scen_file)->required(), "Path to .scen file")
+         ("agents,a", po::value<int>(&num_agents)->default_value(50), "Number of agents")
+         ("budget,b", po::value<double>(&time_budget_s)->default_value(5.0), "Total planning budget (seconds)")
+-        ("slice", po::value<double>(&slice_budget_s)->default_value(0.05), "Repair slice budget (seconds)")
++        ("slice", po::value<double>(&slice_budget_s)->default_value(0.005), "Repair slice budget (seconds)")
++        ("neighborhood-size,k", po::value<int>(&neighborhood_size)->default_value(8), "Neighborhood size k")
+         ("seed", po::value<int>(&rng_seed)->default_value(0), "Random seed")
+         ("policy,p", po::value<std::string>(&policy_str)->default_value("EXACT_PARTIAL_ACCEPTANCE"),
+          "Policy: DISCARD_NO_PA, RESUMPTION_NO_PA, GREEDY_PARTIAL_ACCEPTANCE, EXACT_PARTIAL_ACCEPTANCE")
++        ("mode", po::value<std::string>(&mode_str)->default_value("online"),
++         "Execution mode: online | offline_snapshots")
++        ("load-init-paths", po::value<std::string>(&load_init_path)->default_value(""), "Load shared initial paths from file")
++        ("dump-init-paths", po::value<std::string>(&dump_init_path)->default_value(""), "Dump initial paths to file")
++        ("dump-final-paths", po::value<std::string>(&dump_final_path)->default_value(""), "Dump final MovingAI paths to file")
+         ("output,o", po::value<std::string>(&output_file)->default_value("partial_acceptance_result.json"), "Output JSON file");
+ 
+     po::variables_map vm;
+@@ -77,78 +250,384 @@ int main(int argc, char* argv[]) {
+     }
+ 
+     Instance instance(map_file, scen_file, num_agents);
+-    ResumableRepairEngine engine(instance);
+ 
+-    bool use_pa = (policy_str == "GREEDY_PARTIAL_ACCEPTANCE" || policy_str == "EXACT_PARTIAL_ACCEPTANCE");
++    // 1. Obtain initial solution outside the refinement deadline timer (Controlled Refinement Protocol)
++    std::vector<::Path> initial_paths;
++    double init_plan_time_s = 0.0;
++    std::string init_plan_source = "GENERATED_PRIORITIZED_PLANNING";
++    if (!load_init_path.empty() && loadInitPathsFromFile(load_init_path, num_agents, initial_paths)) {
++        init_plan_source = "LOADED_FROM_SHARED_FIXTURE";
++    } else {
++        initial_paths = computeInitialSolution(instance, num_agents, init_plan_time_s);
++        if (!dump_init_path.empty()) {
++            saveInitPathsToFile(dump_init_path, initial_paths);
++        }
++    }
++
++    bool resumption_enabled = (policy_str != "DISCARD_NO_PA");
++    bool use_pa = (mode_str == "online") &&
++                  (policy_str == "GREEDY_PARTIAL_ACCEPTANCE" || policy_str == "EXACT_PARTIAL_ACCEPTANCE");
+     PartialAcceptancePolicy pa_policy = PartialAcceptancePolicy::OFF;
+-    if (policy_str == "EXACT_PARTIAL_ACCEPTANCE") {
+-        pa_policy = PartialAcceptancePolicy::EXACT_CLOSURE;
+-    } else if (policy_str == "GREEDY_PARTIAL_ACCEPTANCE") {
+-        pa_policy = PartialAcceptancePolicy::GREEDY_DEPENDENCY;
++    if (use_pa) {
++        if (policy_str == "EXACT_PARTIAL_ACCEPTANCE") {
++            pa_policy = PartialAcceptancePolicy::EXACT_CLOSURE;
++        } else if (policy_str == "GREEDY_PARTIAL_ACCEPTANCE") {
++            pa_policy = PartialAcceptancePolicy::GREEDY_DEPENDENCY;
++        }
+     }
+ 
++    int store_capacity = resumption_enabled ? 2 : 0;
++    ResumableRepairEngine engine(instance, false, store_capacity);
++    engine.setInitialSolution(initial_paths);
+     engine.setPartialAcceptanceEnabled(use_pa);
+     engine.setPartialAcceptancePolicy(pa_policy);
++    if (mode_str == "offline_snapshots") {
++        engine.setSnapshotCaptureEnabled(true);
++    }
++
++    std::string init_val_err;
++    if (!engine.validateIncumbent(init_val_err)) {
++        std::cerr << "FATAL: Initial incumbent invalid: " << init_val_err << std::endl;
++        return 1;
++    }
+ 
+-    // Initial solution
+-    auto initial_paths = computeInitialSolution(instance, num_agents);
+-    engine.setInitialSolution(initial_paths);
+     int initial_cost = engine.getIncumbentCost();
+ 
+-    SearchBudget global_budget;
+-    global_budget.max_time_seconds = time_budget_s;
+-    global_budget.start_time = std::chrono::steady_clock::now();
+-    global_budget.global_deadline_time = global_budget.start_time + std::chrono::duration_cast<std::chrono::nanoseconds>(
++    // 2. Start Monotonic Global Refinement Timer
++    const double t_reserve_s = 0.0005; // 500 us safety reserve before starting an operation
++    const int max_stagnant_attempts = 2;
++    auto t_global_start = std::chrono::steady_clock::now();
++    auto global_deadline = t_global_start + std::chrono::duration_cast<std::chrono::steady_clock::duration>(
+         std::chrono::duration<double>(time_budget_s));
+-    global_budget.has_global_deadline = true;
+ 
+     std::mt19937 rng(rng_seed);
+-    int total_iterations = 0;
+-    int neighborhood_size = 4;
+-
+     std::vector<int> all_agents(num_agents);
+     for (int i = 0; i < num_agents; ++i) all_agents[i] = i;
+ 
+-    // Execute Anytime MAPF-LNS repair loop until global deadline
+-    while (!global_budget.isGlobalDeadlineExceeded() && global_budget.getElapsedSeconds() < time_budget_s) {
+-        total_iterations++;
++    int total_iterations = 0;
++    int fresh_actions_count = 0;
++    int resumed_actions_count = 0;
++    int stagnant_evictions = 0;
++    int incompatible_evictions = 0;
++    double time_of_last_accepted_commit_s = 0.0;
++
++    std::vector<std::pair<double, int>> anytime_cost_trajectory;
++    anytime_cost_trajectory.push_back({0.0, initial_cost});
+ 
+-        // Random neighborhood selection
+-        std::shuffle(all_agents.begin(), all_agents.end(), rng);
+-        std::vector<int> neighborhood(all_agents.begin(), all_agents.begin() + std::min(neighborhood_size, num_agents));
++    // Execute Anytime MAPF-LNS repair loop until global deadline reserve
++    while (true) {
++        auto t_now = std::chrono::steady_clock::now();
++        double elapsed_s = std::chrono::duration<double>(t_now - t_global_start).count();
++        double b_k = std::max(0.0, time_budget_s - elapsed_s);
+ 
+-        // Slice budget
+-        SearchBudget slice_budget;
+-        slice_budget.max_time_seconds = slice_budget_s;
+-        slice_budget.start_time = std::chrono::steady_clock::now();
+-        slice_budget.global_deadline_time = global_budget.global_deadline_time;
+-        slice_budget.has_global_deadline = true;
++        if (b_k <= t_reserve_s) {
++            break;
++        }
++
++        int resume_slot = selectCompatibleResumeSlot(
++            engine, resumption_enabled, max_stagnant_attempts, stagnant_evictions, incompatible_evictions);
++
++        auto t_pre_exec = std::chrono::steady_clock::now();
++        double elapsed_pre_s = std::chrono::duration<double>(t_pre_exec - t_global_start).count();
++        double b_k_exec = std::max(0.0, time_budget_s - elapsed_pre_s);
++        if (b_k_exec <= t_reserve_s) {
++            break;
++        }
++
++        double effective_slice_s = std::min(slice_budget_s, std::max(0.001, b_k_exec - t_reserve_s));
++        // Standard RouteBudget Lab slice expansion cap rule (100,000 expansions/sec)
++        uint64_t expansion_cap = std::max<uint64_t>(50, static_cast<uint64_t>(slice_budget_s * 100000.0));
++        SearchBudget slice_budget(expansion_cap, effective_slice_s);
++        slice_budget.setGlobalDeadline(global_deadline);
+ 
++        total_iterations++;
+         RepairOutcome outcome;
+-        bool can_resume = (policy_str != "DISCARD_NO_PA") && (engine.getCheckpointStore().getNumSuspended() > 0);
+ 
+-        if (can_resume) {
+-            outcome = engine.resumeCheckpoint(0, slice_budget, RetentionPolicy::WHOLE_CHECKPOINT_SELECTIVE);
++        if (resume_slot >= 0) {
++            resumed_actions_count++;
++            outcome = engine.resumeCheckpoint(resume_slot, slice_budget, RetentionPolicy::WHOLE_CHECKPOINT_SELECTIVE);
+         } else {
+-            outcome = engine.attemptFreshRepair(neighborhood, slice_budget, rng());
++            fresh_actions_count++;
++            std::shuffle(all_agents.begin(), all_agents.end(), rng);
++            int k = std::min(neighborhood_size, num_agents);
++            std::vector<int> neighborhood(all_agents.begin(), all_agents.begin() + k);
++            unsigned int repair_seed = rng();
++            outcome = engine.attemptFreshRepair(neighborhood, slice_budget, repair_seed);
+         }
+ 
+-        (void)outcome;
++        if (outcome.type == RepairOutcomeType::COMPLETED_ACCEPTED) {
++            auto t_commit = std::chrono::steady_clock::now();
++            double commit_ts = std::chrono::duration<double>(t_commit - t_global_start).count();
++            time_of_last_accepted_commit_s = commit_ts;
++            anytime_cost_trajectory.push_back({commit_ts, engine.getIncumbentCost()});
++        } else if (outcome.type == RepairOutcomeType::STOPPED_DEADLINE) {
++            break;
++        }
+     }
+ 
++    auto t_global_end = std::chrono::steady_clock::now();
++    double total_solve_time_s = std::chrono::duration<double>(t_global_end - t_global_start).count();
++    double deadline_overshoot_s = std::max(0.0, total_solve_time_s - time_budget_s);
++    bool deadline_exceeded_flag = (total_solve_time_s > time_budget_s);
++
++    // Compute cost available strictly at or before the deadline vs returned final cost
+     int final_cost = engine.getIncumbentCost();
+-    int cost_reduction = initial_cost - final_cost;
++    int cost_at_deadline = initial_cost;
++    for (const auto& pt : anytime_cost_trajectory) {
++        if (pt.first <= time_budget_s) {
++            cost_at_deadline = pt.second;
++        }
++    }
++    int cost_reduction_at_deadline = initial_cost - cost_at_deadline;
++    int cost_reduction_final = initial_cost - final_cost;
++
++    // 3. Offline validation and path serialization (strictly outside online solver timer)
++    if (!dump_final_path.empty()) {
++        saveMovingAIPathsToFile(dump_final_path, instance, engine.getIncumbentPaths());
++    }
++
++    std::string internal_val_err;
++    bool internal_valid = engine.validateIncumbent(internal_val_err);
++    long long independent_soc = 0;
++    std::string independent_val_err;
++    bool independent_valid = verifyWithIndependentValidator(
++        instance, engine.getIncumbentPaths(), independent_soc, independent_val_err);
++    bool is_valid = internal_valid && independent_valid && (independent_soc == final_cost);
++    std::string val_err = !internal_valid ? internal_val_err :
++                          (!independent_valid ? independent_val_err :
++                          (independent_soc != final_cost ? "SoC mismatch vs rbl::checkPlan" : ""));
++
++    // 4. If in offline_snapshots mode, replay all captured snapshots offline through all selectors
++    if (mode_str == "offline_snapshots") {
++        const auto& snapshots = engine.getCapturedSnapshots();
++        const auto& goals = instance.getGoals();
++
++        std::ofstream out(output_file);
++        if (!out.is_open()) {
++            std::cerr << "Failed to open output file: " << output_file << std::endl;
++            return 1;
++        }
++
++        int positive_feasible_count = 0;
++        int greedy_positive_count = 0;
++        int exact_gt_greedy_count = 0;
++        int exact_vs_oracle_mismatch = 0;
++        int nn_ref_vs_exact_mismatch = 0;
++        int64_t total_exact_gain = 0;
++        int64_t total_greedy_gain = 0;
++
++        out << std::fixed << std::setprecision(6);
++        out << "{\n";
++        out << "  \"mode\": \"offline_snapshots\",\n";
++        out << "  \"collection_policy\": \"" << policy_str << "\",\n";
++        out << "  \"map\": \"" << map_file << "\",\n";
++        out << "  \"scen\": \"" << scen_file << "\",\n";
++        out << "  \"num_agents\": " << num_agents << ",\n";
++        out << "  \"time_budget_s\": " << time_budget_s << ",\n";
++        out << "  \"slice_budget_s\": " << slice_budget_s << ",\n";
++        out << "  \"neighborhood_size\": " << neighborhood_size << ",\n";
++        out << "  \"seed\": " << rng_seed << ",\n";
++        out << "  \"total_repair_attempts\": " << total_iterations << ",\n";
++        out << "  \"total_interruptions\": " << engine.getTotalInterruptionsObserved() << ",\n";
++        out << "  \"interruptions_with_completed_paths\": " << engine.getInterruptionsWithCompletedPrefix() << ",\n";
++        out << "  \"captured_snapshot_count\": " << snapshots.size() << ",\n";
++        out << "  \"snapshots\": [\n";
++
++        for (size_t s_idx = 0; s_idx < snapshots.size(); ++s_idx) {
++            const auto& snap = snapshots[s_idx];
++            int r = (int)snap.candidate_agents.size();
++            std::vector<ReplacementCandidate> candidates(r);
++            for (int i = 0; i < r; ++i) {
++                int a = snap.candidate_agents[i];
++                candidates[i].agent_id = a;
++                candidates[i].replacement_path = snap.candidate_paths[i];
++                candidates[i].old_path = snap.incumbent_paths[a];
++                candidates[i].cost_old = PartialAcceptanceOptimizer::computeArrivalCost(snap.incumbent_paths[a], goals[a]);
++                candidates[i].cost_new = PartialAcceptanceOptimizer::computeArrivalCost(snap.candidate_paths[i], goals[a]);
++                candidates[i].weight = static_cast<int64_t>(candidates[i].cost_old) - static_cast<int64_t>(candidates[i].cost_new);
++            }
++
++            auto t_gb0 = std::chrono::steady_clock::now();
++            DependencyGraph graph = PartialAcceptanceOptimizer::buildDependencyGraph(
++                candidates, snap.incumbent_paths, instance);
++            auto t_gb1 = std::chrono::steady_clock::now();
++            double gb_us = std::chrono::duration<double, std::micro>(t_gb1 - t_gb0).count();
++
++            PartialAcceptanceResult greedy_res = PartialAcceptanceOptimizer::solveGreedyDependencyAware(
++                graph, candidates, snap.incumbent_version);
++            PartialAcceptanceResult exact_res = PartialAcceptanceOptimizer::solveExactClosure(
++                graph, candidates, snap.incumbent_version);
++            PartialAcceptanceResult nn_res = PartialAcceptanceOptimizer::solveNonnegativeClosureReference(
++                graph, candidates, snap.incumbent_version);
++
++            bool oracle_ran = (r <= 12);
++            PartialAcceptanceResult oracle_res;
++            if (oracle_ran) {
++                oracle_res = PartialAcceptanceOptimizer::solveExhaustiveOracle(
++                    candidates, snap.incumbent_paths, instance, snap.incumbent_version);
++                if (exact_res.predicted_gain != oracle_res.predicted_gain) {
++                    exact_vs_oracle_mismatch++;
++                }
++            }
++            if (graph.feasible_negative_weight_count == 0 &&
++                nn_res.predicted_gain != exact_res.predicted_gain) {
++                nn_ref_vs_exact_mismatch++;
++            }
++
++            // Independently validate exact mixture when positive gain is selected
++            bool exact_mixture_valid = true;
++            double val_us = 0.0;
++            if (exact_res.predicted_gain > 0) {
++                positive_feasible_count++;
++                total_exact_gain += exact_res.predicted_gain;
++                auto t_v0 = std::chrono::steady_clock::now();
++                std::vector<::Path> mix = snap.incumbent_paths;
++                for (size_t k = 0; k < exact_res.selected_agent_ids.size(); ++k) {
++                    mix[exact_res.selected_agent_ids[k]] = exact_res.selected_paths[k];
++                }
++                int64_t mix_soc = 0;
++                std::string mix_err;
++                exact_mixture_valid = PartialAcceptanceOptimizer::validateCompletePlanIndependently(
++                    mix, instance, mix_soc, mix_err);
++                if (exact_mixture_valid && (snap.incumbent_cost - mix_soc != exact_res.predicted_gain)) {
++                    exact_mixture_valid = false;
++                }
++                auto t_v1 = std::chrono::steady_clock::now();
++                val_us = std::chrono::duration<double, std::micro>(t_v1 - t_v0).count();
++            }
++            if (greedy_res.predicted_gain > 0) {
++                greedy_positive_count++;
++                total_greedy_gain += greedy_res.predicted_gain;
++            }
++            if (exact_res.predicted_gain > greedy_res.predicted_gain) {
++                exact_gt_greedy_count++;
++            }
+ 
+-    // Independent final plan validation
+-    std::string val_err;
+-    bool is_valid = engine.validateIncumbent(val_err);
++            out << "    {\n";
++            out << "      \"snapshot_id\": " << snap.snapshot_id << ",\n";
++            out << "      \"attempt_id\": " << snap.attempt_id << ",\n";
++            out << "      \"action_kind\": \"" << (snap.is_resumed ? "RESUME" : "FRESH") << "\",\n";
++            out << "      \"incumbent_version\": " << snap.incumbent_version << ",\n";
++            out << "      \"incumbent_cost\": " << snap.incumbent_cost << ",\n";
++            out << "      \"neighborhood_size\": " << snap.priority_order.size() << ",\n";
++            out << "      \"candidate_count\": " << r << ",\n";
++            out << "      \"slice_duration_s\": " << snap.slice_duration_s << ",\n";
++            out << "      \"remaining_budget_s\": " << snap.remaining_budget_s << ",\n";
++            out << "      \"slice_expansions\": " << snap.slice_expansions << ",\n";
++            out << "      \"candidate_agents\": [";
++            for (int i = 0; i < r; ++i) out << snap.candidate_agents[i] << (i + 1 < r ? ", " : "");
++            out << "],\n";
++            out << "      \"weights\": [";
++            for (int i = 0; i < r; ++i) out << candidates[i].weight << (i + 1 < r ? ", " : "");
++            out << "],\n";
++            out << "      \"positive_weight_count\": " << graph.positive_weight_count << ",\n";
++            out << "      \"zero_weight_count\": " << graph.zero_weight_count << ",\n";
++            out << "      \"negative_weight_count\": " << graph.negative_weight_count << ",\n";
++            out << "      \"forbidden_count\": " << graph.forbidden_count << ",\n";
++            out << "      \"transitively_excluded_count\": " << graph.transitively_excluded_count << ",\n";
++            out << "      \"dependency_arc_count\": " << graph.dependency_arc_count << ",\n";
++            out << "      \"feasible_negative_weight_count\": " << graph.feasible_negative_weight_count << ",\n";
++            out << "      \"graph_build_time_us\": " << gb_us << ",\n";
++            out << "      \"no_pa_gain\": 0,\n";
++            out << "      \"greedy_gain\": " << greedy_res.predicted_gain << ",\n";
++            out << "      \"greedy_selected_count\": " << greedy_res.selected_agent_ids.size() << ",\n";
++            out << "      \"greedy_selection_time_us\": " << greedy_res.selection_time_us << ",\n";
++            out << "      \"exact_gain\": " << exact_res.predicted_gain << ",\n";
++            out << "      \"exact_selected_count\": " << exact_res.selected_agent_ids.size() << ",\n";
++            out << "      \"exact_selected_positive_count\": " << exact_res.selected_positive_weight_count << ",\n";
++            out << "      \"exact_selected_zero_count\": " << exact_res.selected_zero_weight_count << ",\n";
++            out << "      \"exact_selected_negative_count\": " << exact_res.selected_negative_weight_count << ",\n";
++            out << "      \"exact_selection_time_us\": " << exact_res.selection_time_us << ",\n";
++            out << "      \"exact_validation_time_us\": " << val_us << ",\n";
++            out << "      \"exact_mixture_valid\": " << (exact_mixture_valid ? "true" : "false") << ",\n";
++            out << "      \"nonnegative_ref_gain\": " << nn_res.predicted_gain << ",\n";
++            out << "      \"nonnegative_ref_time_us\": " << nn_res.selection_time_us << ",\n";
++            out << "      \"oracle_ran\": " << (oracle_ran ? "true" : "false") << ",\n";
++            out << "      \"oracle_gain\": " << (oracle_ran ? oracle_res.predicted_gain : 0) << ",\n";
++            out << "      \"oracle_time_us\": " << (oracle_ran ? oracle_res.selection_time_us : 0.0) << "\n";
++            out << "    }" << (s_idx + 1 < snapshots.size() ? "," : "") << "\n";
++        }
++
++        out << "  ],\n";
++        out << "  \"summary\": {\n";
++        out << "    \"positive_feasible_opportunities\": " << positive_feasible_count << ",\n";
++        out << "    \"greedy_positive_opportunities\": " << greedy_positive_count << ",\n";
++        out << "    \"exact_strictly_exceeds_greedy_count\": " << exact_gt_greedy_count << ",\n";
++        out << "    \"total_exact_gain\": " << total_exact_gain << ",\n";
++        out << "    \"total_greedy_gain\": " << total_greedy_gain << ",\n";
++        out << "    \"exact_vs_oracle_mismatch_count\": " << exact_vs_oracle_mismatch << ",\n";
++        out << "    \"nn_ref_vs_exact_mismatch_count\": " << nn_ref_vs_exact_mismatch << "\n";
++        out << "  }\n";
++        out << "}\n";
++
++        std::cout << "[Offline Snapshots] Map=" << map_file << " Agents=" << num_agents
++                  << " Seed=" << rng_seed << " | Attempts=" << total_iterations
++                  << " Interrupts=" << engine.getTotalInterruptionsObserved()
++                  << " WithCandidates=" << snapshots.size()
++                  << " PosFeasible=" << positive_feasible_count
++                  << " ExactGain=" << total_exact_gain
++                  << " GreedyGain=" << total_greedy_gain
++                  << " Exact>Greedy=" << exact_gt_greedy_count
++                  << " OracleMismatch=" << exact_vs_oracle_mismatch << std::endl;
++        return (exact_vs_oracle_mismatch == 0 && nn_ref_vs_exact_mismatch == 0) ? 0 : 1;
++    }
++
++    // 5. Aggregate Partial Acceptance Telemetry from online history
++    const auto& pa_hist = engine.getPartialAcceptanceHistory();
++    std::map<int, int> cand_count_hist;
++    int64_t total_cands_eval = 0;
++    int64_t total_pos_w = 0, total_zero_w = 0, total_neg_w = 0;
++    int64_t total_forb = 0, total_trans_excl = 0, total_dep_arcs = 0;
++    int64_t total_feas_neg = 0;
++    int64_t total_sel_pos = 0, total_sel_zero = 0, total_sel_neg = 0;
++    int64_t nn_fast_path_eligible = 0;
++
++    std::vector<double> gb_times, sel_times, val_times, com_times, tot_pa_times;
++    for (const auto& h : pa_hist) {
++        cand_count_hist[h.candidate_count]++;
++        total_cands_eval += h.candidate_count;
++        total_pos_w += h.positive_weight_count;
++        total_zero_w += h.zero_weight_count;
++        total_neg_w += h.negative_weight_count;
++        total_forb += h.forbidden_count;
++        total_trans_excl += h.transitively_excluded_count;
++        total_dep_arcs += h.dependency_arc_count;
++        total_feas_neg += h.feasible_negative_weight_count;
++        if (h.feasible_negative_weight_count == 0 && h.candidate_count > 0) {
++            nn_fast_path_eligible++;
++        }
++        if (h.status == PartialAcceptanceStatus::COMMITTED) {
++            total_sel_pos += h.selected_positive_weight_count;
++            total_sel_zero += h.selected_zero_weight_count;
++            total_sel_neg += h.selected_negative_weight_count;
++        }
++        gb_times.push_back(h.graph_build_time_us);
++        sel_times.push_back(h.selection_time_us);
++        if (h.validation_time_us > 0.0) val_times.push_back(h.validation_time_us);
++        if (h.commit_time_us > 0.0) com_times.push_back(h.commit_time_us);
++        tot_pa_times.push_back(h.total_time_us);
++    }
++
++    LatencyStats gb_stats = computeLatencyStats(gb_times);
++    LatencyStats sel_stats = computeLatencyStats(sel_times);
++    LatencyStats val_stats = computeLatencyStats(val_times);
++    LatencyStats com_stats = computeLatencyStats(com_times);
++    LatencyStats tot_pa_stats = computeLatencyStats(tot_pa_times);
+ 
+     std::cout << "--------------------------------------------------------" << std::endl;
+     std::cout << "Policy:                " << policy_str << std::endl;
+     std::cout << "Initial Cost:          " << initial_cost << std::endl;
+-    std::cout << "Final Cost:            " << final_cost << " (Reduction: " << cost_reduction << ")" << std::endl;
++    std::cout << "Cost at Deadline:      " << cost_at_deadline << " (Reduction: " << cost_reduction_at_deadline << ")" << std::endl;
++    std::cout << "Final Cost:            " << final_cost << " (Reduction: " << cost_reduction_final << ")" << std::endl;
++    std::cout << "Solve Time (s):        " << std::fixed << std::setprecision(6) << total_solve_time_s
++              << " (Overshoot: " << deadline_overshoot_s * 1e6 << " us)" << std::endl;
++    std::cout << "Total Repair Attempts: " << total_iterations << " (Fresh: " << fresh_actions_count
++              << ", Resumed: " << resumed_actions_count << ")" << std::endl;
++    std::cout << "Interruptions:         " << engine.getTotalInterruptionsObserved()
++              << " (With Completed Paths: " << engine.getInterruptionsWithCompletedPrefix() << ")" << std::endl;
+     std::cout << "Accepted Repairs:      " << engine.getAcceptedRepairs() << std::endl;
+     std::cout << "PA Attempts:           " << engine.getPartialAcceptanceAttempts() << std::endl;
++    std::cout << "PA Positive Opps:      " << engine.getPartialAcceptancePositiveOpportunities() << std::endl;
+     std::cout << "PA Committed:          " << engine.getPartialAcceptanceCommitted() << std::endl;
+     std::cout << "PA Total Gain:         " << engine.getPartialAcceptanceTotalGain() << std::endl;
+     std::cout << "Incumbent Version:     " << engine.getIncumbentVersion() << std::endl;
+@@ -158,24 +637,79 @@ int main(int argc, char* argv[]) {
+     // Output JSON
+     std::ofstream out(output_file);
+     if (out.is_open()) {
++        out << std::fixed << std::setprecision(6);
+         out << "{\n";
+         out << "  \"policy\": \"" << policy_str << "\",\n";
++        out << "  \"resumption_enabled\": " << (resumption_enabled ? "true" : "false") << ",\n";
++        out << "  \"partial_acceptance_enabled\": " << (use_pa ? "true" : "false") << ",\n";
++        out << "  \"partial_acceptance_policy\": \"" << toString(pa_policy) << "\",\n";
+         out << "  \"map\": \"" << map_file << "\",\n";
+         out << "  \"scen\": \"" << scen_file << "\",\n";
+         out << "  \"num_agents\": " << num_agents << ",\n";
+         out << "  \"time_budget_s\": " << time_budget_s << ",\n";
+         out << "  \"slice_budget_s\": " << slice_budget_s << ",\n";
++        out << "  \"neighborhood_size\": " << neighborhood_size << ",\n";
+         out << "  \"seed\": " << rng_seed << ",\n";
++        out << "  \"initial_plan_source\": \"" << init_plan_source << "\",\n";
++        out << "  \"initial_planning_time_s\": " << init_plan_time_s << ",\n";
+         out << "  \"initial_cost\": " << initial_cost << ",\n";
++        out << "  \"cost_at_deadline\": " << cost_at_deadline << ",\n";
+         out << "  \"final_cost\": " << final_cost << ",\n";
+-        out << "  \"cost_reduction\": " << cost_reduction << ",\n";
++        out << "  \"cost_reduction_at_deadline\": " << cost_reduction_at_deadline << ",\n";
++        out << "  \"cost_reduction\": " << cost_reduction_final << ",\n";
++        out << "  \"total_solve_time_s\": " << total_solve_time_s << ",\n";
++        out << "  \"deadline_overshoot_s\": " << deadline_overshoot_s << ",\n";
++        out << "  \"deadline_exceeded_flag\": " << (deadline_exceeded_flag ? "true" : "false") << ",\n";
++        out << "  \"time_of_last_accepted_commit_s\": " << time_of_last_accepted_commit_s << ",\n";
+         out << "  \"total_iterations\": " << total_iterations << ",\n";
++        out << "  \"total_repair_attempts\": " << total_iterations << ",\n";
++        out << "  \"fresh_actions_count\": " << fresh_actions_count << ",\n";
++        out << "  \"resumed_actions_count\": " << resumed_actions_count << ",\n";
+         out << "  \"accepted_repairs\": " << engine.getAcceptedRepairs() << ",\n";
++        out << "  \"non_improving_repairs\": " << engine.getNonImprovingRepairs() << ",\n";
++        out << "  \"failed_repairs\": " << engine.getFailedRepairs() << ",\n";
++        out << "  \"total_interrupted_repairs\": " << engine.getTotalInterruptionsObserved() << ",\n";
++        out << "  \"interruptions_with_complete_paths\": " << engine.getInterruptionsWithCompletedPrefix() << ",\n";
++        out << "  \"suspended_interrupted_slices\": " << engine.getInterruptedSlices() << ",\n";
++        out << "  \"stagnant_checkpoints_evicted\": " << stagnant_evictions << ",\n";
++        out << "  \"incompatible_checkpoints_discarded\": " << incompatible_evictions << ",\n";
++        out << "  \"total_expansions\": " << engine.getTotalExpansions() << ",\n";
++        out << "  \"repeated_expansions\": " << engine.getRepeatedExpansions() << ",\n";
+         out << "  \"pa_attempts\": " << engine.getPartialAcceptanceAttempts() << ",\n";
++        out << "  \"pa_positive_opportunities\": " << engine.getPartialAcceptancePositiveOpportunities() << ",\n";
+         out << "  \"pa_committed\": " << engine.getPartialAcceptanceCommitted() << ",\n";
++        out << "  \"pa_budget_skipped\": " << engine.getPartialAcceptanceBudgetSkipped() << ",\n";
+         out << "  \"pa_total_gain\": " << engine.getPartialAcceptanceTotalGain() << ",\n";
++        out << "  \"pa_total_time_us\": " << engine.getPartialAcceptanceTotalTimeUs() << ",\n";
++        out << "  \"pa_telemetry\": {\n";
++        out << "    \"total_candidates_evaluated\": " << total_cands_eval << ",\n";
++        out << "    \"positive_weights\": " << total_pos_w << ",\n";
++        out << "    \"zero_weights\": " << total_zero_w << ",\n";
++        out << "    \"negative_weights\": " << total_neg_w << ",\n";
++        out << "    \"forbidden_candidate_count\": " << total_forb << ",\n";
++        out << "    \"transitively_excluded_count\": " << total_trans_excl << ",\n";
++        out << "    \"dependency_arc_count\": " << total_dep_arcs << ",\n";
++        out << "    \"feasible_negative_weights\": " << total_feas_neg << ",\n";
++        out << "    \"nonnegative_fast_path_eligible_count\": " << nn_fast_path_eligible << ",\n";
++        out << "    \"selected_positive_weights\": " << total_sel_pos << ",\n";
++        out << "    \"selected_zero_weights\": " << total_sel_zero << ",\n";
++        out << "    \"selected_negative_weights\": " << total_sel_neg << ",\n";
++        out << "    \"graph_construction_time_us\": {\"median\": " << gb_stats.median << ", \"p95\": " << gb_stats.p95 << ", \"max\": " << gb_stats.max << ", \"total\": " << gb_stats.total << "},\n";
++        out << "    \"selection_time_us\": {\"median\": " << sel_stats.median << ", \"p95\": " << sel_stats.p95 << ", \"max\": " << sel_stats.max << ", \"total\": " << sel_stats.total << "},\n";
++        out << "    \"validation_time_us\": {\"median\": " << val_stats.median << ", \"p95\": " << val_stats.p95 << ", \"max\": " << val_stats.max << ", \"total\": " << val_stats.total << "},\n";
++        out << "    \"commit_time_us\": {\"median\": " << com_stats.median << ", \"p95\": " << com_stats.p95 << ", \"max\": " << com_stats.max << ", \"total\": " << com_stats.total << "},\n";
++        out << "    \"total_pa_overhead_us\": {\"median\": " << tot_pa_stats.median << ", \"p95\": " << tot_pa_stats.p95 << ", \"max\": " << tot_pa_stats.max << ", \"total\": " << tot_pa_stats.total << "}\n";
++        out << "  },\n";
+         out << "  \"incumbent_version\": " << engine.getIncumbentVersion() << ",\n";
+-        out << "  \"plan_valid\": " << (is_valid ? "true" : "false") << "\n";
++        out << "  \"plan_valid\": " << (is_valid ? "true" : "false") << ",\n";
++        out << "  \"validation_error\": \"" << val_err << "\",\n";
++        out << "  \"anytime_cost_trajectory\": [\n";
++        for (size_t i = 0; i < anytime_cost_trajectory.size(); ++i) {
++            out << "    {\"timestamp_s\": " << anytime_cost_trajectory[i].first
++                << ", \"cost\": " << anytime_cost_trajectory[i].second << "}"
++                << (i + 1 < anytime_cost_trajectory.size() ? "," : "") << "\n";
++        }
++        out << "  ]\n";
+         out << "}\n";
+     }
+ 

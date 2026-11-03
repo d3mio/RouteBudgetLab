@@ -1,0 +1,20 @@
+commit 07973d048cc473131f2854197bbf3e99875374ae
+Author:     d3mio <d.sethnadagamage@gmail.com>
+AuthorDate: Sun Nov 1 15:08:50 2026 +0530
+Commit:     d3mio <d.sethnadagamage@gmail.com>
+CommitDate: Sun Nov 1 15:08:50 2026 +0530
+
+    checkpoint(pre-audit): preserve selective recovery implementation, 15-test suite, and 192-run pilot
+
+ CMakeLists.txt                              |   5 +
+ scripts/analyze_selective_recovery.py       | 321 ++++++++++++
+ scripts/run_selective_recovery_pilot.py     | 220 +++++++++
+ src/engine/rbl_checkpoint.hpp               |  19 +
+ src/engine/rbl_partial_acceptance.cpp       |  17 +
+ src/engine/rbl_partial_acceptance.hpp       |  49 ++
+ src/engine/rbl_resumable_engine.cpp         | 177 ++++++-
+ src/engine/rbl_resumable_engine.hpp         |  71 ++-
+ src/profiler/profile_partial_acceptance.cpp |  77 ++-
+ tests/partial_acceptance_tests.cpp          |   4 +-
+ tests/selective_recovery_tests.cpp          | 725 ++++++++++++++++++++++++++++
+ 11 files changed, 1665 insertions(+), 20 deletions(-)
