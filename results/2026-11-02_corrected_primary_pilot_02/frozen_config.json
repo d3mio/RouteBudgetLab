@@ -1,0 +1,64 @@
+{
+  "experiment_name": "corrected_primary_resumption",
+  "description": "Controlled matched evaluation of selective recovery policies (Cheap Filter, Eviction-Only, Terminal-Only, and Combined) against Resumption Baseline and Terminal-Reserve Control.",
+  "version": "2.0.0",
+  "date": "2026-11-02",
+  "partition": "validation",
+  "prior_data_exposure": "Development/validation partition (random-64-64-10, warehouse-10-20-10-2-2). Untouched test partition remains strictly unexposed.",
+  "base_parameters": {
+    "neighborhood_size": 8,
+    "slice_duration_seconds": 0.005,
+    "slice_expansion_cap_rule": "max(50, floor(slice_duration_seconds * 100000.0)) = 500 expansions",
+    "terminal_reserve_seconds": 0.013,
+    "checkpoint_capacity": 2,
+    "checkpoint_compatibility_policy": "WHOLE_CHECKPOINT_SELECTIVE",
+    "checkpoint_resumption_order": "FIFO (oldest compatible checkpoint_id)",
+    "stagnation_eviction_threshold": 2
+  },
+  "grid": {
+    "maps": [
+      {
+        "name": "random-64-64-10",
+        "path": "data/validation/maps/random-64-64-10.map",
+        "scenarios": [
+          "data/validation/scenarios/random-64-64-10-random-1.scen",
+          "data/validation/scenarios/random-64-64-10-random-2.scen"
+        ]
+      },
+      {
+        "name": "warehouse-10-20-10-2-2",
+        "path": "data/validation/maps/warehouse-10-20-10-2-2.map",
+        "scenarios": [
+          "data/validation/scenarios/warehouse-10-20-10-2-2-random-1.scen",
+          "data/validation/scenarios/warehouse-10-20-10-2-2-random-2.scen"
+        ]
+      }
+    ],
+    "agent_counts": [
+      50,
+      100
+    ],
+    "budgets_seconds": [
+      1.0,
+      5.0
+    ],
+    "seeds": [
+      0,
+      1
+    ]
+  },
+  "policies": [
+    {
+      "name": "DISCARD_NO_PA",
+      "policy_arg": "DISCARD_NO_PA"
+    },
+    {
+      "name": "RESUMPTION_NO_PA",
+      "policy_arg": "RESUMPTION_NO_PA"
+    }
+  ],
+  "accounting": "2 maps * 2 scenarios * 2 agent scales * 2 budgets * 2 seeds = 32 matched cells * 6 variants = 192 total runs",
+  "reserve_selection": "ceil(2 * maximum of 60 measured 100-agent, 8-candidate recovery calls in milliseconds); heuristic for at most two FIFO checkpoints; not a worst-case guarantee",
+  "analysis": "Primary descriptive comparison: resumption deadline SoC minus restart-only deadline SoC; negative favors resumption. Same 32 exposed cells; single predeclared comparison.",
+  "execution": "Sequential stored cyclic order; 32 cells cannot balance six first-position rotations exactly. No selective reruns."
+}
