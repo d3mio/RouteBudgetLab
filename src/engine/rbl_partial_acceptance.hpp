@@ -88,7 +88,8 @@ enum class SelectiveRecoveryPolicy {
     PA_EVERY_INTERRUPTION_FILTERED, // Filtered recovery evaluated on every slice interruption
     PA_EVICTION_ONLY,               // Normal resumption; recovery attempted only upon natural checkpoint eviction
     PA_TERMINAL_ONLY,               // Normal resumption; recovery attempted only during terminal reserve before deadline
-    PA_EVICTION_AND_TERMINAL        // Normal resumption; recovery attempted on eviction and during terminal reserve
+    PA_EVICTION_AND_TERMINAL,       // Normal resumption; recovery attempted on eviction and during terminal reserve
+    GATED_BLOCKER_CLOSURE           // Two-phase gain-gated minimal blocker-closure recovery on eviction & terminal reserve
 };
 
 inline const char* toString(SelectiveRecoveryPolicy p) {
@@ -98,6 +99,7 @@ inline const char* toString(SelectiveRecoveryPolicy p) {
         case SelectiveRecoveryPolicy::PA_EVICTION_ONLY: return "PA_EVICTION_ONLY";
         case SelectiveRecoveryPolicy::PA_TERMINAL_ONLY: return "PA_TERMINAL_ONLY";
         case SelectiveRecoveryPolicy::PA_EVICTION_AND_TERMINAL: return "PA_EVICTION_AND_TERMINAL";
+        case SelectiveRecoveryPolicy::GATED_BLOCKER_CLOSURE: return "GATED_BLOCKER_CLOSURE";
         default: return "UNKNOWN";
     }
 }
@@ -117,6 +119,8 @@ inline SelectiveRecoveryPolicy parseSelectiveRecoveryPolicy(const std::string& s
         return SelectiveRecoveryPolicy::PA_TERMINAL_ONLY;
     } else if (str == "PA_EVICTION_AND_TERMINAL") {
         return SelectiveRecoveryPolicy::PA_EVICTION_AND_TERMINAL;
+    } else if (str == "GATED_BLOCKER_CLOSURE") {
+        return SelectiveRecoveryPolicy::GATED_BLOCKER_CLOSURE;
     }
     return SelectiveRecoveryPolicy::RESUMPTION_NO_PA;
 }
@@ -151,6 +155,8 @@ struct DependencyGraph {
     int zero_weight_count = 0;
     int negative_weight_count = 0;
     int feasible_negative_weight_count = 0;          // non-excluded nodes with w_k < 0
+    std::vector<std::vector<int>> external_blockers; // per candidate u: sorted unique non-candidate incumbent agent IDs colliding with q_u
+    std::vector<int> positive_gain_external_blockers; // sorted unique external blockers colliding with positive-weight candidates
 };
 
 // Result contract for partial acceptance evaluation and commitment

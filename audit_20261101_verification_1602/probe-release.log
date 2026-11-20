@@ -1,3 +1,0 @@
-before valid=1 stored=220 authoritative=218
-after committed=1 valid=1 stored=218 authoritative=216 verified_gain=2
-selective_test4_assertion_guard=0

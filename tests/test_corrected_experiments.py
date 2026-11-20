@@ -56,9 +56,13 @@ class ExperimentTests(unittest.TestCase):
         r['pa_attempts']=0;r['final_cost']=0
         with self.assertRaises(ValueError):reconcile(r)
     def test_real_cli_rejects_unknown_policy(self):
-        binary=Path(sys.argv[0]).resolve() # use explicit environment-independent repository build
-        binary=Path('build/corrected-release/rbl_profile_partial_acceptance')
-        if not binary.exists():self.fail('Build corrected Release profiler before running CLI test')
+        candidates=[
+            Path('build/reconcile_release/rbl_profile_partial_acceptance'),
+            Path('build/release/rbl_profile_partial_acceptance'),
+            Path('build/corrected-release/rbl_profile_partial_acceptance'),
+        ]
+        binary=next((c for c in candidates if c.exists()), candidates[0])
+        if not binary.exists():self.fail('Build Release profiler (e.g. build/reconcile_release/rbl_profile_partial_acceptance) before running CLI test')
         p=subprocess.run([str(binary),'--map','tests/fixtures/recovery_cross.map','--scen','tests/fixtures/recovery_cross.scen','--agents','2','--policy','TYPO'],capture_output=True,text=True)
         self.assertEqual(p.returncode,2)
         self.assertIn('Invalid policy',p.stderr)

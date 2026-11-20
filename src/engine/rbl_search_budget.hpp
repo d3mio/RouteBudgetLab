@@ -195,8 +195,8 @@ public:
             return false;
         }
 
-        // Periodically check clock every 64 expansions to minimize chrono overhead
-        if ((current_expansions & 63) == 0) {
+        // Periodically check clock every 32 expansions to minimize chrono overhead while bounding latency
+        if ((current_expansions & 31) == 0) {
             if (isGlobalDeadlineExceeded()) {
                 interrupted = true;
                 deadline_exceeded = true;

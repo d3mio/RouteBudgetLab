@@ -1,7 +1,0 @@
-policy,pairs,wins,ties,losses,mean_delta_all,mean_delta_non_ties,sample_sd,sd_denominator,sem,exact_sign_two_sided,wilcoxon_exact_two_sided,wilcoxon_less_improvement,wilcoxon_greater_worse,scipy_exact_nonzero,mean_iteration_difference,total_iteration_difference,wilcoxon_holm_five
-RESUMPTION_NO_PA,32,0,32,0,0,,0.0,31,0.0,1,1,1,1,1,0,0,
-PA_EVERY_INTERRUPTION_FILTERED,32,0,28,4,13.5625,108.5,52.975915099648454,31,9.364907201631059,0.125,0.125,1.0,0.0625,0.125,-61.4375,-1966,0.625
-PA_EVICTION_ONLY,32,0,32,0,0,,0.0,31,0.0,1,1,1,1,1,-91.09375,-2915,1
-PA_TERMINAL_ONLY,32,0,32,0,0,,0.0,31,0.0,1,1,1,1,1,-112.40625,-3597,1
-PA_EVICTION_AND_TERMINAL,32,0,32,0,0,,0.0,31,0.0,1,1,1,1,1,-214.0625,-6850,1
-TERMINAL_RESERVE_CONTROL,32,0,32,0,0,,0.0,31,0.0,1,1,1,1,1,1.28125,41,1

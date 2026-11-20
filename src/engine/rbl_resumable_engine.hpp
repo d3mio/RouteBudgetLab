@@ -184,6 +184,11 @@ public:
     // Terminal reserve recovery hook (Section 9)
     bool attemptTerminalRecovery(SearchBudget& budget);
 
+    // Two-Phase Gain-Gated Blocker-Closure operator (Phase A gain gate + Phase B minimal blocker replanning)
+    bool attemptGatedBlockerClosure(int slot_idx, SearchBudget& budget,
+                                    const char* trigger_name = "gated_blocker_closure",
+                                    int64_t gain_threshold = 0);
+
     // Partial acceptance cumulative statistics
     int getPartialAcceptanceAttempts() const { return total_partial_acceptance_attempts; }
     int getPartialAcceptancePositiveOpportunities() const { return total_partial_acceptance_positive_opps; }

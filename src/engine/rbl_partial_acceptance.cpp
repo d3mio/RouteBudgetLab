@@ -284,6 +284,7 @@ DependencyGraph PartialAcceptanceOptimizer::buildDependencyGraph(const std::vect
     graph.weights.resize(r);
     graph.adj.assign(r, {});
     graph.forbidden.assign(r, false);
+    graph.external_blockers.assign(r, {});
 
     for (int i = 0; i < r; ++i) {
         int a_id = candidates[i].agent_id;
@@ -317,6 +318,9 @@ DependencyGraph PartialAcceptanceOptimizer::buildDependencyGraph(const std::vect
                     }
                 } else {
                     // Conflicting agent j is NOT in candidate set R -> candidate u is forbidden
+                    if (std::find(graph.external_blockers[u].begin(), graph.external_blockers[u].end(), j) == graph.external_blockers[u].end()) {
+                        graph.external_blockers[u].push_back(j);
+                    }
                     if (!graph.forbidden[u]) {
                         graph.forbidden[u] = true;
                         graph.conflict_reasons.push_back("Agent " + std::to_string(a_i) +
@@ -326,6 +330,17 @@ DependencyGraph PartialAcceptanceOptimizer::buildDependencyGraph(const std::vect
                 }
             }
         }
+    }
+
+    {
+        std::unordered_set<int> pos_blockers;
+        for (int u = 0; u < r; ++u) {
+            if (graph.weights[u] > 0) {
+                for (int b : graph.external_blockers[u]) pos_blockers.insert(b);
+            }
+        }
+        graph.positive_gain_external_blockers.assign(pos_blockers.begin(), pos_blockers.end());
+        std::sort(graph.positive_gain_external_blockers.begin(), graph.positive_gain_external_blockers.end());
     }
 
     for (int u = 0; u < r; ++u)

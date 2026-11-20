@@ -1,0 +1,27 @@
+# Build artifacts & compiled objects
+build/
+*.o
+*.a
+*.so
+*.dylib
+
+# Python & test caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# OS & temporary files
+.DS_Store
+*.tmp
+/tmp/
+
+# Logs & raw benchmark trace dumps
+logs/
+results/*/raw/
+results/*/paths/
+results/*/init_paths/
+results/*/validation/
+results/*/opportunity_audit/
+results/*/all_runs.json

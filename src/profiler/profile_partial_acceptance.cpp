@@ -274,7 +274,9 @@ int main(int argc, char* argv[]) {
 
     const std::set<std::string> known_policies = {"RESUMPTION_NO_PA", "PA_EVERY_INTERRUPTION_FILTERED",
         "PA_EVICTION_ONLY", "PA_TERMINAL_ONLY", "PA_EVICTION_AND_TERMINAL",
-        "DISCARD_NO_PA", "EXACT_PARTIAL_ACCEPTANCE", "GREEDY_PARTIAL_ACCEPTANCE"};
+        "GATED_BLOCKER_CLOSURE",
+        "DISCARD_NO_PA", "EXACT_PARTIAL_ACCEPTANCE", "GREEDY_PARTIAL_ACCEPTANCE",
+        "UNINTERRUPTED_REPAIR"};
     if (!known_policies.count(policy_str) || time_budget_s <= 0 || slice_budget_s <= 0 ||
         terminal_reserve_s < 0 || neighborhood_size <= 0 || num_agents <= 0) {
         std::cerr << "Invalid policy or planning parameter" << std::endl; return 2;
@@ -295,15 +297,16 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    bool resumption_enabled = (policy_str != "DISCARD_NO_PA");
-    SelectiveRecoveryPolicy sel_policy = parseSelectiveRecoveryPolicy(policy_str);
+    bool is_uninterrupted = (policy_str == "UNINTERRUPTED_REPAIR");
+    bool resumption_enabled = (policy_str != "DISCARD_NO_PA" && !is_uninterrupted);
+    SelectiveRecoveryPolicy sel_policy = is_uninterrupted ? SelectiveRecoveryPolicy::RESUMPTION_NO_PA : parseSelectiveRecoveryPolicy(policy_str);
     PartialAcceptancePolicy pa_policy = PartialAcceptancePolicy::OFF;
     if (policy_str == "EXACT_PARTIAL_ACCEPTANCE") {
         pa_policy = PartialAcceptancePolicy::EXACT_CLOSURE;
-    } else if (policy_str == "GREEDY_PARTIAL_ACCEPTANCE" || sel_policy != SelectiveRecoveryPolicy::RESUMPTION_NO_PA) {
+    } else if (policy_str == "GREEDY_PARTIAL_ACCEPTANCE" || (!is_uninterrupted && sel_policy != SelectiveRecoveryPolicy::RESUMPTION_NO_PA)) {
         pa_policy = PartialAcceptancePolicy::GREEDY_DEPENDENCY;
     }
-    bool use_pa = (mode_str == "online") &&
+    bool use_pa = (mode_str == "online") && !is_uninterrupted &&
                   (sel_policy != SelectiveRecoveryPolicy::RESUMPTION_NO_PA ||
                    policy_str == "GREEDY_PARTIAL_ACCEPTANCE" || policy_str == "EXACT_PARTIAL_ACCEPTANCE");
 
@@ -329,7 +332,8 @@ int main(int argc, char* argv[]) {
     const double t_reserve_s = 0.0005; // 500 us safety reserve before starting an operation
     bool terminal_recovery_needed = (mode_str == "online") &&
         (sel_policy == SelectiveRecoveryPolicy::PA_TERMINAL_ONLY ||
-         sel_policy == SelectiveRecoveryPolicy::PA_EVICTION_AND_TERMINAL);
+         sel_policy == SelectiveRecoveryPolicy::PA_EVICTION_AND_TERMINAL ||
+         sel_policy == SelectiveRecoveryPolicy::GATED_BLOCKER_CLOSURE);
     double effective_cutoff_reserve_s = (terminal_recovery_needed || terminal_reserve_control) ? terminal_reserve_s : t_reserve_s;
     const int max_stagnant_attempts = 2;
     auto t_global_start = std::chrono::steady_clock::now();
@@ -363,7 +367,7 @@ int main(int argc, char* argv[]) {
             break;
         }
 
-        int resume_slot = selectCompatibleResumeSlot(
+        int resume_slot = is_uninterrupted ? -1 : selectCompatibleResumeSlot(
             engine, resumption_enabled, max_stagnant_attempts, stagnant_evictions, incompatible_evictions);
 
         auto t_pre_exec = std::chrono::steady_clock::now();
@@ -373,9 +377,17 @@ int main(int argc, char* argv[]) {
             break;
         }
 
-        double effective_slice_s = std::min(slice_budget_s, std::max(0.001, b_k_exec - effective_cutoff_reserve_s));
-        // Standard RouteBudget Lab slice expansion cap rule (100,000 expansions/sec)
-        uint64_t expansion_cap = std::max<uint64_t>(50, static_cast<uint64_t>(slice_budget_s * 100000.0));
+        double effective_slice_s;
+        uint64_t expansion_cap;
+        if (is_uninterrupted) {
+            // Uninterrupted repair runs for the entire remaining global budget without artificial slice cutoffs
+            effective_slice_s = std::max(0.0001, b_k_exec - effective_cutoff_reserve_s);
+            expansion_cap = UINT64_MAX;
+        } else {
+            effective_slice_s = std::min(slice_budget_s, std::max(0.0001, b_k_exec - effective_cutoff_reserve_s));
+            // Standard RouteBudget Lab slice expansion cap rule (100,000 expansions/sec)
+            expansion_cap = std::max<uint64_t>(50, static_cast<uint64_t>(slice_budget_s * 100000.0));
+        }
         SearchBudget slice_budget(expansion_cap, effective_slice_s);
         slice_budget.setGlobalDeadline(global_deadline);
 
@@ -580,6 +592,10 @@ int main(int argc, char* argv[]) {
             out << "      \"transitively_excluded_count\": " << graph.transitively_excluded_count << ",\n";
             out << "      \"dependency_arc_count\": " << graph.dependency_arc_count << ",\n";
             out << "      \"feasible_negative_weight_count\": " << graph.feasible_negative_weight_count << ",\n";
+            int64_t admissible_u = 0;
+            for (const auto& cand : candidates) if (cand.weight > 0) admissible_u += cand.weight;
+            out << "      \"admissible_gain_u\": " << admissible_u << ",\n";
+            out << "      \"pos_blocker_count\": " << graph.positive_gain_external_blockers.size() << ",\n";
             out << "      \"graph_build_time_us\": " << gb_us << ",\n";
             out << "      \"no_pa_gain\": 0,\n";
             out << "      \"greedy_gain\": " << greedy_res.predicted_gain << ",\n";

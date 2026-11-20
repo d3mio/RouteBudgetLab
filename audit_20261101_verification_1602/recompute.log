@@ -1,4 +1,0 @@
-  File "/Users/disasgamage/Documents/GitHub/RouteBudgetLab/audit_20261101_verification_1602/recompute.py", line 15
-    policies=[p['name'] for p in json.loads((ROOT/'configs/2026-11-01_selective_recovery/selective_recovery_pilot.json').read_text())['policies']
-             ^
-SyntaxError: '[' was never closed

@@ -1,6 +1,0 @@
-validator_unit_tests 5 0.00377091
-real_solver_output_is_valid 5 0.000823483
-real_solver_output_misread_as_xy_is_rejected 5 0.000473408
-experiment_e1_resumption_tests 5 0.00454558
-experiment_e4_compatibility_tests 2 0.00814529
----

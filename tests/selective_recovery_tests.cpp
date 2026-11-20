@@ -913,6 +913,117 @@ bool test22_boundary_time_control_and_deadline_polling(const Instance& instance,
     return true;
 }
 
+// ----------------------------------------------------------------------------
+// Test 23: Two-Phase Gain-Gated Blocker-Closure Phase A O(1) gate & deadline rollback
+// ----------------------------------------------------------------------------
+bool test23_gated_blocker_closure_phase_a_gate(const Instance& instance, const std::vector<::Path>& init_paths) {
+    std::cout << "  [Test 23] Gated Blocker Closure Phase A O(1) gain gate & deadline rollback... " << std::flush;
+    ResumableRepairEngine engine(instance, false, 2);
+    engine.setInitialSolution(init_paths);
+    engine.setSelectiveRecoveryPolicy(SelectiveRecoveryPolicy::GATED_BLOCKER_CLOSURE);
+
+    // Checkpoint with non-improving prefix (Delta_max == 0 <= tau)
+    MacroPrefixCheckpoint cp;
+    cp.checkpoint_id = 901;
+    cp.lifecycle = CheckpointLifecycle::SUSPENDED;
+    cp.neighborhood_agents = {0};
+    cp.priority_order = {0};
+    cp.r_done = 1;
+    cp.prefix_paths = {addInitialWaits(init_paths[0], 1)};
+    cp.old_paths = {init_paths[0]};
+    cp.incumbent_version = engine.getIncumbentVersion();
+    int slot = engine.getCheckpointStore().saveCheckpoint(cp);
+    ASSERT_TRUE(slot >= 0, "Checkpoint saved");
+
+    SearchBudget budget(10000, 1.0);
+    bool committed = engine.attemptGatedBlockerClosure(slot, budget, "test_gate_skip", 0);
+    ASSERT_TRUE(!committed, "Phase A gate must reject zero/negative gain");
+    ASSERT_EQ(engine.getFilterSkips(), 1, "Phase A gate must increment filter_skips");
+    ASSERT_EQ(engine.getIncumbentVersion(), cp.incumbent_version, "Incumbent version unchanged");
+
+    // Verify expired deadline rolls back safely even when Delta_max > 0
+    if (init_paths[0].size() > 2) {
+        // Construct an artificial shorter path to pass Phase A gate, then fail deadline check cleanly
+        ::Path short_p = {init_paths[0].front(), init_paths[0].back()};
+        MacroPrefixCheckpoint cp2;
+        cp2.checkpoint_id = 902;
+        cp2.lifecycle = CheckpointLifecycle::SUSPENDED;
+        cp2.neighborhood_agents = {0};
+        cp2.priority_order = {0};
+        cp2.r_done = 1;
+        cp2.prefix_paths = {short_p};
+        cp2.old_paths = {init_paths[0]};
+        cp2.incumbent_version = engine.getIncumbentVersion();
+        int slot2 = engine.getCheckpointStore().saveCheckpoint(cp2);
+
+        SearchBudget expired_budget(1000, 0.0);
+        expired_budget.setGlobalDeadline(std::chrono::steady_clock::now() - std::chrono::milliseconds(5));
+        bool committed2 = engine.attemptGatedBlockerClosure(slot2, expired_budget, "test_gate_deadline", 0);
+        ASSERT_TRUE(!committed2, "Expired deadline must not commit");
+        ASSERT_EQ(engine.getIncumbentVersion(), cp2.incumbent_version, "Incumbent version unchanged on deadline abort");
+        std::string err;
+        ASSERT_TRUE(engine.validateIncumbent(err), "Incumbent remains valid after abort");
+    }
+
+    std::cout << "PASSED" << std::endl;
+    return true;
+}
+
+// ----------------------------------------------------------------------------
+// Test 24: Two-Phase Gain-Gated Blocker-Closure Phase B minimal blocker replanning
+// ----------------------------------------------------------------------------
+bool test24_gated_blocker_closure_phase_b_replan(const Instance& instance, const std::vector<::Path>& init_paths) {
+    std::cout << "  [Test 24] Gated Blocker Closure Phase B minimal blocker replanning & validation... " << std::flush;
+    ResumableRepairEngine engine(instance, false, 2);
+    // Use a padded initial path for agent 0 that avoids agent 1, and verify gated closure safely commits or rejects
+    // without violating collisions or corrupting incumbent.
+    std::vector<::Path> padded_init = init_paths;
+    if (!padded_init[0].empty()) {
+        padded_init[0] = addInitialWaits(padded_init[0], 3);
+    }
+    // Note: adding waits to agent 0 only might collide with another agent, so validate first;
+    // if padded_init is invalid, fall back to clean init_paths and test checkpoint improvement via sub-optimal wait removal.
+    engine.setInitialSolution(init_paths);
+    engine.setSelectiveRecoveryPolicy(SelectiveRecoveryPolicy::GATED_BLOCKER_CLOSURE);
+
+    // Replace incumbent with a valid plan if padded_init is valid, else test direct checkpoint evaluation
+    std::string val_err;
+    int64_t dummy_soc = 0;
+    if (PartialAcceptanceOptimizer::validateCompletePlanIndependently(padded_init, instance, dummy_soc, val_err)) {
+        ResumableRepairEngine test_eng(instance, false, 2);
+        test_eng.setInitialSolution(padded_init);
+        test_eng.setSelectiveRecoveryPolicy(SelectiveRecoveryPolicy::GATED_BLOCKER_CLOSURE);
+        int64_t cost_before = test_eng.getIncumbentCost();
+        MacroPrefixCheckpoint cp;
+        cp.checkpoint_id = 903;
+        cp.lifecycle = CheckpointLifecycle::SUSPENDED;
+        cp.neighborhood_agents = {0};
+        cp.priority_order = {0};
+        cp.r_done = 1;
+        cp.prefix_paths = {init_paths[0]}; // strictly shorter than padded_init[0]
+        cp.old_paths = {padded_init[0]};
+        cp.incumbent_version = test_eng.getIncumbentVersion();
+        int slot = test_eng.getCheckpointStore().saveCheckpoint(cp);
+
+        SearchBudget budget(50000, 1.0);
+        bool committed = test_eng.attemptGatedBlockerClosure(slot, budget, "test_phase_b", 0);
+        if (committed) {
+            ASSERT_TRUE(test_eng.getIncumbentCost() < cost_before, "Committed closure must strictly lower SoC");
+        }
+        std::string post_err;
+        ASSERT_TRUE(test_eng.validateIncumbent(post_err), "Incumbent must remain 100% collision-free after Phase B");
+    } else {
+        // Fallback: verify terminal recovery call under GATED_BLOCKER_CLOSURE preserves validity
+        SearchBudget budget(10000, 0.5);
+        engine.attemptTerminalRecovery(budget);
+        std::string post_err;
+        ASSERT_TRUE(engine.validateIncumbent(post_err), "Incumbent remains valid");
+    }
+
+    std::cout << "PASSED" << std::endl;
+    return true;
+}
+
 } // namespace rbl_test
 
 int main(int argc, char* argv[]) {
@@ -954,6 +1065,8 @@ int main(int argc, char* argv[]) {
     all_passed &= rbl_test::test20_cli_policy_parsing_and_telemetry(instance, initial_paths);
     all_passed &= rbl_test::test21_failed_eviction_recovery_completes_original_eviction(instance, initial_paths);
     all_passed &= rbl_test::test22_boundary_time_control_and_deadline_polling(instance, initial_paths);
+    all_passed &= rbl_test::test23_gated_blocker_closure_phase_a_gate(instance, initial_paths);
+    all_passed &= rbl_test::test24_gated_blocker_closure_phase_b_replan(instance, initial_paths);
 
     std::cout << "=================================================================" << std::endl;
     if (all_passed) {

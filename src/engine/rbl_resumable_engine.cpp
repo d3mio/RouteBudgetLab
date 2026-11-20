@@ -553,9 +553,13 @@ RepairOutcome ResumableRepairEngine::attemptFreshRepair(const std::vector<int>& 
         // Natural eviction recovery hook (Section 8)
         if (checkpoint_store.getCapacity() > 0) {
             int victim_slot = checkpoint_store.findEvictionVictimSlot();
-            if (victim_slot >= 0 && (selective_recovery_policy == SelectiveRecoveryPolicy::PA_EVICTION_ONLY ||
-                                     selective_recovery_policy == SelectiveRecoveryPolicy::PA_EVICTION_AND_TERMINAL)) {
-                attemptEvictionRecovery(victim_slot, budget);
+            if (victim_slot >= 0) {
+                if (selective_recovery_policy == SelectiveRecoveryPolicy::PA_EVICTION_ONLY ||
+                    selective_recovery_policy == SelectiveRecoveryPolicy::PA_EVICTION_AND_TERMINAL) {
+                    attemptEvictionRecovery(victim_slot, budget);
+                } else if (selective_recovery_policy == SelectiveRecoveryPolicy::GATED_BLOCKER_CLOSURE) {
+                    attemptGatedBlockerClosure(victim_slot, budget, "eviction_gated_blocker");
+                }
             }
         }
 
@@ -1389,6 +1393,13 @@ bool ResumableRepairEngine::attemptTerminalRecovery(SearchBudget& budget) {
         }
 
         total_terminal_pa_examined++;
+        if (selective_recovery_policy == SelectiveRecoveryPolicy::GATED_BLOCKER_CLOSURE) {
+            if (attemptGatedBlockerClosure(s, budget, "terminal_gated_blocker")) {
+                checkpoint_store.markCommitted(s, CheckpointRemoval::Recovery);
+                any_committed = true;
+            }
+            continue;
+        }
         int r_done = std::min(static_cast<int>(cp->r_done), static_cast<int>(std::min(cp->prefix_paths.size(), cp->priority_order.size())));
         std::vector<int> candidate_agents(cp->priority_order.begin(), cp->priority_order.begin() + r_done);
         std::vector<Path> candidate_paths(cp->prefix_paths.begin(), cp->prefix_paths.begin() + r_done);
@@ -1417,6 +1428,276 @@ bool ResumableRepairEngine::attemptTerminalRecovery(SearchBudget& budget) {
     double elapsed_us = std::chrono::duration<double, std::micro>(std::chrono::steady_clock::now() - t0).count();
     total_terminal_pa_time_us += elapsed_us;
     return any_committed;
+}
+
+bool ResumableRepairEngine::attemptGatedBlockerClosure(int slot_idx, SearchBudget& budget,
+                                                       const char* trigger_name,
+                                                       int64_t gain_threshold) {
+    if (eviction_recovery_active) return false;
+    const auto* cp = checkpoint_store.getCheckpoint(slot_idx);
+    if (!cp || cp->lifecycle != CheckpointLifecycle::SUSPENDED) return false;
+
+    const int count = std::max(0, std::min(cp->r_done,
+        static_cast<int>(std::min(cp->prefix_paths.size(), cp->priority_order.size()))));
+    if (count == 0) return false;
+
+    eviction_recovery_active = true;
+    struct Guard { bool& active; ~Guard() { active = false; } } guard{eviction_recovery_active};
+
+    const auto t0 = std::chrono::steady_clock::now();
+    const uint64_t cp_id = cp->checkpoint_id;
+    const uint64_t cp_ver = cp->incumbent_version;
+    const auto& goals = instance.getGoals();
+
+    ++total_partial_acceptance_attempts;
+    ++total_filter_evaluations;
+
+    // Phase A: O(1) Admissible Gain Gate (skip immediately when Delta_max <= tau)
+    int64_t delta_max = 0;
+    std::vector<ReplacementCandidate> candidates;
+    candidates.reserve(count);
+    for (int i = 0; i < count; ++i) {
+        int a = cp->priority_order[i];
+        if (a < 0 || a >= num_agents) return false;
+        ReplacementCandidate c;
+        c.agent_id = a;
+        c.replacement_path = cp->prefix_paths[i];
+        c.old_path = incumbent_paths[a];
+        c.cost_old = PartialAcceptanceOptimizer::computeArrivalCost(c.old_path, goals[a]);
+        c.cost_new = PartialAcceptanceOptimizer::computeArrivalCost(c.replacement_path, goals[a]);
+        if (!checkedSub(static_cast<int64_t>(c.cost_old), static_cast<int64_t>(c.cost_new), c.weight)) {
+            return false;
+        }
+        if (c.weight > 0) {
+            if (!checkedAdd(delta_max, c.weight, delta_max)) return false;
+        }
+        candidates.push_back(std::move(c));
+    }
+
+    PartialAcceptanceResult res;
+    res.policy = PartialAcceptancePolicy::EXACT_CLOSURE;
+    res.source_incumbent_version = incumbent_version;
+    res.candidate_count = count;
+    res.optimistic_upper_bound_U = delta_max;
+    res.bound_computed = true;
+
+    if (delta_max <= gain_threshold) {
+        ++total_filter_skips;
+        ++total_terminal_pa_filter_skips;
+        res.status = PartialAcceptanceStatus::NO_GAIN;
+        res.filter_skipped = true;
+        res.detail = "Skipped by Phase A O(1) admissible gain gate";
+        res.total_time_us = std::chrono::duration<double, std::micro>(std::chrono::steady_clock::now() - t0).count();
+        total_partial_acceptance_time_us += res.total_time_us;
+        recordRecovery(trigger_name, cp_id, cp_ver, count, res);
+        return false;
+    }
+
+    if (budget.isGlobalBudgetExhausted(budget.partial_acceptance_reserve_s)) {
+        ++total_partial_acceptance_budget_skipped;
+        res.status = PartialAcceptanceStatus::BUDGET_SKIPPED;
+        res.detail = "Global budget exhausted prior to Phase B blocker-closure";
+        res.total_time_us = std::chrono::duration<double, std::micro>(std::chrono::steady_clock::now() - t0).count();
+        total_partial_acceptance_time_us += res.total_time_us;
+        recordRecovery(trigger_name, cp_id, cp_ver, count, res);
+        return false;
+    }
+
+    // Phase B: Minimal Blocker-Only Replanning (|B| <= 2)
+    DependencyGraph graph = PartialAcceptanceOptimizer::buildDependencyGraph(
+        candidates, incumbent_paths, instance, &budget);
+    if (graph.cancelled) {
+        ++total_partial_acceptance_budget_skipped;
+        res.status = PartialAcceptanceStatus::BUDGET_SKIPPED;
+        res.detail = "Budget exhausted during dependency graph construction";
+        res.total_time_us = std::chrono::duration<double, std::micro>(std::chrono::steady_clock::now() - t0).count();
+        total_partial_acceptance_time_us += res.total_time_us;
+        recordRecovery(trigger_name, cp_id, cp_ver, count, res);
+        return false;
+    }
+
+    // If |B| == 0, solve exact closure directly over non-blocked prefix candidates
+    if (graph.positive_gain_external_blockers.empty()) {
+        PartialAcceptanceResult exact_res = PartialAcceptanceOptimizer::solveExactClosure(
+            graph, candidates, incumbent_version, &budget);
+        if (exact_res.status == PartialAcceptanceStatus::OPTIMAL_SELECTION && exact_res.predicted_gain > 0) {
+            ++total_partial_acceptance_positive_opps;
+            bool committed = commitPartialAcceptance(
+                exact_res.selected_agent_ids, exact_res.selected_paths, incumbent_version, exact_res, &budget);
+            exact_res.total_time_us = std::chrono::duration<double, std::micro>(std::chrono::steady_clock::now() - t0).count();
+            total_partial_acceptance_time_us += exact_res.total_time_us;
+            if (committed) {
+                ++total_partial_acceptance_committed;
+                total_partial_acceptance_gain += exact_res.verified_gain;
+                ++total_terminal_pa_committed;
+                total_terminal_pa_gain += exact_res.verified_gain;
+                ++total_accepted_repairs;
+            }
+            recordRecovery(trigger_name, cp_id, cp_ver, count, exact_res);
+            return committed;
+        }
+        res.status = exact_res.status;
+        res.detail = exact_res.detail;
+        res.total_time_us = std::chrono::duration<double, std::micro>(std::chrono::steady_clock::now() - t0).count();
+        total_partial_acceptance_time_us += res.total_time_us;
+        recordRecovery(trigger_name, cp_id, cp_ver, count, res);
+        return false;
+    }
+
+    // Check minimal blocker bound |B| <= 2
+    const std::vector<int>& blockers = graph.positive_gain_external_blockers;
+    if (blockers.size() > 2) {
+        res.status = PartialAcceptanceStatus::NO_GAIN;
+        res.detail = "Skipped Phase B: |B|=" + std::to_string(blockers.size()) + " > 2";
+        res.total_time_us = std::chrono::duration<double, std::micro>(std::chrono::steady_clock::now() - t0).count();
+        total_partial_acceptance_time_us += res.total_time_us;
+        recordRecovery(trigger_name, cp_id, cp_ver, count, res);
+        return false;
+    }
+
+    // Collect closed positive-gain subset P_closed (avoiding pairwise-incompatible replacements)
+    std::vector<bool> selected(count, false);
+    std::vector<int> queue;
+    for (int u = 0; u < count; ++u) {
+        if (candidates[u].weight > 0) {
+            selected[u] = true;
+            queue.push_back(u);
+        }
+    }
+    for (size_t qi = 0; qi < queue.size(); ++qi) {
+        int u = queue[qi];
+        for (int v : graph.adj[u]) {
+            if (!selected[v]) {
+                selected[v] = true;
+                queue.push_back(v);
+            }
+        }
+    }
+    for (const auto& inc_pair : graph.incompatibilities) {
+        if (selected[inc_pair.first] && selected[inc_pair.second]) {
+            res.status = PartialAcceptanceStatus::NO_GAIN;
+            res.detail = "Skipped Phase B: pairwise incompatibility in closed positive prefix";
+            res.total_time_us = std::chrono::duration<double, std::micro>(std::chrono::steady_clock::now() - t0).count();
+            total_partial_acceptance_time_us += res.total_time_us;
+            recordRecovery(trigger_name, cp_id, cp_ver, count, res);
+            return false;
+        }
+    }
+
+    // Check if any non-positive member of P_closed introduces extra external blockers beyond |B| <= 2
+    std::vector<int> all_blockers = blockers;
+    for (int u = 0; u < count; ++u) {
+        if (selected[u]) {
+            for (int b : graph.external_blockers[u]) {
+                if (std::find(all_blockers.begin(), all_blockers.end(), b) == all_blockers.end()) {
+                    all_blockers.push_back(b);
+                }
+            }
+        }
+    }
+    if (all_blockers.size() > 2) {
+        res.status = PartialAcceptanceStatus::NO_GAIN;
+        res.detail = "Skipped Phase B: closed |B|=" + std::to_string(all_blockers.size()) + " > 2";
+        res.total_time_us = std::chrono::duration<double, std::micro>(std::chrono::steady_clock::now() - t0).count();
+        total_partial_acceptance_time_us += res.total_time_us;
+        recordRecovery(trigger_name, cp_id, cp_ver, count, res);
+        return false;
+    }
+
+    // Build isolated private reservation table with P_closed inserted and blockers removed
+    PathTable priv_table = this->path_table;
+    std::vector<int> group_agents;
+    std::vector<Path> group_paths;
+    int64_t old_group_cost = 0;
+    int64_t new_group_cost = 0;
+
+    for (int u = 0; u < count; ++u) {
+        if (selected[u]) {
+            int a = candidates[u].agent_id;
+            priv_table.deletePath(a, incumbent_paths[a]);
+            if (!checkedAdd(old_group_cost, static_cast<int64_t>(candidates[u].cost_old), old_group_cost)) return false;
+        }
+    }
+    for (int b : all_blockers) {
+        priv_table.deletePath(b, incumbent_paths[b]);
+        int64_t b_old = PartialAcceptanceOptimizer::computeArrivalCost(incumbent_paths[b], goals[b]);
+        if (!checkedAdd(old_group_cost, b_old, old_group_cost)) return false;
+    }
+    for (int u = 0; u < count; ++u) {
+        if (selected[u]) {
+            int a = candidates[u].agent_id;
+            priv_table.insertPath(a, candidates[u].replacement_path);
+            group_agents.push_back(a);
+            group_paths.push_back(candidates[u].replacement_path);
+            if (!checkedAdd(new_group_cost, static_cast<int64_t>(candidates[u].cost_new), new_group_cost)) return false;
+        }
+    }
+
+    // Replan only minimal blockers B under a tight sub-budget
+    ConstraintTable priv_ct(instance.num_of_cols, instance.map_size, &priv_table);
+    double rem_global_s = budget.has_global_deadline ? std::max(0.0, budget.getRemainingGlobalSeconds() - budget.partial_acceptance_reserve_s) : 0.005;
+    double sub_time_s = std::min(0.005, rem_global_s);
+    if (sub_time_s <= 0.0001) {
+        ++total_partial_acceptance_budget_skipped;
+        res.status = PartialAcceptanceStatus::BUDGET_SKIPPED;
+        res.detail = "Insufficient remaining budget for Phase B blocker replanning";
+        res.total_time_us = std::chrono::duration<double, std::micro>(std::chrono::steady_clock::now() - t0).count();
+        total_partial_acceptance_time_us += res.total_time_us;
+        recordRecovery(trigger_name, cp_id, cp_ver, count, res);
+        return false;
+    }
+
+    SearchBudget sub_budget(2000, sub_time_s);
+    if (budget.has_global_deadline) {
+        sub_budget.setGlobalDeadline(budget.global_deadline_time);
+    }
+
+    for (size_t bi = 0; bi < all_blockers.size(); ++bi) {
+        int b = all_blockers[bi];
+        Path b_path = findPathWithBudget(b, priv_ct, sub_budget, static_cast<unsigned int>(cp->base_rng_seed + 9001 + bi));
+        if (sub_budget.interrupted || b_path.empty()) {
+            res.status = sub_budget.deadline_exceeded ? PartialAcceptanceStatus::BUDGET_SKIPPED : PartialAcceptanceStatus::NO_GAIN;
+            res.detail = sub_budget.deadline_exceeded ? "Phase B blocker replanning interrupted by deadline" : "Phase B blocker replanning found no path";
+            res.total_time_us = std::chrono::duration<double, std::micro>(std::chrono::steady_clock::now() - t0).count();
+            total_partial_acceptance_time_us += res.total_time_us;
+            recordRecovery(trigger_name, cp_id, cp_ver, count, res);
+            return false;
+        }
+        int64_t b_new = PartialAcceptanceOptimizer::computeArrivalCost(b_path, goals[b]);
+        if (!checkedAdd(new_group_cost, b_new, new_group_cost)) return false;
+        priv_table.insertPath(b, b_path);
+        group_agents.push_back(b);
+        group_paths.push_back(std::move(b_path));
+    }
+
+    int64_t net_gain = 0;
+    if (!checkedSub(old_group_cost, new_group_cost, net_gain) || net_gain <= 0) {
+        res.status = PartialAcceptanceStatus::NO_GAIN;
+        res.detail = "Phase B blocker replanning yielded non-improving net cost";
+        res.total_time_us = std::chrono::duration<double, std::micro>(std::chrono::steady_clock::now() - t0).count();
+        total_partial_acceptance_time_us += res.total_time_us;
+        recordRecovery(trigger_name, cp_id, cp_ver, count, res);
+        return false;
+    }
+
+    ++total_partial_acceptance_positive_opps;
+    res.status = PartialAcceptanceStatus::OPTIMAL_SELECTION;
+    res.predicted_gain = net_gain;
+    res.selected_agent_ids = group_agents;
+    res.selected_paths = group_paths;
+
+    bool committed = commitPartialAcceptance(group_agents, group_paths, incumbent_version, res, &budget);
+    res.total_time_us = std::chrono::duration<double, std::micro>(std::chrono::steady_clock::now() - t0).count();
+    total_partial_acceptance_time_us += res.total_time_us;
+    if (committed) {
+        ++total_partial_acceptance_committed;
+        total_partial_acceptance_gain += res.verified_gain;
+        ++total_terminal_pa_committed;
+        total_terminal_pa_gain += res.verified_gain;
+        ++total_accepted_repairs;
+    }
+    recordRecovery(trigger_name, cp_id, cp_ver, count, res);
+    return committed;
 }
 
 } // namespace rbl

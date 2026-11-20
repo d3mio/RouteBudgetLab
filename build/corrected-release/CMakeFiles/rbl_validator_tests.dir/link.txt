@@ -1,1 +1,0 @@
-/usr/bin/c++ -O3 -DNDEBUG -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/rbl_validator_tests.dir/tests/validator_tests.cpp.o -o rbl_validator_tests
